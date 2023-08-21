@@ -23,14 +23,14 @@ namespace json_data{
         bool cooler_status;
         bool qc_camera_status;
         std::array<float, 10> heat_sensors;
-        static std::vector<parsed_json> json_data_cache;
     };
 
     struct failed_qc{
         uint8_t failed_qc_units;
     };
+    static std::vector<parsed_json> json_data_cache;
 
-    void json_to_vec(json &j_data);
+    void json_to_vec(json &j_data, std::vector<parsed_json> &json_data_cache);
 };
 
 #endif // JSON_PARSER_H
