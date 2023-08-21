@@ -24,14 +24,20 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="control">
+       <attribute name="icon">
+        <iconset theme="applications-system"/>
+       </attribute>
        <attribute name="title">
         <string>Control</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="analytics">
+       <attribute name="icon">
+        <iconset theme="x-office-presentation"/>
+       </attribute>
        <attribute name="title">
         <string>Analytics</string>
        </attribute>
