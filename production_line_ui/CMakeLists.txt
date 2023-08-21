@@ -9,6 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# set(PAHO_CPP_LIB_PATH "/home/heidi/projects/ProductionLineUi/paho.mqtt.cpp/build/src")
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
@@ -17,6 +19,8 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        mqtt_client.h
+        mqtt_client.cpp
         json.hpp
         json_parser.h
         json_parser.cpp
@@ -45,6 +49,7 @@ else()
     endif()
 endif()
 
+#target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${PAHO_CPP_LIB_PATH}/libpaho-mqttpp3.a)
 target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(production_line_ui PROPERTIES
