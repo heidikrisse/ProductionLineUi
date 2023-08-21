@@ -1,6 +1,6 @@
 #include "json_parser.h"
 
-void json_data::json_to_vec(json &j_data)
+void json_data::json_to_vec(json &j_data, std::vector<parsed_json> &json_data_cache)
 {
     parsed_json data;
     j_data["timestamp"] = data.timestamp;
@@ -10,5 +10,5 @@ void json_data::json_to_vec(json &j_data)
     j_data["heater3"] = data.heater3_status;
     j_data["camera_status"] = data.qc_camera_status;
     j_data["heat sensors"] = data.heat_sensors;
-    data.json_data_cache.push_back(data);
+    json_data_cache.push_back(data);
 }
