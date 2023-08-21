@@ -11,8 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set(PAHO_CPP_LIB_PATH "/home/heidi/projects/ProductionLineUi/paho.mqtt.cpp/build/src")
 
-include_directories(${PAHO_CPP_PATH}/include)
-
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
@@ -23,6 +21,9 @@ set(PROJECT_SOURCES
         mainwindow.ui
         mqtt_client.h
         mqtt_client.cpp
+        json.hpp
+        json_parser.h
+        json_parser.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
