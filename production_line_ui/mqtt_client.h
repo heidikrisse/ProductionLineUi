@@ -1,6 +1,7 @@
+// mqtt_client.h
 #ifndef MQTT_CLIENT_H
 #define MQTT_CLIENT_H
-// mqtt_client.h
+
 #include "mqtt/async_client.h"
 #include <string>
 #include <vector>

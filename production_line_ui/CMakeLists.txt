@@ -9,7 +9,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# set(PAHO_CPP_LIB_PATH "/home/heidi/projects/ProductionLineUi/paho.mqtt.cpp/build/src")
+# Add paths to Paho MQTT header files and libraries
+set(PAHO_MQTT_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/paho.mqtt.cpp")
+set(PAHO_MQTT_C_DIR "${CMAKE_CURRENT_SOURCE_DIR}/paho.mqtt.c")
+
+# Add PahoMQTT subdirectories
+# add_subdirectory(${PAHO_MQTT_C_DIR}) # Not working because the subdirectories were addied by mistake to ProductionLineUi, not ProductionLineUi/production_line_ui!
+# add_subdirectory(${PAHO_MQTT_CPP_DIR})
+set(PAHO_MQTT_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../paho.mqtt.cpp")
+set(PAHO_MQTT_C_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../paho.mqtt.c")
+
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -49,8 +58,7 @@ else()
     endif()
 endif()
 
-#target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${PAHO_CPP_LIB_PATH}/libpaho-mqttpp3.a)
-target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets paho-mqtt3a paho-mqttpp3)
 
 set_target_properties(production_line_ui PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
