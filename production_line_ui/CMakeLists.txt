@@ -17,6 +17,9 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        json.hpp
+        json_parser.h
+        json_parser.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
