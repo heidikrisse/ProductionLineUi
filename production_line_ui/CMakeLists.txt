@@ -14,10 +14,8 @@ set(PAHO_MQTT_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/paho.mqtt.cpp")
 set(PAHO_MQTT_C_DIR "${CMAKE_CURRENT_SOURCE_DIR}/paho.mqtt.c")
 
 # Add PahoMQTT subdirectories
-# add_subdirectory(${PAHO_MQTT_C_DIR}) # Not working because the subdirectories were addied by mistake to ProductionLineUi, not ProductionLineUi/production_line_ui!
-# add_subdirectory(${PAHO_MQTT_CPP_DIR})
-set(PAHO_MQTT_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../paho.mqtt.cpp")
-set(PAHO_MQTT_C_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../paho.mqtt.c")
+add_subdirectory(${PAHO_MQTT_C_DIR})
+add_subdirectory(${PAHO_MQTT_CPP_DIR})
 
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
