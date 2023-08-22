@@ -1,15 +1,19 @@
+// json_parser.h
 #ifndef JSON_PARSER_H
 #define JSON_PARSER_H
+
 #include "json.hpp"
 #include <vector>
 #include <iostream>
 #include <array>
 #include <fstream>
+
 /**
  * The idea of this class is to wrap nlohmanns JSON parser
  * to parse incoming MQTT JSON data into structured C++ objects
  *
  */
+
 using json = nlohmann::json;
 namespace json_data{
 
@@ -27,9 +31,9 @@ namespace json_data{
     struct failed_qc{
         uint8_t failed_qc_units;
     };
-    static std::vector<parsed_json> json_data_cache;
 
-    void json_to_vec(json &j_data, std::vector<parsed_json> &json_data_cache);
+    // Returns parsed_json object
+    parsed_json json_to_vec(json &j_data);
 };
 
-#endif // JSON_PARSER_H
+#endif

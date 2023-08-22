@@ -14,6 +14,7 @@ MQTTClient::~MQTTClient()
 
 bool MQTTClient::connect()
 {
+    return true; // or false if fails to connect
 }
 
 void MQTTClient::disconnect()
@@ -23,9 +24,8 @@ void MQTTClient::disconnect()
 // Function to fetch data from MQTT topics
 std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
-    std::vector<std::string> data;
-    // jotakin
-    return data;
+    // json j = ...;
+    // data_cache.push_back(json_data::json_to_vec(j));
 }
 
 void MQTTClient::set_production_line_speed(int speed)
@@ -66,7 +66,7 @@ void MQTTClient::save_data_to_file(const std::string& filename)
             {
                 json j;
 
-                j["timestamp"] = data.timestamp.data();
+                j["timestamp"] = data.timestamp;
                 j["conveyor_speed"] = data.units_per_minute;
                 j["heater1"] = data.heater1_status;
                 j["heater2"] = data.heater2_status;
