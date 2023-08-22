@@ -50,6 +50,8 @@ public:
     // Function to save data to a file
     void save_data_to_file(const std::string& filename);
 
+
+
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;

@@ -43,7 +43,7 @@ void MQTTClient::subscribe(const std::string& topic){
 
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
-    msg->set_qos(0);
+    msg->set_qos(2);
 
     try{
         client.publish(msg)->wait();
@@ -142,12 +142,7 @@ double MQTTClient::get_operating_cost() const
 }
 
 void MQTTClient::on_message(const mqtt::message& message){
-    std::string topic = message.get_topic();
-    if(topic == "TestTopic123"){
-        //assert(0);
-        std::cout << "toimii\n";
-    }
-
+    assert(0);
 }
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
