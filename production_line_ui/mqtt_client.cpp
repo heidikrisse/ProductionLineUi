@@ -67,6 +67,13 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
     return data;
 }
 
+void MQTTClient::on_message(const mqtt::message& message){
+    // std::string payload = message.get_payload_str();
+    // json j = json::parse(payload);
+    // data_cache.push_back(json_data::json_to_vec(j));
+    assert(0);
+}
+
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
     std::string payload = std::to_string(units_per_minute);
@@ -141,9 +148,6 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
-void MQTTClient::on_message(const mqtt::message& message){
-    assert(0);
-}
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
 {

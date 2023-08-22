@@ -1,4 +1,4 @@
-// json_parser.h
+// json_parser.cpp
 #include "json_parser.h"
 
 json_data::parsed_json json_data::json_to_vec(json &j_data) {
