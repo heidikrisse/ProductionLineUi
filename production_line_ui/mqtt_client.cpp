@@ -14,15 +14,43 @@ MQTTClient::~MQTTClient()
 
 bool MQTTClient::connect()
 {
-    // return client.connect();
-    return true; // now to avoid error, client.connect() should return true if succeeds or false if fails to connect
+    mqtt::connect_options conn_opts;
+    try{
+        client.connect(conn_opts)->wait();
+        return true;
+    } catch(const mqtt::exception& e){
+        std::cerr << "Error: " << e.what() << '\n';
+        return false;
+    }
 }
 
 void MQTTClient::disconnect()
 {
-    // client.disconnect();
+    try{
+        client.disconnect()->wait();
+    } catch (const mqtt::exception& e){
+        std::cerr << "Error: " << e.what() << '\n';
+    }
 }
 
+void MQTTClient::subscribe(const std::string& topic){
+    try{
+        client.subscribe(topic, 0)->wait();
+    } catch (const mqtt::exception& e){
+        std::cerr << "Error: " << e.what() << '\n';
+    }
+}
+
+void MQTTClient::publish(const std::string& topic, const std::string& payload){
+    mqtt::message_ptr msg = mqtt::make_message(topic, payload);
+    msg->set_qos(0);
+
+    try{
+        client.publish(msg)->wait();
+    }catch (const mqtt::exception& e){
+        std::cerr << "Error: " << e.what() << "\n";
+    }
+}
 // Function to fetch data from MQTT topics
 std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
@@ -39,8 +67,10 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
     return data;
 }
 
-void MQTTClient::set_conveyor_speed(int speed)
+void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
+    std::string payload = std::to_string(units_per_minute);
+    publish("TestTopic123" , payload);
 }
 
 void MQTTClient::set_heating_elements(std::vector<bool> states)
@@ -111,6 +141,14 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
+void MQTTClient::on_message(const mqtt::message& message){
+    std::string topic = message.get_topic();
+    if(topic == "TestTopic123"){
+        //assert(0);
+        std::cout << "toimii\n";
+    }
+
+}
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
