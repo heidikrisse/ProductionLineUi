@@ -1,0 +1,6 @@
+[submodule "production_line_ui/paho.mqtt.c"]
+	path = production_line_ui/paho.mqtt.c
+	url = https://github.com/eclipse/paho.mqtt.c.git
+[submodule "production_line_ui/paho.mqtt.cpp"]
+	path = production_line_ui/paho.mqtt.cpp
+	url = https://github.com/eclipse/paho.mqtt.cpp.git

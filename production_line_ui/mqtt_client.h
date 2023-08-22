@@ -3,8 +3,15 @@
 #define MQTT_CLIENT_H
 
 #include "mqtt/async_client.h"
+#include <fstream>
+#include "json_parser.h" // for using nlohmann::json
 #include <string>
 #include <vector>
+/**
+ * MQTTClient class is a wrapper around the Paho MQTT async client.
+ * - connects to an MQTT broker, fetches data, controls a production
+ * line and save data to a file.
+ */
 
 class MQTTClient
 {
@@ -37,6 +44,7 @@ public:
 
 private:
     mqtt::async_client client;
+    std::vector<json_data::parsed_json> data_cache;
 };
 
 #endif
