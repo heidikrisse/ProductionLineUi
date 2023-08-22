@@ -105,8 +105,13 @@ git submodule add https://github.com/eclipse/paho.mqtt.cpp.git
 # To initialize and update the submodules:
 git submodule update --init --recursive
 ```
+### 3. Install library to create charts
 
-### 3. Build and run the project using Qt Creator:
+```shell
+sudo apt install libqt5charts5-dev
+```
+
+### 4. Build and run the project using Qt Creator
 
 - Open Qt Creator.
 - Select File > Open File or Project.
