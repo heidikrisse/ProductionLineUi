@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>617</width>
-    <height>492</height>
+    <width>826</width>
+    <height>670</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,19 +24,32 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="control">
        <attribute name="icon">
-        <iconset theme="applications-system"/>
+        <iconset theme="applications-system">
+         <normaloff>.</normaloff>.</iconset>
        </attribute>
        <attribute name="title">
         <string>Control</string>
        </attribute>
+       <widget class="QFrame" name="temperature_chart">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>701</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+       </widget>
       </widget>
       <widget class="QWidget" name="analytics">
        <attribute name="icon">
-        <iconset theme="x-office-presentation"/>
+        <iconset theme="x-office-presentation">
+         <normaloff>.</normaloff>.</iconset>
        </attribute>
        <attribute name="title">
         <string>Analytics</string>

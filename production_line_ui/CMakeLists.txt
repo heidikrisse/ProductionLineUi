@@ -20,6 +20,7 @@ add_subdirectory(${PAHO_MQTT_CPP_DIR})
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt5Charts)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -64,7 +65,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets paho-mqtt3a paho-mqttpp3)
+target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
 
 set_target_properties(production_line_ui PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
