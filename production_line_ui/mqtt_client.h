@@ -26,15 +26,22 @@ public:
     // Function to disconnect from the MQTT broker
     void disconnect();
 
+    // Subscribe to topic
+    void subscribe(const std::string& topic);
+
+    // Send json's to broker
+    void publish(const std::string& topic, const std::string& payload);
+
     // Function to fetch latest data from the sensors
     std::vector<std::string> fetch_sensor_data();
 
     // Function to control production line
-    void set_production_line_speed(int speed);
+    void set_conveyor_speed(int units_per_minute);
     void set_heating_elements(std::vector<bool> states);
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);
 
+    void on_message(const mqtt::message& message);
     // Function to calculate the failure rate from the fetched data
     double get_failure_rate() const;
     // Function to calculate the operating costs from the fetched data
