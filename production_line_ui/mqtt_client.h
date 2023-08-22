@@ -30,7 +30,7 @@ public:
     std::vector<std::string> fetch_sensor_data();
 
     // Function to control production line
-    void set_production_line_speed(int speed);
+    void set_conveyor_speed(int speed);
     void set_heating_elements(std::vector<bool> states);
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);

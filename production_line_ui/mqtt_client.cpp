@@ -24,11 +24,20 @@ void MQTTClient::disconnect()
 // Function to fetch data from MQTT topics
 std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
-    // json j = ...;
-    // data_cache.push_back(json_data::json_to_vec(j));
+    std::vector<std::string> data;
+
+    // Convert each json string to a json object and then parse it:
+    for (const std::string& raw_data : data) {
+        // Convert string to json object
+        json j = json::parse(raw_data);
+        // Parse the data and store in the cache
+        data_cache.push_back(json_data::json_to_vec(j));
+    }
+
+    return data;
 }
 
-void MQTTClient::set_production_line_speed(int speed)
+void MQTTClient::set_conveyor_speed(int speed)
 {
 }
 
