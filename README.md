@@ -93,8 +93,8 @@ git clone https://github.com/heidikrisse/ProductionLineUi.git
 ### 2. Fetch the submodules
 
 ```shell
-# Install libssl-dev
-sudo apt-get install libssl-dev
+# Install packages
+sudo apt-get install libssl-dev libpaho-mqtt-dev
 
 # To add the submodules
 cd ProductionLineUi
