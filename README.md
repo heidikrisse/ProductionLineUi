@@ -49,6 +49,7 @@ git clone https://github.com/heidikrisse/ProductionLineUi.git
 # To add the submodules
 ```shell
 cd ProductionLineUi
+cd production_line_ui
 git submodule add https://github.com/eclipse/paho.mqtt.c.git
 git submodule add https://github.com/eclipse/paho.mqtt.cpp.git
 
