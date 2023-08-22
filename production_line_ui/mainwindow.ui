@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>617</width>
+    <width>618</width>
     <height>492</height>
    </rect>
   </property>
@@ -28,7 +28,8 @@
       </property>
       <widget class="QWidget" name="control">
        <attribute name="icon">
-        <iconset theme="applications-system"/>
+        <iconset theme="applications-system">
+         <normaloff>.</normaloff>.</iconset>
        </attribute>
        <attribute name="title">
         <string>Control</string>
@@ -36,11 +37,25 @@
       </widget>
       <widget class="QWidget" name="analytics">
        <attribute name="icon">
-        <iconset theme="x-office-presentation"/>
+        <iconset theme="x-office-presentation">
+         <normaloff>.</normaloff>.</iconset>
        </attribute>
        <attribute name="title">
         <string>Analytics</string>
        </attribute>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>400</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>test</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
