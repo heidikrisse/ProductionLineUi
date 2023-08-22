@@ -7,15 +7,14 @@
 #include <fstream>
 /**
  * The idea of this class is to wrap nlohmanns JSON parser
- * and Paho MQTT library into one class that gets JSON data
- * trough MQTT connection and parses the contents into objects
+ * to parse incoming MQTT JSON data into structured C++ objects
  *
  */
 using json = nlohmann::json;
 namespace json_data{
 
     struct parsed_json{
-        std::string_view timestamp;
+        std::string timestamp;
         uint16_t units_per_minute;
         bool heater1_status;
         bool heater2_status;
