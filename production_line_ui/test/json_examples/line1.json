@@ -1,0 +1,19 @@
+{
+  "timestamp": "2023-08-22T08:30:00Z",
+  "conveyor_speed": 438,
+  "heater1": true,
+  "heater2": true,
+  "heater3": false,
+  "cooler": true,
+  "qc_camera": true,
+  "temp_sensor1": 48.4,
+  "temp_sensor2": 53.9,
+  "temp_sensor3": 56.2,
+  "temp_sensor4": 75.1,
+  "temp_sensor5": 79.6,
+  "temp_sensor6": 88.2,
+  "temp_sensor7": 77.4,
+  "temp_sensor8": 62.7,
+  "temp_sensor9": 56.3,
+  "temp_sensor10": 45.9
+}
