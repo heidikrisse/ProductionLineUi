@@ -31,6 +31,14 @@ set(PROJECT_SOURCES
         json.hpp
         json_parser.h
         json_parser.cpp
+        test/tests.cpp
+        test/doctest.h
+        test/json_examples/line1.json
+        test/json_examples/line2.json
+        test/json_examples/line3.json
+        test/json_examples/camera1.json
+        test/json_examples/camera2.json
+        test/json_examples/camera3.json
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
