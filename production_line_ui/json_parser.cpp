@@ -1,6 +1,7 @@
+// json_parser.h
 #include "json_parser.h"
 
-void json_data::json_to_vec(json &j_data, std::vector<parsed_json> &json_data_cache) {
+json_data::parsed_json json_data::json_to_vec(json &j_data) {
     parsed_json data;
 
     data.timestamp = j_data["timestamp"].get<std::string>();
@@ -16,6 +17,8 @@ void json_data::json_to_vec(json &j_data, std::vector<parsed_json> &json_data_ca
         data.heat_sensors[i] = j_data[sensor_name].get<float>();
     }
 
-    json_data_cache.push_back(data);
+    // Returns the parsed data
+    return data;
 }
+
 

@@ -7,6 +7,7 @@
 #include "json_parser.h" // for using nlohmann::json
 #include <string>
 #include <vector>
+
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
