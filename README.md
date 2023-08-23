@@ -1,7 +1,7 @@
 # ProductionLineUi
 
 ## Monitoring / UI / Telemetry requirements - Group 3
-========================================
+
 Create a monitoring / UI system for the production line.
 
 - Figure out how to input / output data
