@@ -1,10 +1,15 @@
 // mqtt_client.cpp
 #include "mqtt_client.h"
 
-// Constructor
+#include <string>
+#include <filesystem>
+
+// Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
     : client(broker_address, client_id)
 {
+    // Set a message callback
+    client.set_callback(*this);
 }
 
 MQTTClient::~MQTTClient()
@@ -15,11 +20,14 @@ MQTTClient::~MQTTClient()
 bool MQTTClient::connect()
 {
     mqtt::connect_options conn_opts;
-    try{
+    try
+    {
         client.connect(conn_opts)->wait();
         return true;
-    } catch(const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+    }
+    catch(const mqtt::exception& e)
+    {
+        std::cerr << "connection error: " << e.what() << '\n';
         return false;
     }
 }
@@ -29,15 +37,18 @@ void MQTTClient::disconnect()
     try{
         client.disconnect()->wait();
     } catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+        std::cerr << "disconnect error: " << e.what() << '\n';
     }
 }
 
 void MQTTClient::subscribe(const std::string& topic){
-    try{
+    try
+    {
         client.subscribe(topic, 0)->wait();
-    } catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+    }
+    catch (const mqtt::exception& e)
+    {
+        std::cerr << "subscripe Error: " << e.what() << '\n';
     }
 }
 
@@ -45,10 +56,13 @@ void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(0);
 
-    try{
+    try
+    {
         client.publish(msg)->wait();
-    }catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << "\n";
+    }
+    catch (const mqtt::exception& e)
+    {
+        std::cerr << "publish Error: " << e.what() << '\n';
     }
 }
 // Function to fetch data from MQTT topics
@@ -56,33 +70,48 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
     std::vector<std::string> data;
 
-    // Convert each json string to a json object and then parse it:
-    for (const std::string& raw_data : data) {
-        // Convert string to json object
-        json j = json::parse(raw_data);
-        // Parse the data and store in the cache
-        data_cache.push_back(json_data::json_to_vec(j));
+    for (const auto& jsonData : data_cache)
+    {
+        data.push_back(jsonData.timestamp);
     }
 
     return data;
 }
 
+void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
+{
+    std::string payload = msg->get_payload_str();
+    json j = json::parse(payload);
+    data_cache.push_back(json_data::json_to_vec(j));
+}
+
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
     std::string payload = std::to_string(units_per_minute);
-    publish("TestTopic123" , payload);
+    publish("test_topic_123" , payload);
 }
 
 void MQTTClient::set_heating_elements(std::vector<bool> states)
 {
+    json j;
+    j["heater1"] = states[0];
+    j["heater2"] = states[1];
+    j["heater3"] = states[2];
+    publish("heater_states_topic", j.dump());
 }
 
 void MQTTClient::set_cooling_system(bool state)
 {
+    json j;
+    j["cooler"] = state;
+    publish("cooler_state_topic", j.dump());
 }
 
 void MQTTClient::set_quality_control_camera(bool state)
 {
+    json j;
+    j["qc_camera"] = state;
+    publish("qc_camera_ctate_topic", j.dump());
 }
 
 // Function to calculate the failure rate from the fetched data
@@ -91,7 +120,8 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
-        for (const auto& data : data_cache) {
+        for (const auto& data : data_cache)
+        {
             total_units += data.units_per_minute;
             // failed_units += data.failed_qc_units;
         }
@@ -141,17 +171,15 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
-void MQTTClient::on_message(const mqtt::message& message){
-    std::string topic = message.get_topic();
-    if(topic == "TestTopic123"){
-        //assert(0);
-        std::cout << "toimii\n";
-    }
-
-}
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
+    // Check if directory exists or create it
+    std::filesystem::path filePath(filename);
+    if(!std::filesystem::exists(filePath.parent_path())){
+        std::filesystem::create_directories(filePath.parent_path());
+    }
+
     // Open the file in append mode so that it doesn't overwrite the file if it already exists
     std::ofstream out_file(filename, std::ios::app);
 
@@ -181,3 +209,4 @@ void MQTTClient::save_data_to_file(const std::string& filename)
         out_file.close();
     }
 }
+

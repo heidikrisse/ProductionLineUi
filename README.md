@@ -1,7 +1,7 @@
 # ProductionLineUi
 
 ## Monitoring / UI / Telemetry requirements - Group 3
-========================================
+
 Create a monitoring / UI system for the production line.
 
 - Figure out how to input / output data
@@ -25,10 +25,9 @@ Create a monitoring / UI system for the production line.
           an user guide.
 
 ### Production line tech specs - for all the groups 1 - 3
-==========================
 
 #### Sensors
--------
+
 - Production line convoyer has variable speed, measured in units pushed through/minute.
     - The maximum speed of the convoyer is 600 units / minute
     - The minimum speed of the convoyer is 0 units / minute
@@ -62,7 +61,7 @@ Create a monitoring / UI system for the production line.
 
 
 #### Controls
---------
+
 - Convoyer target speed can be adjusted by user from 0 (0 / units) to 255 (600 units / minute)
     - Convoyer's acceleration/deceleration is at maximum 1 units/minute /second.
 
@@ -90,12 +89,19 @@ Create a monitoring / UI system for the production line.
 git clone https://github.com/heidikrisse/ProductionLineUi.git
 ```
 
-### 2. Fetch the submodules
+### 2. Fetch the submodules (Ubuntu and openSUSE Leap 15.5)
 
 ```shell
-# Install packages
+# Install packages (Ubuntu)
 sudo apt-get install libssl-dev libpaho-mqtt-dev
+```
 
+```shell
+# Install packages (openSUSE Leap 15.5)
+sudo zypper install libopenssl-devel libpaho-mqtt-devel
+```
+
+```shell
 # To add the submodules
 cd ProductionLineUi
 cd production_line_ui
@@ -105,8 +111,19 @@ git submodule add https://github.com/eclipse/paho.mqtt.cpp.git
 # To initialize and update the submodules:
 git submodule update --init --recursive
 ```
+### 3. Install library to create charts
 
-### 3. Build and run the project using Qt Creator:
+```shell
+# Ubuntu
+sudo apt install libqt5charts5-dev
+```
+
+```shell
+# openSUSE Leap 15.5
+sudo zypper install libQt5Charts5-devel
+```
+
+### 4. Build and run the project using Qt Creator
 
 - Open Qt Creator.
 - Select File > Open File or Project.
