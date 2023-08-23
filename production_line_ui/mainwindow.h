@@ -22,8 +22,15 @@ class MainWindow : public QMainWindow
   private slots:
     void on_pushButton_clicked();
 
-  private:
+    void on_pushButton_2_clicked();
+
+private:
     Ui::MainWindow *ui;
     MQTTClient *test;
+    QLineSeries *series;
+    QChart *chart;
+    QChartView *chart_view;
+    QDateTimeAxis* axis_x;
+    QValueAxis* axis_y;
 };
 #endif
