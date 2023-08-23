@@ -2,6 +2,7 @@
 #include "mqtt_client.h"
 
 #include <string>
+#include <filesystem>
 
 // Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
@@ -173,6 +174,12 @@ double MQTTClient::get_operating_cost() const
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
+    // Check if directory exists or create it
+    std::filesystem::path filePath(filename);
+    if(!std::filesystem::exists(filePath.parent_path())){
+        std::filesystem::create_directories(filePath.parent_path());
+    }
+
     // Open the file in append mode so that it doesn't overwrite the file if it already exists
     std::ofstream out_file(filename, std::ios::app);
 
