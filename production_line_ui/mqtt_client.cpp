@@ -103,22 +103,32 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
 
 std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path) {
     std::vector<json_data::parsed_json> samples;
-    int file_number{1};
 
-    while (true) {
-        std::string filename = folder_path + "/data" + std::to_string(file_number) + ".json";
+    // Files to load
+    std::vector<std::string> file_names = {
+        "camera1.json",
+        "camera2.json",
+        "camera3.json",
+        "line1.json",
+        "line2.json",
+        "line3.json"
+    };
+
+    for (const std::string& file_name : file_names) {
+        std::string filename = folder_path + "/" + file_name;
         std::ifstream file(filename);
 
-        if (!file.is_open()) break;
-
-        json j;
-        file >> j;
-        samples.push_back(json_data::json_to_vec(j));
-        file_number++;
+        if (file.is_open()) {
+            json j;
+            file >> j;
+            samples.push_back(json_data::json_to_vec(j));
+            file.close();
+        }
     }
 
     return samples;
 }
+
 
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
