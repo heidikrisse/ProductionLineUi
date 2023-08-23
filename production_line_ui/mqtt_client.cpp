@@ -76,14 +76,6 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     data_cache.push_back(json_data::json_to_vec(j));
 }
 
-/*
-void MQTTClient::on_message(const mqtt::message* message){
-    std::string payload = message->get_payload_str();
-    json j = json::parse(payload);
-    data_cache.push_back(json_data::json_to_vec(j));
-    // assert(0); // just for testing
-} */
-
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
     std::string payload = std::to_string(units_per_minute);
