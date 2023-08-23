@@ -14,10 +14,10 @@
  * line and save data to a file.
  */
 
-class MQTTClient
+class MQTTClient : public mqtt::callback
 {
 public:
-    MQTTClient(const std::string& brokerAddress, const std::string& clientId);
+    MQTTClient(const std::string& broker_address, const std::string& client_id);
     ~MQTTClient();
 
     // Function to connect to the MQTT broker
@@ -41,7 +41,11 @@ public:
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);
 
-    void on_message(const mqtt::message* message);
+    // void on_message(const mqtt::message* message);
+
+    // Overriden callback function to handle incoming messages
+    virtual void message_arrived(mqtt::const_message_ptr msg) override;
+
     // Function to calculate the failure rate from the fetched data
     double get_failure_rate() const;
     // Function to calculate the operating costs from the fetched data
