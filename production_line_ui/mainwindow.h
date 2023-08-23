@@ -26,4 +26,4 @@ class MainWindow : public QMainWindow
     Ui::MainWindow *ui;
     MQTTClient *test;
 };
-#endif // MAINWINDOW_H
+#endif

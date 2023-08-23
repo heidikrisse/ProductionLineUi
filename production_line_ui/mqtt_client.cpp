@@ -48,7 +48,7 @@ void MQTTClient::publish(const std::string& topic, const std::string& payload){
     try{
         client.publish(msg)->wait();
     }catch (const mqtt::exception& e){
-        std::cerr << "publish Error: " << e.what() << "\n";
+        std::cerr << "publish Error: " << e.what() << '\n';
     }
 }
 // Function to fetch data from MQTT topics
@@ -67,29 +67,40 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
     return data;
 }
 
-void MQTTClient::on_message(const mqtt::message& message){
-    // std::string payload = message.get_payload_str();
+void MQTTClient::on_message(const mqtt::message* message){
+    // std::string payload = message->get_payload_str();
     // json j = json::parse(payload);
     // data_cache.push_back(json_data::json_to_vec(j));
-    assert(0);
+    assert(0); // just for testing
 }
 
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
     std::string payload = std::to_string(units_per_minute);
-    publish("TestTopic123" , payload);
+    publish("test_topic_123" , payload);
 }
 
 void MQTTClient::set_heating_elements(std::vector<bool> states)
 {
+    json j;
+    j["heater1"] = states[0];
+    j["heater2"] = states[1];
+    j["heater3"] = states[2];
+    publish("heater_states_topic", j.dump());
 }
 
 void MQTTClient::set_cooling_system(bool state)
 {
+    json j;
+    j["cooler"] = state;
+    publish("cooler_state_topic", j.dump());
 }
 
 void MQTTClient::set_quality_control_camera(bool state)
 {
+    json j;
+    j["qc_camera"] = state;
+    publish("qc_camera_ctate_topic", j.dump());
 }
 
 // Function to calculate the failure rate from the fetched data
@@ -146,11 +157,6 @@ double MQTTClient::get_operating_cost() const
     }
 
     return total_cost / total_units;
-}
-
-
-void MQTTClient::on_message(const mqtt::message* message){
-    assert(0);
 }
 
 // Function to save the data to a file
