@@ -52,7 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view->setRenderHint(QPainter::Antialiasing);
     chart_view->setParent(ui->temperature_chart);
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "11234567890heidi"); // change unique client ID
+
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "testff"); // change unique client ID
     test->connect();
     test->subscribe("test/12345"); // name of the test/topic
 }
@@ -105,5 +106,19 @@ void MainWindow::on_pushButton_2_clicked()
             multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
+}
+
+
+
+
+void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
+{
+    conveyer_upm = value;
+}
+
+
+void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
+{
+    test->set_conveyor_speed(conveyer_upm);
 }
 

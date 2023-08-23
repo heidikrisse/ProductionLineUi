@@ -31,7 +31,15 @@ class MainWindow : public QMainWindow
         void on_pushButton_2_clicked();
 
 
-private:
+        //slider values
+        void on_conveyer_units_per_minute_slider_valueChanged(int value);
+
+        void on_conveyer_units_per_minute_slider_sliderReleased();
+
+      public:
+        int conveyer_upm;
+
+      private:
     Ui::MainWindow *ui;
     MQTTClient *test;
     //QSplineSeries *series;

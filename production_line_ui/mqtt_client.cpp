@@ -106,8 +106,9 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
 
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
-    std::string payload = std::to_string(units_per_minute);
-    publish("test_topic_123" , payload);
+    json j;
+    j["Conveyer_speed"] = units_per_minute;
+    publish("Conveyer_speed" , j.dump());
 }
 
 void MQTTClient::set_heating_elements(std::vector<bool> states)
