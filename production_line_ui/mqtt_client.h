@@ -3,8 +3,9 @@
 #define MQTT_CLIENT_H
 
 #include "mqtt/async_client.h"
-#include <fstream>
 #include "json_parser.h" // for using nlohmann::json
+
+#include <fstream>
 #include <string>
 #include <vector>
 

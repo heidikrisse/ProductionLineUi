@@ -3,6 +3,7 @@
 #define JSON_PARSER_H
 
 #include "json.hpp"
+
 #include <vector>
 #include <iostream>
 #include <array>
@@ -26,6 +27,7 @@ namespace json_data{
         bool cooler_status;
         bool qc_camera_status;
         std::array<float, 10> heat_sensors;
+        // uint8_t non_passers = 0;
     };
 
     struct failed_qc{
