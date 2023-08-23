@@ -36,8 +36,11 @@ class MainWindow : public QMainWindow
 
         void on_conveyer_units_per_minute_slider_sliderReleased();
 
-      public:
-        int conveyer_upm;
+      private:
+        // TODO: Säädetään MQTT esim sillain että se pitää kirjaa
+        // siitä mikä on viimeisin tiedetty arvo, ja nopeus otetaan sen perusteella
+        // Jos ei saada onnistumaan niin luetaan vaikka tiedostosta tms.
+        int conveyer_upm = 423; // conveyer units per minute speed
 
       private:
     Ui::MainWindow *ui;
