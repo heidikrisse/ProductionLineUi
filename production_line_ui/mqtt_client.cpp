@@ -1,12 +1,12 @@
 // mqtt_client.cpp
 #include "mqtt_client.h"
 
-// Add a message callback to your client. You can set this up in the constructor.
+// Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
     : client(broker_address, client_id)
 {
     // Set a message callback
-    client.set_callback(*this);  // this assumes your MQTTClient class implements the callback interface
+    client.set_callback(*this);
 }
 
 MQTTClient::~MQTTClient()
