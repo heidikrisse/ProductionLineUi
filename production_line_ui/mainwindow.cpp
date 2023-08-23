@@ -115,12 +115,29 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
-    conveyer_upm = value;
+    if(allow_custom_params)
+    {
+        conveyer_upm = value;
+    }
+    else{
+        ui->conveyer_units_per_minute_slider->setValue(conveyer_upm);
+    }
+
 }
 
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
-    test->set_conveyor_speed(conveyer_upm);
+    if(allow_custom_params)
+    {
+       test->set_conveyor_speed(conveyer_upm);
+    }
+
+}
+
+
+void MainWindow::on_Allow_custom_params_toggled(bool checked)
+{
+    allow_custom_params = !allow_custom_params;
 }
 
