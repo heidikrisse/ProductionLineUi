@@ -41,8 +41,6 @@ public:
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);
 
-    // void on_message(const mqtt::message* message);
-
     // Overriden callback function to handle incoming messages
     virtual void message_arrived(mqtt::const_message_ptr msg) override;
 

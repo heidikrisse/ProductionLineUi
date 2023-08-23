@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "fasdff111112222");
     test->connect();
-    test->subscribe("#");
+    test->subscribe("test/12345");
 
 }
 
@@ -62,7 +62,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    test->publish("#", "Hello world");
+    test->publish("test/12345", "Hello world");
 }
 
 
