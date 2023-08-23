@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view->setRenderHint(QPainter::Antialiasing);
     chart_view->setParent(ui->temperature_chart);
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:17403", "fasdff2342343");
+    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "fasdff111112222");
     test->connect();
     test->subscribe("#");
 
