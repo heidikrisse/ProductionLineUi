@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     chart->addAxis(axis_x, Qt::AlignBottom);
     chart->addAxis(axis_y, Qt::AlignLeft);
 
-    for (int i = 1; i < 11; i++) {
+    for (int i{1}; i < 11; i++)
+    {
         auto* series = new QSplineSeries();
         multi_series.append(series);
         series->setName(QString("Sensor " + QString::number(i)));
