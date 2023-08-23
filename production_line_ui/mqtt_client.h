@@ -3,8 +3,7 @@
 #define MQTT_CLIENT_H
 
 #include "mqtt/async_client.h"
-#include "json_parser.h" // for using nlohmann::json
-
+#include "json_parser.h" // for using nlohmann::json´
 #include <fstream>
 #include <string>
 #include <vector>
@@ -56,10 +55,11 @@ public:
     void save_data_to_file(const std::string& filename);
 
 
-
+    int conveyer_upm = 423;
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;
+
 };
 
 #endif

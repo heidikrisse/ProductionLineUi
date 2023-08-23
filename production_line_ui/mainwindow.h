@@ -25,6 +25,7 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
+
     private slots:
         void on_pushButton_clicked();
 
@@ -37,13 +38,13 @@ class MainWindow : public QMainWindow
         void on_conveyer_units_per_minute_slider_sliderReleased();
 
         void on_Allow_custom_params_toggled(bool checked);
-
+        friend class MQTTClient;
       private:
         // TODO: Säädetään MQTT esim sillain että se pitää kirjaa
         // siitä mikä on viimeisin tiedetty arvo, ja nopeus otetaan sen perusteella
         // Jos ei saada onnistumaan niin luetaan vaikka tiedostosta tms.
         bool allow_custom_params = false;
-        int conveyer_upm = 423; // conveyer units per minute speed
+        //int conveyer_upm = 423; // conveyer units per minute speed
 
 
       private:
@@ -57,5 +58,6 @@ class MainWindow : public QMainWindow
     QValueAxis* axis_y;
     //std::unique_ptr<QValueAxis> axis_y;
 };
+
 
 #endif
