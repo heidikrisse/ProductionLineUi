@@ -73,7 +73,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    // Load data from a sample JSON file (line1.json) for testing
+    std::string filename{"test/json_examples/line1.json"};
+
+    std::ifstream file(filename);
+    if (file.is_open())
+    {
+        nlohmann::json j;
+        file >> j;
+        file.close();
+
+        test->publish("test/12345", j.dump());
+    }
+
+    /*
     nlohmann::json j;
+
     j["timestamp"] = "asdf";
     j["conveyor_speed"] = 14;
     j["heater1"] = false;
@@ -93,7 +108,7 @@ void MainWindow::on_pushButton_clicked()
     j["temp_sensor10"] = 1.1f;
 
 
-    test->publish("test/12345", j.dump());
+    test->publish("test/12345", j.dump()); */
 }
 
 
@@ -102,14 +117,18 @@ void MainWindow::on_pushButton_2_clicked()
     // Load the sample data
     std::vector<json_data::parsed_json> samples = test->load_sample_data("tests/json_examples");
 
-    // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor
+    // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor)
     for (auto* series : multi_series) {
         series->clear();
     }
 
-    for (const auto& sample : samples) {
-        for (int i{0}; i < 10; i++) {
-            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), sample.heat_sensors[i]);
+    // Add sample data to series
+    for (const auto& sample : samples)
+    {
+        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ");
+        for (int i{0}; i < 10; ++i)
+        {
+            multi_series[i]->append(timestamp.toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
 
