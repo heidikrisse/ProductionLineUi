@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "mqtt_client.h"
+#include "json_parser.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -144,4 +145,3 @@ void MainWindow::on_Allow_custom_params_toggled(bool checked)
 {
     allow_custom_params = !allow_custom_params;
 }
-
