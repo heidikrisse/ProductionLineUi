@@ -1,6 +1,8 @@
 // mqtt_client.cpp
 #include "mqtt_client.h"
+
 #include <string>
+
 // Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
     : client(broker_address, client_id)
@@ -17,10 +19,13 @@ MQTTClient::~MQTTClient()
 bool MQTTClient::connect()
 {
     mqtt::connect_options conn_opts;
-    try{
+    try
+    {
         client.connect(conn_opts)->wait();
         return true;
-    } catch(const mqtt::exception& e){
+    }
+    catch(const mqtt::exception& e)
+    {
         std::cerr << "connection error: " << e.what() << '\n';
         return false;
     }
@@ -36,9 +41,12 @@ void MQTTClient::disconnect()
 }
 
 void MQTTClient::subscribe(const std::string& topic){
-    try{
+    try
+    {
         client.subscribe(topic, 0)->wait();
-    } catch (const mqtt::exception& e){
+    }
+    catch (const mqtt::exception& e)
+    {
         std::cerr << "subscripe Error: " << e.what() << '\n';
     }
 }
@@ -47,9 +55,12 @@ void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(0);
 
-    try{
+    try
+    {
         client.publish(msg)->wait();
-    }catch (const mqtt::exception& e){
+    }
+    catch (const mqtt::exception& e)
+    {
         std::cerr << "publish Error: " << e.what() << '\n';
     }
 }
@@ -58,7 +69,8 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
     std::vector<std::string> data;
 
-    for (const auto& jsonData : data_cache) {
+    for (const auto& jsonData : data_cache)
+    {
         data.push_back(jsonData.timestamp);
     }
 
@@ -107,7 +119,8 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
-        for (const auto& data : data_cache) {
+        for (const auto& data : data_cache)
+        {
             total_units += data.units_per_minute;
             // failed_units += data.failed_qc_units;
         }
