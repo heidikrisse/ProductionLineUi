@@ -6,6 +6,7 @@
 #include <QtCharts>
 #include <QChartView>
 #include <QLineSeries>
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,10 +28,12 @@ class MainWindow : public QMainWindow
 private:
     Ui::MainWindow *ui;
     MQTTClient *test;
-    QLineSeries *series;
+    //QLineSeries *series;
+    QList<QLineSeries *> multi_series;
     QChart *chart;
     QChartView *chart_view;
     QDateTimeAxis* axis_x;
     QValueAxis* axis_y;
+    //std::unique_ptr<QValueAxis> axis_y;
 };
 #endif // MAINWINDOW_H
