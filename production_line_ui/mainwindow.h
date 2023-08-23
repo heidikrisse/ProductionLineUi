@@ -8,6 +8,7 @@
 #include <QtCharts>
 #include <QChartView>
 #include <QLineSeries>
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -29,14 +30,17 @@ class MainWindow : public QMainWindow
 
         void on_pushButton_2_clicked();
 
-    private:
-        Ui::MainWindow *ui;
-        MQTTClient *test;
-        QLineSeries *series;
-        QChart *chart;
-        QChartView *chart_view;
-        QDateTimeAxis* axis_x;
-        QValueAxis* axis_y;
+
+private:
+    Ui::MainWindow *ui;
+    MQTTClient *test;
+    //QSplineSeries *series;
+    QList<QSplineSeries *> multi_series;
+    QChart *chart;
+    QChartView *chart_view;
+    QDateTimeAxis* axis_x;
+    QValueAxis* axis_y;
+    //std::unique_ptr<QValueAxis> axis_y;
 };
 
 #endif
