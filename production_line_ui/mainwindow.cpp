@@ -25,19 +25,28 @@ MainWindow::MainWindow(QWidget *parent)
         axis_x->setMin(QDateTime::fromString("200000", "hhmmss"));
 
         // Chart
-        chart->legend()->hide();
+        chart->legend()->setVisible(true);
+        chart->legend()->setAlignment(Qt::AlignBottom);
         chart->setTitle("Temperature");
         chart->addAxis(axis_x, Qt::AlignBottom);
         chart->addAxis(axis_y, Qt::AlignLeft);
-        //chart->addSeries();
-        //chart->addSeries();
-        //chart->addSeries();
 
-        auto* series = new QLineSeries();
-        multi_series.append(series);
-        series->setName(QString("sensor " + QString::number(multi_series.count())));
-        series->attachAxis(axis_x);
-        series->attachAxis(axis_y);
+
+
+        for (int i = 1; i < 11; i++) {
+            auto* series = new QSplineSeries();
+            multi_series.append(series);
+            series->setName(QString("Sensor " + QString::number(i)));
+            chart->addSeries(series);
+            series->append(QDateTime::fromString("200000", "hhmmss").toMSecsSinceEpoch()+(3*i), (28+(2*i)));
+            series->append(QDateTime::fromString("210000", "hhmmss").toMSecsSinceEpoch()+(3*i), (39+(2*i)));
+            series->append(QDateTime::fromString("220000", "hhmmss").toMSecsSinceEpoch()+(3*i), (55+(2*i)));
+            series->append(QDateTime::fromString("223000", "hhmmss").toMSecsSinceEpoch()+(3*i), (70+(2*i)));
+            series->attachAxis(axis_x);
+            series->attachAxis(axis_y);
+        }
+
+
 
         // ChartView
         chart_view = new QChartView(chart);
@@ -55,7 +64,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::on_pushButton_clicked()
 {
