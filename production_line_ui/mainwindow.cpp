@@ -46,9 +46,9 @@ MainWindow::MainWindow(QWidget *parent)
         chart_view->setParent(ui->temperature_chart);
 
 
-    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "11234567890heidi");
+    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "11234567890heidi"); // change unique client ID
     test->connect();
-    test->subscribe("test/12345");
+    test->subscribe("test/12345"); // name of the test/topic
 
 }
 
