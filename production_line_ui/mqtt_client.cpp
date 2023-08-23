@@ -10,6 +10,9 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
 {
     // Set a message callback
     client.set_callback(*this);
+
+    // Load sample data
+    data_cache = load_sample_data("test/json_examples"); // removed when we get the real realtime data from group 2
 }
 
 MQTTClient::~MQTTClient()
@@ -55,7 +58,7 @@ void MQTTClient::subscribe(const std::string& topic){
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(0);
-    msg->set_retained(true); // Set retained flag
+    msg->set_retained(true); // Set retained flag true
 
     try
     {
@@ -86,7 +89,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     std::string topic = msg->get_topic();
 
     if(topic == "Conveyer_speed"){
-        std::string message = msg->get_payload();
+        std::string message{msg->get_payload()};
         json speed = json::parse(message);
         try {
             conveyer_upm = speed["Conveyer_speed"].get<int>();

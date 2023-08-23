@@ -16,7 +16,8 @@
  */
 
 using json = nlohmann::json;
-namespace json_data{
+namespace json_data
+{
 
     struct parsed_json{
         std::string timestamp;
@@ -27,7 +28,7 @@ namespace json_data{
         bool cooler_status;
         bool qc_camera_status;
         std::array<float, 10> heat_sensors;
-        // uint8_t non_passers = 0;
+        uint8_t non_passers = 0;
     };
 
     struct failed_qc{

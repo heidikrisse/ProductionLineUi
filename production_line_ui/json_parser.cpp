@@ -14,15 +14,17 @@ json_data::parsed_json json_data::json_to_vec(json &j_data) {
         data.cooler_status = j_data.value("cooler", false);
         data.qc_camera_status = j_data.value("qc_camera", false);
 
-        for (int i = 0; i < 10; ++i) {
-            std::string sensor_name = "temp_sensor" + std::to_string(i + 1);
+        for (int i{0}; i < 10; ++i)
+        {
+            std::string sensor_name{"temp_sensor" + std::to_string(i + 1)};
             data.heat_sensors[i] = j_data.value(sensor_name, 0.0f);
         }
 
         // Check and get "non-passers" from the JSON if it exists
-       /* if(j_data.contains("non-passers")) {
+        if(j_data.contains("non-passers"))
+        {
             data.non_passers = j_data["non-passers"].get<uint8_t>();
-        }*/
+        }
     }
     catch (const nlohmann::json::exception& e)
     {
