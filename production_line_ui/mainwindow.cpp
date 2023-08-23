@@ -62,8 +62,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    test->disconnect();
-    delete test;
+    if (test) {
+        test->disconnect();
+        delete test;
+    }
     delete ui;
 }
 
@@ -96,7 +98,7 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     // Load the sample data
-    std::vector<json_data::parsed_json> samples = test->load_sample_data("./tests/json_examples");
+    std::vector<json_data::parsed_json> samples = test->load_sample_data("tests/json_examples");
 
     // Clear previous data from multi_series
     for (auto* series : multi_series) {
@@ -108,6 +110,7 @@ void MainWindow::on_pushButton_2_clicked()
             multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
+
 }
 
 
