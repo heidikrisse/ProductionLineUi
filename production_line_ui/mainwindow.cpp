@@ -25,9 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view->setRenderHint(QPainter::Antialiasing);
     chart_view->setParent(ui->temperature_chart);
 
-    test = new MQTTClient("broker.hivemq.com", "test");
+    test = new MQTTClient("5.tcp.eu.ngrok.io:17403", "fasdff2342343");
     test->connect();
-    test->subscribe("TestTopic123");
+    test->subscribe("#");
 
 }
 
@@ -39,6 +39,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    test->publish("TestTopic123", "Hello world");
+    test->publish("#", "Hello world");
 }
 

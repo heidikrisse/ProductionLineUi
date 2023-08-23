@@ -41,7 +41,7 @@ public:
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);
 
-    void on_message(const mqtt::message& message);
+    void on_message(const mqtt::message* message);
     // Function to calculate the failure rate from the fetched data
     double get_failure_rate() const;
     // Function to calculate the operating costs from the fetched data

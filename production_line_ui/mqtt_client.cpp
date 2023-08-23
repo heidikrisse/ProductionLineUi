@@ -19,7 +19,7 @@ bool MQTTClient::connect()
         client.connect(conn_opts)->wait();
         return true;
     } catch(const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+        std::cerr << "connection error: " << e.what() << '\n';
         return false;
     }
 }
@@ -29,7 +29,7 @@ void MQTTClient::disconnect()
     try{
         client.disconnect()->wait();
     } catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+        std::cerr << "disconnect error: " << e.what() << '\n';
     }
 }
 
@@ -37,18 +37,18 @@ void MQTTClient::subscribe(const std::string& topic){
     try{
         client.subscribe(topic, 0)->wait();
     } catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << '\n';
+        std::cerr << "subscripe Error: " << e.what() << '\n';
     }
 }
 
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
-    msg->set_qos(2);
+    msg->set_qos(0);
 
     try{
         client.publish(msg)->wait();
     }catch (const mqtt::exception& e){
-        std::cerr << "Error: " << e.what() << "\n";
+        std::cerr << "publish Error: " << e.what() << "\n";
     }
 }
 // Function to fetch data from MQTT topics
@@ -146,6 +146,11 @@ double MQTTClient::get_operating_cost() const
     }
 
     return total_cost / total_units;
+}
+
+
+void MQTTClient::on_message(const mqtt::message* message){
+    assert(0);
 }
 
 // Function to save the data to a file
