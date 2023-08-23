@@ -20,9 +20,9 @@ json_data::parsed_json json_data::json_to_vec(json &j_data) {
     }
 
     // Check and get "non-passers" from the JSON if it exists
-    if(j_data.contains("non-passers")) {
+   /* if(j_data.contains("non-passers")) {
         data.non_passers = j_data["non-passers"].get<uint8_t>();
-    }
+    }*/
 
     // Returns the parsed data
     return data;

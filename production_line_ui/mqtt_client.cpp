@@ -1,6 +1,6 @@
 // mqtt_client.cpp
 #include "mqtt_client.h"
-
+#include <string>
 // Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
     : client(broker_address, client_id)
@@ -189,3 +189,4 @@ void MQTTClient::save_data_to_file(const std::string& filename)
         out_file.close();
     }
 }
+
