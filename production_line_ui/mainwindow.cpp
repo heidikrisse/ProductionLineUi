@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view->setRenderHint(QPainter::Antialiasing);
     chart_view->setParent(ui->temperature_chart);
 
-    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "11234567890heidi"); // change unique client ID
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "11234567890heidi"); // change unique client ID
     test->connect();
     test->subscribe("test/12345"); // name of the test/topic
 }
@@ -92,11 +92,18 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    // Series
-//    series->clear();
-//    series->append(QDateTime::fromString("200000", "hhmmss").toMSecsSinceEpoch(), 28);
-//    series->append(QDateTime::fromString("210000", "hhmmss").toMSecsSinceEpoch(), 39);
-//    series->append(QDateTime::fromString("220000", "hhmmss").toMSecsSinceEpoch(), 55);
-//    series->append(QDateTime::fromString("223000", "hhmmss").toMSecsSinceEpoch(), 70);
+    // Load the sample data
+    std::vector<json_data::parsed_json> samples = test->load_sample_data("./tests/json_examples");
+
+    // Clear previous data from multi_series
+    for (auto* series : multi_series) {
+        series->clear();
+    }
+
+    for (const auto& sample : samples) {
+        for (int i{0}; i < 10; i++) {
+            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), sample.heat_sensors[i]);
+        }
+    }
 }
 
