@@ -56,8 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "testff"); // change unique client ID
     test->connect();
     test->subscribe("test/12345"); // name of the test/topic
-    ui->lcdNumber->display(conveyer_upm); // set speed lcdNumber to display current default speed.
-    ui->conveyer_units_per_minute_slider->setValue(conveyer_upm); // set slider starting value to current speed
+    test->subscribe("Conveyer_speed");
+    ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
+    ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
 }
 
 MainWindow::~MainWindow()
@@ -120,10 +121,10 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
     if(allow_custom_params)
     {
-        conveyer_upm = value;
+        test->conveyer_upm = value;
     }
     else{
-        ui->conveyer_units_per_minute_slider->setValue(conveyer_upm);
+        ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
     }
 
 }
@@ -133,7 +134,7 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
     if(allow_custom_params)
     {
-       test->set_conveyor_speed(conveyer_upm);
+        test->set_conveyor_speed(test->conveyer_upm);
     }
 
 }

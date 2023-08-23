@@ -83,7 +83,19 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
 {
     std::string payload = msg->get_payload_str();
     json j = json::parse(payload);
-    data_cache.push_back(json_data::json_to_vec(j));
+    std::string topic = msg->get_topic();
+
+    if(topic == "Conveyer_speed"){
+        std::string message = msg->get_payload();
+        json speed = json::parse(message);
+        try {
+            conveyer_upm = speed["Conveyer_speed"].get<int>();
+        } catch (const nlohmann::json::exception& e) {
+            std::cerr << "json parsing error: " << e.what() << std::endl;
+        }
+
+    }
+  //  data_cache.push_back(json_data::json_to_vec(j));
 }
 
 std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path) {
