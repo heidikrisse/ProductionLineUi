@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
         chart_view->setParent(ui->temperature_chart);
 
 
-    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "fasdff111112222");
+    test = new MQTTClient("4.tcp.eu.ngrok.io:16834", "wa");
     test->connect();
     test->subscribe("test/12345");
 
@@ -63,7 +63,24 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     nlohmann::json j;
-    j["message"] = "Hello world";
+    j["timestamp"] = "asdf";
+    j["conveyor_speed"] = 14;
+    j["heater1"] = false;
+    j["heater2"] = false;
+    j["heater3"] = false;
+    j["cooler"] = false;
+    j["qc_camera"] = false;
+    j["temp_sensor1"] = 1.1f;
+    j["temp_sensor2"] = 1.1f;
+    j["temp_sensor3"] = 1.1f;
+    j["temp_sensor4"] = 1.1f;
+    j["temp_sensor5"] = 1.1f;
+    j["temp_sensor6"] = 1.1f;
+    j["temp_sensor7"] = 1.1f;
+    j["temp_sensor8"] = 1.1f;
+    j["temp_sensor9"] = 1.1f;
+    j["temp_sensor10"] = 1.1f;
+
 
     test->publish("test/12345", j.dump());
 }
