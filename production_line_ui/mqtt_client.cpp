@@ -58,12 +58,8 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
     std::vector<std::string> data;
 
-    // Convert each json string to a json object and then parse it:
-    for (const std::string& raw_data : data) {
-        // Convert string to json object
-        json j = json::parse(raw_data);
-        // Parse the data and store in the cache
-        data_cache.push_back(json_data::json_to_vec(j));
+    for (const auto& jsonData : data_cache) {
+        data.push_back(jsonData.timestamp);
     }
 
     return data;

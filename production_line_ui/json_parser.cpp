@@ -4,6 +4,8 @@
 json_data::parsed_json json_data::json_to_vec(json &j_data) {
     parsed_json data;
 
+
+
     data.timestamp = j_data["timestamp"].get<std::string>();
     data.units_per_minute = j_data["conveyor_speed"].get<uint16_t>();
     data.heater1_status = j_data["heater1"].get<bool>();
