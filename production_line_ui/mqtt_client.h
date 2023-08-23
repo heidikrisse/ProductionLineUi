@@ -36,6 +36,8 @@ public:
     // Function to fetch latest data from the sensors
     std::vector<std::string> fetch_sensor_data();
 
+    std::vector<json_data::parsed_json> load_sample_data(const std::string& folder_path);
+
     // Function to control production line
     void set_conveyor_speed(int units_per_minute);
     void set_heating_elements(std::vector<bool> states);

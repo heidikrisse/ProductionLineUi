@@ -85,6 +85,25 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     data_cache.push_back(json_data::json_to_vec(j));
 }
 
+std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path) {
+    std::vector<json_data::parsed_json> samples;
+    int file_number{1};
+
+    while (true) {
+        std::string filename = folder_path + "/data" + std::to_string(file_number) + ".json";
+        std::ifstream file(filename);
+
+        if (!file.is_open()) break;
+
+        json j;
+        file >> j;
+        samples.push_back(json_data::json_to_vec(j));
+        file_number++;
+    }
+
+    return samples;
+}
+
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
     json j;
@@ -210,4 +229,3 @@ void MQTTClient::save_data_to_file(const std::string& filename)
         out_file.close();
     }
 }
-
