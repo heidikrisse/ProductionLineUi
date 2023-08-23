@@ -26,6 +26,7 @@ namespace json_data{
         bool cooler_status;
         bool qc_camera_status;
         std::array<float, 10> heat_sensors;
+        uint8_t non_passers;
     };
 
     struct failed_qc{
