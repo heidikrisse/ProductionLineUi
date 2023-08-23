@@ -39,8 +39,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>1221</width>
-          <height>561</height>
+          <width>721</width>
+          <height>491</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2"/>
@@ -56,6 +56,29 @@
         </property>
         <property name="text">
          <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="conveyer_units_per_minute_slider">
+        <property name="geometry">
+         <rect>
+          <x>780</x>
+          <y>40</y>
+          <width>160</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="lcdNumber">
+        <property name="geometry">
+         <rect>
+          <x>950</x>
+          <y>30</y>
+          <width>64</width>
+          <height>23</height>
+         </rect>
         </property>
        </widget>
       </widget>
@@ -87,5 +110,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>conveyer_units_per_minute_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>870</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>992</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

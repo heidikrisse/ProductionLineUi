@@ -87,8 +87,9 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
 
 void MQTTClient::set_conveyor_speed(int units_per_minute)
 {
-    std::string payload = std::to_string(units_per_minute);
-    publish("test_topic_123" , payload);
+    json j;
+    j["Conveyer_speed"] = units_per_minute;
+    publish("Conveyer_speed" , j.dump());
 }
 
 void MQTTClient::set_heating_elements(std::vector<bool> states)
