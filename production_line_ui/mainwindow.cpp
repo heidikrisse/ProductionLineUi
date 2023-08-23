@@ -62,7 +62,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    test->publish("test/12345", "Hello world");
+    nlohmann::json j;
+    j["message"] = "Hello world";
+
+    test->publish("test/12345", j.dump());
 }
 
 
