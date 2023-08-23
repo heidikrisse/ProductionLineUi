@@ -93,17 +93,16 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     // Load the sample data
-    std::vector<json_data::parsed_json> samples = test->load_sample_data("./test");
+    std::vector<json_data::parsed_json> samples = test->load_sample_data("./tests/json_examples");
 
     // Clear previous data from multi_series
     for (auto* series : multi_series) {
         series->clear();
     }
 
-    // Populate multi_series using samples
     for (const auto& sample : samples) {
-        for (int i = 0; i < 10; i++) {
-            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "hhmmss").toMSecsSinceEpoch(), sample.heat_sensors[i]);
+        for (int i{0}; i < 10; i++) {
+            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
 }
