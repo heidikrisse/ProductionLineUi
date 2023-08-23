@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    test->disconnect();
+    delete test;
     delete ui;
 }
 

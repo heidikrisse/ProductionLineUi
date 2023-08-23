@@ -25,5 +25,3 @@ json_data::parsed_json json_data::json_to_vec(json &j_data) {
     // Returns the parsed data
     return data;
 }
-
-
