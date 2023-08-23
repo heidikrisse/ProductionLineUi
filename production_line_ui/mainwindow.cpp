@@ -100,7 +100,7 @@ void MainWindow::on_pushButton_2_clicked()
     // Load the sample data
     std::vector<json_data::parsed_json> samples = test->load_sample_data("tests/json_examples");
 
-    // Clear previous data from multi_series
+    // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor
     for (auto* series : multi_series) {
         series->clear();
     }

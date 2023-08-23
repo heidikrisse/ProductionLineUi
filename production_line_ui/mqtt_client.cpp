@@ -55,6 +55,7 @@ void MQTTClient::subscribe(const std::string& topic){
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(0);
+    msg->set_retained(true); // Set retained flag
 
     try
     {
