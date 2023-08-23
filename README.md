@@ -25,10 +25,9 @@ Create a monitoring / UI system for the production line.
           an user guide.
 
 ### Production line tech specs - for all the groups 1 - 3
-==========================
 
 #### Sensors
--------
+
 - Production line convoyer has variable speed, measured in units pushed through/minute.
     - The maximum speed of the convoyer is 600 units / minute
     - The minimum speed of the convoyer is 0 units / minute
@@ -62,7 +61,7 @@ Create a monitoring / UI system for the production line.
 
 
 #### Controls
---------
+
 - Convoyer target speed can be adjusted by user from 0 (0 / units) to 255 (600 units / minute)
     - Convoyer's acceleration/deceleration is at maximum 1 units/minute /second.
 
