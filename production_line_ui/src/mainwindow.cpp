@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(chart_view);
 
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232"); // change unique client ID
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232btrtr"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
@@ -254,11 +254,8 @@ void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 
 void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 {
-    if(test->qc_camera_toggle){
-        test->qc_camera_toggle = checked;
-        test->publish_data();
-    }
-
+    test->qc_camera_toggle = checked;
+    test->publish_data();
 }
 
 
