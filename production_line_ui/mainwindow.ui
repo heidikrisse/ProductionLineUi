@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1257</width>
-    <height>711</height>
+    <width>1371</width>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,17 +34,6 @@
        <attribute name="title">
         <string>Control</string>
        </attribute>
-       <widget class="QFrame" name="temperature_chart">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>721</width>
-          <height>491</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2"/>
-       </widget>
        <widget class="QPushButton" name="pushButton_2">
         <property name="geometry">
          <rect>
@@ -58,12 +47,34 @@
          <string>Test</string>
         </property>
        </widget>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1001</width>
+          <height>561</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QFrame" name="chart_frame">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>770</x>
-          <y>60</y>
-          <width>290</width>
+          <x>1030</x>
+          <y>40</y>
+          <width>292</width>
           <height>80</height>
          </rect>
         </property>
@@ -134,12 +145,12 @@
    <slot>display(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>870</x>
-     <y>85</y>
+     <x>881</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
-     <x>992</x>
-     <y>79</y>
+     <x>1070</x>
+     <y>179</y>
     </hint>
    </hints>
   </connection>

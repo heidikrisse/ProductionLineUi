@@ -50,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     // ChartView
     chart_view = new QChartView(chart);
     chart_view->setRenderHint(QPainter::Antialiasing);
-    chart_view->setParent(ui->temperature_chart);
+    QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
+    layout->addWidget(chart_view);
 
 
     test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "testff"); // change unique client ID
