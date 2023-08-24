@@ -55,12 +55,22 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(chart_view);
 
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i"); // change unique client ID
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
     ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
     ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
+    ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
+    ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
+    ui->cooler_check_on_off->setChecked(test->cooler);
+    ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
+    ui->heater1_check_on_off->setChecked(test->heater1);
+    ui->heater2_checked_on_off->setChecked(test->heater2);
+    ui->heater3_checked_on_off->setChecked(test->heater3);
+    ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
 }
 
 MainWindow::~MainWindow()
@@ -140,7 +150,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
-    if(allow_custom_params)
+    if(test->conveyer_manual_control)
     {
         test->conveyer_upm = value;
     }
@@ -153,15 +163,94 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
-    if(allow_custom_params)
+    if(test->conveyer_manual_control)
     {
-        test->set_conveyor_speed(test->conveyer_upm);
+        test->publish_data();
+    }
+
+}
+
+void MainWindow::on_heater1_check_on_off_toggled(bool checked)
+{
+    if(test->heater1_manual_control){
+        test->heater1 = checked;
+        test->publish_data();
     }
 
 }
 
 
-void MainWindow::on_Allow_custom_params_toggled(bool checked)
+void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
-    allow_custom_params = !allow_custom_params;
+    test->heater1_manual_control = checked;
+    test->publish_data();
 }
+
+
+void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
+{
+    if(test->heater2_manual_control){
+        test->heater2 = checked;
+        test->publish_data();
+    }
+
+}
+
+
+void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
+{
+    test->heater2_manual_control = checked;
+    test->publish_data();
+}
+
+
+void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
+{
+    if(test->heater3_manual_control){
+        test->heater3 = checked;
+        test->publish_data();
+    }
+
+}
+
+
+void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
+{
+    test->heater3_manual_control = checked;
+    test->publish_data();
+}
+
+
+void MainWindow::on_qc_camera_on_off_toggled(bool checked)
+{
+    if(test->qc_camera_toggle){
+        test->qc_camera_toggle = checked;
+        test->publish_data();
+    }
+
+}
+
+
+void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
+{
+    test->conveyer_manual_control = checked;
+    test->publish_data();
+}
+
+
+void MainWindow::on_cooler_manual_auto_toggled(bool checked)
+{
+    test->cooler_manual_control = checked;
+    test->publish_data();
+}
+
+
+void MainWindow::on_cooler_check_on_off_toggled(bool checked)
+{
+    if(test->cooler_manual_control){
+        test->cooler = checked;
+        test->publish_data();
+    }
+
+}
+
