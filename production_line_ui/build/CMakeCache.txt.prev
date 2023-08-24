@@ -410,6 +410,9 @@ production_line_ui_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 production_line_ui_SOURCE_DIR:STATIC=/home/heidi/projects/ProductionLineUi/production_line_ui
 
+//Dependencies for the target
+production_line_ui_library_LIB_DEPENDS:STATIC=general;Qt5::Widgets;general;Qt5::Charts;general;paho-mqtt3a;general;paho-mqttpp3;
+
 
 ########################
 # INTERNAL cache entries
@@ -551,7 +554,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=9
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

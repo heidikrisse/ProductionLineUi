@@ -8,15 +8,15 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     QDesktopWidget *desktop = QApplication::desktop();
-    int screenWidth = desktop->width();
-    int screenHeight = desktop->height();
+    int screen_width{desktop->width()};
+    int screen_height{desktop->height()};
 
-    float windowWidthPercentage = 0.8; // Adjust as needed
-    float windowHeightPercentage = 0.8; // Adjust as needed
-    int windowWidth = static_cast<int>(screenWidth * windowWidthPercentage);
-    int windowHeight = static_cast<int>(screenHeight * windowHeightPercentage);
+    float window_width_percentage{0.8}; // Adjust as needed
+    float window_height_percentage{0.8}; // Adjust as needed
+    int window_width{static_cast<int>(screen_width * window_width_percentage)};
+    int window_height{static_cast<int>(screen_height * window_height_percentage)};
 
-    w.resize(windowWidth, windowHeight);
+    w.resize(window_width, window_height);
     w.show();
     w.start_data_update_loop();
     return a.exec();

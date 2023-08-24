@@ -37,9 +37,12 @@ bool MQTTClient::connect()
 
 void MQTTClient::disconnect()
 {
-    try{
+    try
+    {
         client.disconnect()->wait();
-    } catch (const mqtt::exception& e){
+    }
+    catch (const mqtt::exception& e)
+    {
         std::cerr << "disconnect error: " << e.what() << '\n';
     }
 }
@@ -74,9 +77,9 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
     std::vector<std::string> data;
 
-    for (const auto& jsonData : data_cache)
+    for (const auto& json_data : data_cache)
     {
-        data.push_back(jsonData.timestamp);
+        data.push_back(json_data.timestamp);
     }
 
     return data;
@@ -88,7 +91,8 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if(topic == "conveyer_params"){
+    if(topic == "conveyer_params")
+    {
         std::string message{msg->get_payload()};
         try {
             conveyer_upm = j["conveyer_speed"].get<int>();
@@ -103,15 +107,18 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             heater2 = j["heater2"].get<bool>();
             heater3 = j["heater3"].get<bool>();
             cooler = j["cooler"].get<bool>();
-        } catch (const nlohmann::json::exception& e) {
-            std::cerr << "json parsing error: " << e.what() << std::endl;
+        }
+        catch (const nlohmann::json::exception& e)
+        {
+            std::cerr << "json parsing error: " << e.what() << '\n';
         }
 
     }
-  //  data_cache.push_back(json_data::json_to_vec(j));
+   // data_cache.push_back(json_data::json_to_vec(j));
 }
 
-std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path) {
+std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
+{
     std::vector<json_data::parsed_json> samples;
 
     // Files to load
@@ -124,11 +131,13 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
         "line3.json"
     };
 
-    for (const std::string& file_name : file_names) {
+    for (const std::string& file_name : file_names)
+    {
         std::string filename = folder_path + "/" + file_name;
         std::ifstream file(filename);
 
-        if (file.is_open()) {
+        if (file.is_open())
+        {
             json j;
             file >> j;
             samples.push_back(json_data::json_to_vec(j));
@@ -200,9 +209,9 @@ double MQTTClient::get_operating_cost() const
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
     // Check if directory exists or create it
-    std::filesystem::path filePath(filename);
-    if(!std::filesystem::exists(filePath.parent_path())){
-        std::filesystem::create_directories(filePath.parent_path());
+    std::filesystem::path file_path(filename);
+    if(!std::filesystem::exists(file_path.parent_path())){
+        std::filesystem::create_directories(file_path.parent_path());
     }
 
     // Open the file in append mode so that it doesn't overwrite the file if it already exists
