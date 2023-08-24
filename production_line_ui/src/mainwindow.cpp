@@ -55,10 +55,10 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(chart_view);
 
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "testff"); // change unique client ID
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "test12345heidi"); // change unique client ID
     test->connect();
     test->subscribe("test/12345"); // name of the test/topic
-    test->subscribe("Conveyer_speed");
+    test->subscribe("conveyer_speed");
     ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
     ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
 }

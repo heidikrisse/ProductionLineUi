@@ -12,7 +12,8 @@
 		[
 			"add_executable",
 			"install",
-			"target_link_libraries"
+			"target_link_libraries",
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -26,19 +27,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 62,
+				"line" : 65,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 78,
+				"line" : 81,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 68,
+				"line" : 71,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 21,
 				"parent" : 0
 			}
 		]
@@ -84,6 +91,10 @@
 				{
 					"backtrace" : 0,
 					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/include"
 				},
 				{
 					"backtrace" : 3,
