@@ -36,13 +36,6 @@ public:
     std::vector<std::string> fetch_sensor_data();
 
     std::vector<json_data::parsed_json> load_sample_data(const std::string& folder_path);
-
-    // Function to control production line
-    void set_conveyor_speed(int units_per_minute);
-    void set_heating_elements(bool heater1_s, bool heater2_s, bool heater3_s);
-    void set_cooling_system(bool state);
-    void set_quality_control_camera(bool state);
-
     // Overriden callback function to handle incoming messages
     virtual void message_arrived(mqtt::const_message_ptr msg) override;
 

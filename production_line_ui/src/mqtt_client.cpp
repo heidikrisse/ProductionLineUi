@@ -139,40 +139,6 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
     return samples;
 }
 
-/******************************************************/
-// These functions can be called when manual parameters
-// are enabled.
-// they call publish_data() function that sends
-// updated values to subscriber
-
-void MQTTClient::set_conveyor_speed(int units_per_minute)
-{
-    conveyer_upm = units_per_minute;
-    publish_data();
-}
-
-void MQTTClient::set_heating_elements(bool heater1_state, bool heater2_state, bool heater3_state)
-{
-    heater1 = heater1_state;
-    heater2 = heater2_state;
-    heater3 = heater3_state;
-    publish_data();
-}
-
-void MQTTClient::set_cooling_system(bool state)
-{
-    cooler = state;
-    publish_data();
-}
-
-void MQTTClient::set_quality_control_camera(bool state)
-{
-    qc_camera_toggle = state;
-    publish_data();
-}
-/******************************************************/
-
-
 // Function to calculate the failure rate from the fetched data
 double MQTTClient::get_failure_rate() const
 {
