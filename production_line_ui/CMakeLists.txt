@@ -43,14 +43,18 @@ set(PROJECT_SOURCES
         json_examples/camera1.json
         json_examples/camera2.json
         json_examples/camera3.json
-        resources/toggleBtn_on.png
-        resources/toggleBtn_off.png
+        resources/images/toggleBtn_on.png
+        resources/images/toggleBtn_off.png
+        resources/resources.qrc
 )
+
+set(CMAKE_AUTORCC ON)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(production_line_ui
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        resources/resources.qrc
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET production_line_ui APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -60,15 +64,18 @@ else()
     if(ANDROID)
         add_library(production_line_ui SHARED
             ${PROJECT_SOURCES}
+            resources/resources.qrc
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(production_line_ui
             ${PROJECT_SOURCES}
+            resources/resources.qrc
         )
     endif()
 endif()
+
 
 target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
 
@@ -87,5 +94,5 @@ install(TARGETS production_line_ui
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(production_line_ui)
+    qt_finalize_executable(production_line_ui resources/resources.qrc)
 endif()
