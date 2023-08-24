@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
         json_examples/camera1.json
         json_examples/camera2.json
         json_examples/camera3.json
+        resources/toggleBtn_on.png
+        resources/toggleBtn_off.png
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
