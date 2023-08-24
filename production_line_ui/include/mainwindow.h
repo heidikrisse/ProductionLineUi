@@ -9,6 +9,7 @@
 #include <QChartView>
 #include <QLineSeries>
 #include <memory>
+#include <thread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -24,8 +25,11 @@ class MainWindow : public QMainWindow
     public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
-
+        void data_update_loop();
+        void start_data_update_loop();
     private slots:
+
+
         void on_pushButton_clicked();
 
         void on_pushButton_2_clicked();
@@ -67,6 +71,7 @@ class MainWindow : public QMainWindow
         QChartView *chart_view;
         QDateTimeAxis* axis_x;
         QValueAxis* axis_y;
+        std::thread data_loop_thread;
         //std::unique_ptr<QValueAxis> axis_y;
 };
 
