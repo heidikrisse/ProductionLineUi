@@ -1,9 +1,9 @@
 // mainwindow.cpp
-
 #include "../include/mainwindow.h"
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/json_parser.h"
+
 #include <thread>
 #include <mutex>
 
@@ -59,8 +59,9 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
     layout->addWidget(chart_view);
 
+    /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232btrtr"); // change unique client ID
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "abcd1234heidikr"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
@@ -81,11 +82,13 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     stop_data_loop.store(true);
-    if (test) {
+    if (test)
+    {
         test->disconnect();
         delete test;
     }
-    if (data_loop_thread.joinable()) {
+    if (data_loop_thread.joinable())
+    {
         data_loop_thread.join();
 
     }
@@ -130,30 +133,6 @@ void MainWindow::on_pushButton_clicked()
 
         test->publish("test/12345", j.dump());
     }
-
-    /*
-    nlohmann::json j;
-
-    j["timestamp"] = "asdf";
-    j["conveyor_speed"] = 14;
-    j["heater1"] = false;
-    j["heater2"] = false;
-    j["heater3"] = false;
-    j["cooler"] = false;
-    j["qc_camera"] = false;
-    j["temp_sensor1"] = 1.1f;
-    j["temp_sensor2"] = 1.1f;
-    j["temp_sensor3"] = 1.1f;
-    j["temp_sensor4"] = 1.1f;
-    j["temp_sensor5"] = 1.1f;
-    j["temp_sensor6"] = 1.1f;
-    j["temp_sensor7"] = 1.1f;
-    j["temp_sensor8"] = 1.1f;
-    j["temp_sensor9"] = 1.1f;
-    j["temp_sensor10"] = 1.1f;
-
-
-    test->publish("test/12345", j.dump()); */
 }
 
 
@@ -170,13 +149,12 @@ void MainWindow::on_pushButton_2_clicked()
     // Add sample data to series
     for (const auto& sample : samples)
     {
-        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ");
+        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
         for (int i{0}; i < 10; ++i)
         {
             multi_series[i]->append(timestamp.toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
-
 }
 
 
@@ -188,7 +166,8 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
     {
         test->conveyer_upm = value;
     }
-    else{
+    else
+    {
         ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
     }
 
@@ -206,7 +185,8 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 {
-    if(test->heater1_manual_control){
+    if(test->heater1_manual_control)
+    {
         test->heater1 = checked;
         test->publish_data();
     }
@@ -278,10 +258,9 @@ void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
-    if(test->cooler_manual_control){
+    if(test->cooler_manual_control)
+    {
         test->cooler = checked;
         test->publish_data();
     }
-
 }
-

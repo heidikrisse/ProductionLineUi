@@ -80,14 +80,15 @@ endif()
 
 target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
 
-################################
+################################ For unit tests
 
 # Create a library containing the common code from production_line_ui target
 add_library(production_line_ui_library STATIC ${PROJECT_SOURCES})
 target_link_libraries(production_line_ui_library PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
 target_include_directories(production_line_ui_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-###############################
+############################### end of unit tests
+
 set_target_properties(production_line_ui PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -106,10 +107,12 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(production_line_ui resources/resources.qrc)
 endif()
 
-###########################
+########################### For unit tests
 
 # Link the main application with the production_line_ui_library
 target_link_libraries(production_line_ui PRIVATE production_line_ui_library)
 
 # Build the unit_tests target
 add_subdirectory(unit_test)
+
+########################### end of unit tests

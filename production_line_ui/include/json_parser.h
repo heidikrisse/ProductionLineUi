@@ -19,7 +19,8 @@ using json = nlohmann::json;
 namespace json_data
 {
 
-    struct parsed_json{
+    struct parsed_json
+    {
         std::string timestamp;
         uint16_t units_per_minute;
         bool heater1_status;
@@ -31,7 +32,8 @@ namespace json_data
         uint8_t non_passers = 0;
     };
 
-    struct failed_qc{
+    struct failed_qc
+    {
         uint8_t failed_qc_units;
     };
 

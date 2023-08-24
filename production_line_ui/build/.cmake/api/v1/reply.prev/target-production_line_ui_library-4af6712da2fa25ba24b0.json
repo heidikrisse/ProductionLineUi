@@ -1,8 +1,9 @@
 {
+	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "production_line_ui"
+			"path" : "libproduction_line_ui_library.a"
 		}
 	],
 	"backtrace" : 1,
@@ -10,8 +11,7 @@
 	{
 		"commands" : 
 		[
-			"add_executable",
-			"install",
+			"add_library",
 			"target_link_libraries",
 			"include_directories"
 		],
@@ -27,29 +27,17 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 74,
+				"line" : 86,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 99,
+				"line" : 87,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
-				"file" : 0,
-				"line" : 112,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 81,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
 				"file" : 0,
 				"line" : 24,
 				"parent" : 0
@@ -62,7 +50,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"fragment" : "-fPIC"
 				},
 				{
@@ -72,23 +60,23 @@
 			"defines" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "QT_CHARTS_LIB"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "QT_CORE_LIB"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "QT_GUI_LIB"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "QT_NO_DEBUG"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "QT_WIDGETS_LIB"
 				}
 			],
@@ -96,47 +84,47 @@
 			[
 				{
 					"backtrace" : 0,
-					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/include"
+					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_library_autogen/include"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 3,
 					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/include/x86_64-linux-gnu/qt5"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtGui"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCore"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCharts"
 				}
@@ -146,7 +134,7 @@
 			{
 				"backtraces" : 
 				[
-					4
+					2
 				],
 				"standard" : "17"
 			},
@@ -165,111 +153,21 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 3,
-			"id" : "production_line_ui_library::@6890427a1f51a3e7e1df"
-		},
-		{
-			"backtrace" : 4,
+			"backtrace" : 2,
 			"id" : "paho-mqtt3a::@a3c003cf7a8946b573ab"
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 2,
 			"id" : "paho-mqttpp3::@aaa5779b74432a89411d"
 		},
 		{
 			"backtrace" : 0,
-			"id" : "production_line_ui_autogen::@6890427a1f51a3e7e1df"
+			"id" : "production_line_ui_library_autogen::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "production_line_ui::@6890427a1f51a3e7e1df",
-	"install" : 
-	{
-		"destinations" : 
-		[
-			{
-				"backtrace" : 2,
-				"path" : "bin"
-			}
-		],
-		"prefix" : 
-		{
-			"path" : "/usr/local"
-		}
-	},
-	"link" : 
-	{
-		"commandFragments" : 
-		[
-			{
-				"fragment" : "",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "-Wl,-rpath,/home/heidi/projects/ProductionLineUi/production_line_ui/build/paho.mqtt.cpp/src:/usr/local/lib:/home/heidi/projects/ProductionLineUi/production_line_ui/build/paho.mqtt.c/src:",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 3,
-				"fragment" : "libproduction_line_ui_library.a",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Charts.so.5.15.3",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.3",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.15.3",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.3",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "paho.mqtt.c/src/libpaho-mqtt3a.so.1.3.12",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lc",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-ldl",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lpthread",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lrt",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lanl",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "paho.mqtt.cpp/src/libpaho-mqttpp3.so.1.2.0",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "/usr/local/lib/libpaho-mqtt3a.so",
-				"role" : "libraries"
-			}
-		],
-		"language" : "CXX"
-	},
-	"name" : "production_line_ui",
-	"nameOnDisk" : "production_line_ui",
+	"id" : "production_line_ui_library::@6890427a1f51a3e7e1df",
+	"name" : "production_line_ui_library",
+	"nameOnDisk" : "libproduction_line_ui_library.a",
 	"paths" : 
 	{
 		"build" : ".",
@@ -338,7 +236,7 @@
 			"backtrace" : 0,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "build/production_line_ui_autogen/mocs_compilation.cpp",
+			"path" : "build/production_line_ui_library_autogen/mocs_compilation.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -449,22 +347,22 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "build/production_line_ui_autogen/include/ui_mainwindow.h",
+			"path" : "build/production_line_ui_library_autogen/include/ui_mainwindow.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 0,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "build/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp",
+			"path" : "build/production_line_ui_library_autogen/3YJK5W5UP7/qrc_resources.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "build/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.rule",
+			"path" : "build/production_line_ui_library_autogen/3YJK5W5UP7/qrc_resources.cpp.rule",
 			"sourceGroupIndex" : 4
 		}
 	],
-	"type" : "EXECUTABLE"
+	"type" : "STATIC_LIBRARY"
 }
