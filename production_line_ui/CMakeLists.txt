@@ -17,6 +17,9 @@ set(PAHO_MQTT_C_DIR "${CMAKE_CURRENT_SOURCE_DIR}/paho.mqtt.c")
 add_subdirectory(${PAHO_MQTT_C_DIR})
 add_subdirectory(${PAHO_MQTT_CPP_DIR})
 
+# Include directories
+include_directories(include)
+
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -24,22 +27,22 @@ find_package(Qt5Charts)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
+        src/mainwindow.cpp
+        include/mainwindow.h
         mainwindow.ui
-        mqtt_client.h
-        mqtt_client.cpp
-        json.hpp
-        json_parser.h
-        json_parser.cpp
-        test/tests.cpp
-        test/doctest.h
-        test/json_examples/line1.json
-        test/json_examples/line2.json
-        test/json_examples/line3.json
-        test/json_examples/camera1.json
-        test/json_examples/camera2.json
-        test/json_examples/camera3.json
+        include/mqtt_client.h
+        src/mqtt_client.cpp
+        include/json.hpp
+        include/json_parser.h
+        src/json_parser.cpp
+        unit_test/unit_tests.cpp
+        include/doctest.h
+        json_examples/line1.json
+        json_examples/line2.json
+        json_examples/line3.json
+        json_examples/camera1.json
+        json_examples/camera2.json
+        json_examples/camera3.json
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

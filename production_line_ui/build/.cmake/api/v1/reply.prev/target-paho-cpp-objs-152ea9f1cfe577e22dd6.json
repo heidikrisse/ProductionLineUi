@@ -1,0 +1,258 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/async_client.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/client.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/connect_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/create_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/disconnect_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/iclient_persistence.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/message.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/properties.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/response_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/ssl_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/string_collection.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/subscribe_options.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/token.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/topic.cpp.o"
+		},
+		{
+			"path" : "paho.mqtt.cpp/src/CMakeFiles/paho-cpp-objs.dir/will_options.cpp.o"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"paho.mqtt.cpp/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 44,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 71,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-fPIC"
+				},
+				{
+					"fragment" : "-std=c++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/src"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "11"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			]
+		}
+	],
+	"id" : "paho-cpp-objs::@aaa5779b74432a89411d",
+	"name" : "paho-cpp-objs",
+	"paths" : 
+	{
+		"build" : "paho.mqtt.cpp/src",
+		"source" : "paho.mqtt.cpp/src"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/async_client.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/client.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/connect_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/create_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/disconnect_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/iclient_persistence.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/message.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/properties.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/response_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/ssl_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/string_collection.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/subscribe_options.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/token.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/topic.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "paho.mqtt.cpp/src/will_options.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "OBJECT_LIBRARY"
+}

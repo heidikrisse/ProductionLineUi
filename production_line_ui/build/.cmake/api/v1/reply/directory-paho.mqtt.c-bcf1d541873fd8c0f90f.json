@@ -1,0 +1,73 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"INSTALL"
+		],
+		"files" : 
+		[
+			"paho.mqtt.c/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 87,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 91,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "share/doc/Eclipse Paho C/samples",
+			"paths" : 
+			[
+				"paho.mqtt.c/src/samples/MQTTAsync_publish.c",
+				"paho.mqtt.c/src/samples/MQTTAsync_publish_time.c",
+				"paho.mqtt.c/src/samples/MQTTAsync_subscribe.c",
+				"paho.mqtt.c/src/samples/MQTTClient_publish.c",
+				"paho.mqtt.c/src/samples/MQTTClient_publish_async.c",
+				"paho.mqtt.c/src/samples/MQTTClient_subscribe.c",
+				"paho.mqtt.c/src/samples/paho_c_pub.c",
+				"paho.mqtt.c/src/samples/paho_c_sub.c",
+				"paho.mqtt.c/src/samples/paho_cs_pub.c",
+				"paho.mqtt.c/src/samples/paho_cs_sub.c",
+				"paho.mqtt.c/src/samples/pubsub_opts.c"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "share/doc/Eclipse Paho C",
+			"paths" : 
+			[
+				"paho.mqtt.c/CONTRIBUTING.md",
+				"paho.mqtt.c/epl-v20",
+				"paho.mqtt.c/edl-v10",
+				"paho.mqtt.c/README.md",
+				"paho.mqtt.c/notice.html"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "paho.mqtt.c",
+		"source" : "paho.mqtt.c"
+	}
+}
