@@ -8,6 +8,7 @@
 #include <mutex>
 
 static std::mutex data_mutex;
+static std::atomic<bool> stop_data_loop(false);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -79,12 +80,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    stop_data_loop.store(true);
     if (test) {
         test->disconnect();
         delete test;
     }
     if (data_loop_thread.joinable()) {
         data_loop_thread.join();
+
     }
     delete ui;
 }
@@ -92,7 +95,7 @@ MainWindow::~MainWindow()
 void MainWindow::data_update_loop()
 {
     std::lock_guard<std::mutex> data_lock(data_mutex);
-    while(true)
+    while(not stop_data_loop)
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.

@@ -10,6 +10,7 @@
 #include <QLineSeries>
 #include <memory>
 #include <thread>
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
