@@ -39,7 +39,7 @@ public:
 
     // Function to control production line
     void set_conveyor_speed(int units_per_minute);
-    void set_heating_elements(std::vector<bool> states);
+    void set_heating_elements(bool heater1_s, bool heater2_s, bool heater3_s);
     void set_cooling_system(bool state);
     void set_quality_control_camera(bool state);
 
@@ -54,8 +54,24 @@ public:
     // Function to save data to a file
     void save_data_to_file(const std::string& filename);
 
+    void publish_data();
+    /**
+     * @brief section for control parameters
+     */
 
-    int conveyer_upm = 423;
+ public:
+   bool conveyer_manual_control = false;
+   bool heater1_manual_control = false;
+   bool heater2_manual_control = false;
+   bool heater3_manual_control = false;
+   bool cooler_manual_control = false;
+   bool qc_camera_toggle = false;
+   int conveyer_upm = 423;
+   bool heater1 = false;
+   bool heater2 = false;
+   bool heater3 = false;
+   bool cooler = false;
+
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;
