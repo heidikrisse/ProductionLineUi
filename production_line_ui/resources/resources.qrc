@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>images/toggleBtn_off.png</file>
+        <file>images/toggleBtn_on.png</file>
+    </qresource>
+</RCC>
