@@ -47,7 +47,7 @@ void MQTTClient::disconnect()
 void MQTTClient::subscribe(const std::string& topic){
     try
     {
-        client.subscribe(topic, 0)->wait();
+        client.subscribe(topic, 2)->wait();
     }
     catch (const mqtt::exception& e)
     {
@@ -57,7 +57,7 @@ void MQTTClient::subscribe(const std::string& topic){
 
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
-    msg->set_qos(0);
+    msg->set_qos(2);
     msg->set_retained(true); // Set retained flag true
 
     try
@@ -88,11 +88,21 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if(topic == "conveyer_speed"){
+    if(topic == "conveyer_params"){
         std::string message{msg->get_payload()};
-        json speed = json::parse(message);
         try {
-            conveyer_upm = speed["conveyer_speed"].get<int>();
+            conveyer_upm = j["conveyer_speed"].get<int>();
+            conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
+            heater1_manual_control = j["heater1_manual_control"].get<bool>();
+            heater2_manual_control = j["heater2_manual_control"].get<bool>();
+            heater3_manual_control = j["heater3_manual_control"].get<bool>();
+            cooler_manual_control = j["cooler_manual_control"].get<bool>();
+            qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
+            conveyer_upm = j["conveyer_speed"].get<int>();
+            heater1 = j["heater1"].get<bool>();
+            heater2 = j["heater2"].get<bool>();
+            heater3 = j["heater3"].get<bool>();
+            cooler = j["cooler"].get<bool>();
         } catch (const nlohmann::json::exception& e) {
             std::cerr << "json parsing error: " << e.what() << std::endl;
         }
@@ -127,37 +137,6 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
     }
 
     return samples;
-}
-
-
-void MQTTClient::set_conveyor_speed(int units_per_minute)
-{
-    json j;
-    j["conveyer_speed"] = units_per_minute;
-    publish("conveyer_speed" , j.dump());
-}
-
-void MQTTClient::set_heating_elements(std::vector<bool> states)
-{
-    json j;
-    j["heater1"] = states[0];
-    j["heater2"] = states[1];
-    j["heater3"] = states[2];
-    publish("heater_states_topic", j.dump());
-}
-
-void MQTTClient::set_cooling_system(bool state)
-{
-    json j;
-    j["cooler"] = state;
-    publish("cooler_state_topic", j.dump());
-}
-
-void MQTTClient::set_quality_control_camera(bool state)
-{
-    json j;
-    j["qc_camera"] = state;
-    publish("qc_camera_ctate_topic", j.dump());
 }
 
 // Function to calculate the failure rate from the fetched data
@@ -254,4 +233,20 @@ void MQTTClient::save_data_to_file(const std::string& filename)
 
         out_file.close();
     }
+}
+void MQTTClient::publish_data()
+{
+    json j;
+    j["conveyer_manual_control"] = conveyer_manual_control;
+    j["heater1_manual_control"] = heater1_manual_control;
+    j["heater2_manual_control"] = heater2_manual_control;
+    j["heater3_manual_control"] = heater3_manual_control;
+    j["cooler_manual_control"] = cooler_manual_control;
+    j["qc_camera_toggle"] = qc_camera_toggle;
+    j["conveyer_speed"] = conveyer_upm;
+    j["heater1"] = heater1;
+    j["heater2"] = heater2;
+    j["heater3"] = heater3;
+    j["cooler"] = cooler;
+    publish("conveyer_params" , j.dump());
 }

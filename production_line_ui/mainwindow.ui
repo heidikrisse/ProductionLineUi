@@ -79,17 +79,101 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="1">
+         <item row="1" column="1">
           <widget class="QLCDNumber" name="lcdNumber"/>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="speed_label">
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="heater2_checked_on_off">
            <property name="text">
-            <string>Conveyer speed</string>
+            <string>On (Checked) / off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QCheckBox" name="heater3_manual_automatic">
+           <property name="text">
+            <string>manual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QCheckBox" name="heater2_manual_automatic">
+           <property name="text">
+            <string>manual</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
+          <widget class="QLabel" name="heater1_label">
+           <property name="text">
+            <string>Heater 1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="qc_camera_label">
+           <property name="text">
+            <string>Quality control camera</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="heater1_manual_automatic">
+           <property name="text">
+            <string>manual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QCheckBox" name="cooler_manual_auto">
+           <property name="text">
+            <string>manual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QCheckBox" name="qc_camera_on_off">
+           <property name="text">
+            <string>On</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="heater1_check_on_off">
+           <property name="text">
+            <string>On (Checked) / off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="heater2_label">
+           <property name="text">
+            <string>Heater 2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QCheckBox" name="cooler_check_on_off">
+           <property name="text">
+            <string>On (Checked) / off´</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="cooler_label">
+           <property name="text">
+            <string>Cooler status</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="speed_manual_or_auto">
+           <property name="text">
+            <string>manual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QSlider" name="conveyer_units_per_minute_slider">
            <property name="maximum">
             <number>600</number>
@@ -100,9 +184,23 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QCheckBox" name="Allow_custom_params">
+          <widget class="QLabel" name="speed_label">
            <property name="text">
-            <string>allow custom paramameters</string>
+            <string>Conveyer speed</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QCheckBox" name="heater3_checked_on_off">
+           <property name="text">
+            <string>On (Checked) / off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="heater3_label">
+           <property name="text">
+            <string>Heater 3</string>
            </property>
           </widget>
          </item>

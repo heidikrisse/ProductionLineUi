@@ -35,11 +35,29 @@ class MainWindow : public QMainWindow
 
         void on_conveyer_units_per_minute_slider_sliderReleased();
 
-        void on_Allow_custom_params_toggled(bool checked);
         friend class MQTTClient;
 
-    private:
-        bool allow_custom_params = false;
+        void on_heater1_check_on_off_toggled(bool checked);
+
+        void on_heater1_manual_automatic_toggled(bool checked);
+
+        void on_heater2_checked_on_off_toggled(bool checked);
+
+        void on_heater2_manual_automatic_toggled(bool checked);
+
+        void on_heater3_checked_on_off_toggled(bool checked);
+
+        void on_heater3_manual_automatic_toggled(bool checked);
+
+        void on_qc_camera_on_off_toggled(bool checked);
+
+        void on_speed_manual_or_auto_toggled(bool checked);
+
+        void on_cooler_manual_auto_toggled(bool checked);
+
+        void on_cooler_check_on_off_toggled(bool checked);
+
+      private:
         //int conveyer_upm = 423; // conveyer units per minute speed
         Ui::MainWindow *ui;
         MQTTClient *test;
