@@ -66,6 +66,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/heidi/projects/ProductionLineUi/production_line_ui/build/paho.mqtt.c/cmake_install.cmake")
   include("/home/heidi/projects/ProductionLineUi/production_line_ui/build/paho.mqtt.cpp/cmake_install.cmake")
+  include("/home/heidi/projects/ProductionLineUi/production_line_ui/build/unit_test/cmake_install.cmake")
 
 endif()
 

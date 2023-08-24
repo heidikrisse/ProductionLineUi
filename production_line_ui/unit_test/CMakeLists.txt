@@ -1,6 +1,5 @@
 # Set the source files for your unit tests
 set(TEST_SOURCES
-    main.cpp
     unit_tests.cpp
 )
 

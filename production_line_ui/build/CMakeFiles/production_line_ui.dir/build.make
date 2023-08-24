@@ -69,10 +69,18 @@ include CMakeFiles/production_line_ui.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/production_line_ui.dir/flags.make
 
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/resources.qrc
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp: CMakeFiles/production_line_ui_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/images/toggleBtn_off.png
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/images/toggleBtn_on.png
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp: /usr/lib/qt5/bin/rcc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources/resources.qrc"
+	/usr/bin/cmake -E cmake_autorcc /home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles/production_line_ui_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json 
+
 CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o: production_line_ui_autogen/mocs_compilation.cpp
 CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o -MF CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/mocs_compilation.cpp
 
 CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.i: cmake_force
@@ -86,7 +94,7 @@ CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cp
 CMakeFiles/production_line_ui.dir/main.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/main.cpp.o: ../main.cpp
 CMakeFiles/production_line_ui.dir/main.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/production_line_ui.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/production_line_ui.dir/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/main.cpp.o -MF CMakeFiles/production_line_ui.dir/main.cpp.o.d -o CMakeFiles/production_line_ui.dir/main.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/main.cpp
 
 CMakeFiles/production_line_ui.dir/main.cpp.i: cmake_force
@@ -100,7 +108,7 @@ CMakeFiles/production_line_ui.dir/main.cpp.s: cmake_force
 CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o: ../src/mainwindow.cpp
 CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o -MF CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o.d -o CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/src/mainwindow.cpp
 
 CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.i: cmake_force
@@ -114,7 +122,7 @@ CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.s: cmake_force
 CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o: ../src/mqtt_client.cpp
 CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o -MF CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o.d -o CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/src/mqtt_client.cpp
 
 CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.i: cmake_force
@@ -128,7 +136,7 @@ CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.s: cmake_force
 CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o: ../src/json_parser.cpp
 CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o -MF CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o.d -o CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/src/json_parser.cpp
 
 CMakeFiles/production_line_ui.dir/src/json_parser.cpp.i: cmake_force
@@ -142,7 +150,7 @@ CMakeFiles/production_line_ui.dir/src/json_parser.cpp.s: cmake_force
 CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
 CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o: ../unit_test/unit_tests.cpp
 CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o -MF CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o.d -o CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/unit_tests.cpp
 
 CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.i: cmake_force
@@ -153,6 +161,20 @@ CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/unit_tests.cpp -o CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.s
 
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o: CMakeFiles/production_line_ui.dir/flags.make
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o: production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o: CMakeFiles/production_line_ui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o -MF CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o.d -o CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o -c /home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp
+
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp > CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.i
+
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp -o CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.s
+
 # Object files for target production_line_ui
 production_line_ui_OBJECTS = \
 "CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o" \
@@ -160,7 +182,8 @@ production_line_ui_OBJECTS = \
 "CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o" \
 "CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o" \
 "CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o" \
-"CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o"
+"CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o" \
+"CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
 
 # External object files for target production_line_ui
 production_line_ui_EXTERNAL_OBJECTS =
@@ -171,16 +194,18 @@ production_line_ui: CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o
 production_line_ui: CMakeFiles/production_line_ui.dir/src/mqtt_client.cpp.o
 production_line_ui: CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o
 production_line_ui: CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o
+production_line_ui: CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o
 production_line_ui: CMakeFiles/production_line_ui.dir/build.make
+production_line_ui: libproduction_line_ui_library.a
 production_line_ui: /usr/lib/x86_64-linux-gnu/libQt5Charts.so.5.15.3
-production_line_ui: paho.mqtt.c/src/libpaho-mqtt3a.so.1.3.12
-production_line_ui: paho.mqtt.cpp/src/libpaho-mqttpp3.so.1.2.0
 production_line_ui: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.3
 production_line_ui: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.15.3
 production_line_ui: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.3
+production_line_ui: paho.mqtt.c/src/libpaho-mqtt3a.so.1.3.12
+production_line_ui: paho.mqtt.cpp/src/libpaho-mqttpp3.so.1.2.0
 production_line_ui: /usr/local/lib/libpaho-mqtt3a.so
 production_line_ui: CMakeFiles/production_line_ui.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable production_line_ui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable production_line_ui"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/production_line_ui.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -191,7 +216,7 @@ CMakeFiles/production_line_ui.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/production_line_ui.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/production_line_ui.dir/clean
 
-CMakeFiles/production_line_ui.dir/depend:
+CMakeFiles/production_line_ui.dir/depend: production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp
 	cd /home/heidi/projects/ProductionLineUi/production_line_ui/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/heidi/projects/ProductionLineUi/production_line_ui /home/heidi/projects/ProductionLineUi/production_line_ui /home/heidi/projects/ProductionLineUi/production_line_ui/build /home/heidi/projects/ProductionLineUi/production_line_ui/build /home/heidi/projects/ProductionLineUi/production_line_ui/build/CMakeFiles/production_line_ui.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/production_line_ui.dir/depend
 

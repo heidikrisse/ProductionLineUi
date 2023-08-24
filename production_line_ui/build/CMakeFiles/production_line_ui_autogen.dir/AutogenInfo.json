@@ -67,7 +67,9 @@
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
 		"/usr/share/cmake-3.22/Modules/CMakeParseArguments.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Charts/Qt5ChartsConfigVersion.cmake",
-		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Charts/Qt5ChartsConfig.cmake"
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Charts/Qt5ChartsConfig.cmake",
+		"/home/heidi/projects/ProductionLineUi/production_line_ui/resources/resources.qrc",
+		"/home/heidi/projects/ProductionLineUi/production_line_ui/resources/resources.qrc"
 	],
 	"CMAKE_SOURCE_DIR" : "/home/heidi/projects/ProductionLineUi/production_line_ui",
 	"DEP_FILE" : "",

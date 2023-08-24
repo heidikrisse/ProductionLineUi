@@ -1059,4 +1059,6 @@ CMakeFiles/production_line_ui.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDesktopWidget \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication

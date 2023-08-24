@@ -258,4 +258,75 @@ CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
  /usr/include/c++/11/cfloat \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
- /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/../include/json_parser.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/../include/json.hpp \
+ /usr/include/c++/11/cstddef /usr/include/c++/11/iterator \
+ /usr/include/c++/11/bits/stream_iterator.h /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
+ /usr/include/c++/11/bits/shared_ptr.h \
+ /usr/include/c++/11/bits/shared_ptr_base.h \
+ /usr/include/c++/11/bits/allocated_ptr.h \
+ /usr/include/c++/11/ext/concurrence.h \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/backward/auto_ptr.h \
+ /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /usr/include/c++/11/forward_list /usr/include/c++/11/bits/forward_list.h \
+ /usr/include/c++/11/bits/forward_list.tcc /usr/include/c++/11/valarray \
+ /usr/include/c++/11/bits/valarray_array.h \
+ /usr/include/c++/11/bits/valarray_array.tcc \
+ /usr/include/c++/11/bits/valarray_before.h \
+ /usr/include/c++/11/bits/slice_array.h \
+ /usr/include/c++/11/bits/valarray_after.h \
+ /usr/include/c++/11/bits/gslice.h \
+ /usr/include/c++/11/bits/gslice_array.h \
+ /usr/include/c++/11/bits/mask_array.h \
+ /usr/include/c++/11/bits/indirect_array.h /usr/include/c++/11/version \
+ /usr/include/c++/11/cassert /usr/include/assert.h \
+ /usr/include/c++/11/filesystem /usr/include/c++/11/bits/fs_fwd.h \
+ /usr/include/c++/11/bits/fs_path.h /usr/include/c++/11/codecvt \
+ /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
+ /usr/include/c++/11/numeric /usr/include/c++/11/bits/stl_numeric.h \
+ /usr/include/c++/11/pstl/glue_numeric_defs.h /usr/include/c++/11/any \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/../include/mqtt_client.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/async_client.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTAsync.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTExportDeclarations.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTProperties.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTReasonCodes.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTSubscribeOpts.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTClientPersistence.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/types.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/token.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/iaction_listener.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/exception.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/properties.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTProperties.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/buffer_ref.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/string_collection.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/server_response.h \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/include/c++/11/condition_variable \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/create_options.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/delivery_token.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/message.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/iclient_persistence.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/buffer_view.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/callback.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/thread_queue.h \
+ /usr/include/c++/11/deque /usr/include/c++/11/bits/stl_deque.h \
+ /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/queue \
+ /usr/include/c++/11/bits/stl_queue.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/iasync_client.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/connect_options.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/topic.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/subscribe_options.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.c/src/MQTTSubscribeOpts.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/will_options.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/ssl_options.h \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/paho.mqtt.cpp/src/mqtt/disconnect_options.h \
+ /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
+ /usr/include/c++/11/bits/list.tcc \
+ /home/heidi/projects/ProductionLineUi/production_line_ui/unit_test/../include/json_parser.h

@@ -1131,7 +1131,12 @@ CMakeFiles/production_line_ui.dir/main.cpp.o: ../main.cpp \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread \
+  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDesktopWidget \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication
+
+CMakeFiles/production_line_ui.dir/production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp.o: production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp \
+  /usr/include/stdc-predef.h
 
 CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cpp.o: production_line_ui_autogen/mocs_compilation.cpp \
   /usr/include/stdc-predef.h \
@@ -2263,7 +2268,8 @@ CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cp
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/qxylegendmarker.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
-  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries
+  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread
 
 CMakeFiles/production_line_ui.dir/src/json_parser.cpp.o: ../src/json_parser.cpp \
   /usr/include/stdc-predef.h \
@@ -3703,6 +3709,7 @@ CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o: ../src/mainwindow.cpp \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
   /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread \
   production_line_ui_autogen/ui_mainwindow.h \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QCheckBox \
@@ -4392,7 +4399,94 @@ CMakeFiles/production_line_ui.dir/unit_test/unit_tests.cpp.o: ../unit_test/unit_
   /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
   /usr/include/c++/11/cfloat \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
-  /usr/include/x86_64-linux-gnu/sys/time.h
+  /usr/include/x86_64-linux-gnu/sys/time.h \
+  ../include/json_parser.h \
+  ../include/json.hpp \
+  /usr/include/c++/11/cstddef \
+  /usr/include/c++/11/iterator \
+  /usr/include/c++/11/bits/stream_iterator.h \
+  /usr/include/c++/11/memory \
+  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/11/bits/align.h \
+  /usr/include/c++/11/bit \
+  /usr/include/c++/11/bits/shared_ptr.h \
+  /usr/include/c++/11/bits/shared_ptr_base.h \
+  /usr/include/c++/11/bits/allocated_ptr.h \
+  /usr/include/c++/11/ext/concurrence.h \
+  /usr/include/c++/11/bits/shared_ptr_atomic.h \
+  /usr/include/c++/11/backward/auto_ptr.h \
+  /usr/include/c++/11/pstl/glue_memory_defs.h \
+  /usr/include/c++/11/forward_list \
+  /usr/include/c++/11/bits/forward_list.h \
+  /usr/include/c++/11/bits/forward_list.tcc \
+  /usr/include/c++/11/valarray \
+  /usr/include/c++/11/bits/valarray_array.h \
+  /usr/include/c++/11/bits/valarray_array.tcc \
+  /usr/include/c++/11/bits/valarray_before.h \
+  /usr/include/c++/11/bits/slice_array.h \
+  /usr/include/c++/11/bits/valarray_after.h \
+  /usr/include/c++/11/bits/gslice.h \
+  /usr/include/c++/11/bits/gslice_array.h \
+  /usr/include/c++/11/bits/mask_array.h \
+  /usr/include/c++/11/bits/indirect_array.h \
+  /usr/include/c++/11/version \
+  /usr/include/c++/11/cassert \
+  /usr/include/assert.h \
+  /usr/include/c++/11/filesystem \
+  /usr/include/c++/11/bits/fs_fwd.h \
+  /usr/include/c++/11/bits/fs_path.h \
+  /usr/include/c++/11/codecvt \
+  /usr/include/c++/11/bits/fs_dir.h \
+  /usr/include/c++/11/bits/fs_ops.h \
+  /usr/include/c++/11/numeric \
+  /usr/include/c++/11/bits/stl_numeric.h \
+  /usr/include/c++/11/pstl/glue_numeric_defs.h \
+  /usr/include/c++/11/any \
+  ../include/mqtt_client.h \
+  ../paho.mqtt.cpp/src/mqtt/async_client.h \
+  ../paho.mqtt.c/src/MQTTAsync.h \
+  ../paho.mqtt.c/src/MQTTExportDeclarations.h \
+  ../paho.mqtt.c/src/MQTTProperties.h \
+  ../paho.mqtt.c/src/MQTTReasonCodes.h \
+  ../paho.mqtt.c/src/MQTTSubscribeOpts.h \
+  ../paho.mqtt.c/src/MQTTClientPersistence.h \
+  ../paho.mqtt.cpp/src/mqtt/types.h \
+  ../paho.mqtt.cpp/src/mqtt/token.h \
+  ../paho.mqtt.cpp/src/mqtt/iaction_listener.h \
+  ../paho.mqtt.cpp/src/mqtt/exception.h \
+  ../paho.mqtt.cpp/src/mqtt/properties.h \
+  ../paho.mqtt.c/src/MQTTProperties.h \
+  ../paho.mqtt.cpp/src/mqtt/buffer_ref.h \
+  ../paho.mqtt.cpp/src/mqtt/string_collection.h \
+  ../paho.mqtt.cpp/src/mqtt/server_response.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/condition_variable \
+  ../paho.mqtt.cpp/src/mqtt/create_options.h \
+  ../paho.mqtt.cpp/src/mqtt/delivery_token.h \
+  ../paho.mqtt.cpp/src/mqtt/message.h \
+  ../paho.mqtt.cpp/src/mqtt/iclient_persistence.h \
+  ../paho.mqtt.cpp/src/mqtt/buffer_view.h \
+  ../paho.mqtt.cpp/src/mqtt/callback.h \
+  ../paho.mqtt.cpp/src/mqtt/thread_queue.h \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/bits/stl_queue.h \
+  ../paho.mqtt.cpp/src/mqtt/iasync_client.h \
+  ../paho.mqtt.cpp/src/mqtt/connect_options.h \
+  ../paho.mqtt.cpp/src/mqtt/topic.h \
+  ../paho.mqtt.cpp/src/mqtt/subscribe_options.h \
+  ../paho.mqtt.c/src/MQTTSubscribeOpts.h \
+  ../paho.mqtt.cpp/src/mqtt/will_options.h \
+  ../paho.mqtt.cpp/src/mqtt/ssl_options.h \
+  ../paho.mqtt.cpp/src/mqtt/disconnect_options.h \
+  /usr/include/c++/11/list \
+  /usr/include/c++/11/bits/stl_list.h \
+  /usr/include/c++/11/bits/list.tcc \
+  ../include/json_parser.h
 
 
 /usr/include/c++/11/cfloat:
@@ -5145,6 +5239,8 @@ production_line_ui_autogen/mocs_compilation.cpp:
 
 /usr/include/c++/11/climits:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QThread:
+
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qmath.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
@@ -5843,6 +5939,8 @@ production_line_ui_autogen/mocs_compilation.cpp:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstracteventdispatcher.h:
 
+production_line_ui_autogen/3YJK5W5UP7/qrc_resources.cpp:
+
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -6006,6 +6104,8 @@ production_line_ui_autogen/mocs_compilation.cpp:
 /usr/include/c++/11/deque:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDesktopWidget:
 
 /usr/include/c++/11/bits/stl_relops.h:
 

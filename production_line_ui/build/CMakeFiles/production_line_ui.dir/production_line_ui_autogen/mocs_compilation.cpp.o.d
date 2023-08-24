@@ -1055,4 +1055,5 @@ CMakeFiles/production_line_ui.dir/production_line_ui_autogen/mocs_compilation.cp
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qxylegendmarker.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
- /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries
+ /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread

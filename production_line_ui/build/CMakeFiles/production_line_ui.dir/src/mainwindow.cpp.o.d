@@ -1059,6 +1059,7 @@ CMakeFiles/production_line_ui.dir/src/mainwindow.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qtchartsversion.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QChartView \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QLineSeries \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QThread \
  /home/heidi/projects/ProductionLineUi/production_line_ui/build/production_line_ui_autogen/include/../ui_mainwindow.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QCheckBox \
