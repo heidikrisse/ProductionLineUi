@@ -61,6 +61,7 @@ class MainWindow : public QMainWindow
 
         void on_cooler_check_on_off_toggled(bool checked);
 
+
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed
         Ui::MainWindow *ui;
