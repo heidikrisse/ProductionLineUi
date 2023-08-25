@@ -44,6 +44,8 @@ set(PROJECT_SOURCES
         resources/images/toggleBtn_on.png
         resources/images/toggleBtn_off.png
         resources/resources.qrc
+        include/mqtt_main_window_bridge.h
+        src/mqtt_main_window_bridge.cpp
 )
 
 set(CMAKE_AUTORCC ON)

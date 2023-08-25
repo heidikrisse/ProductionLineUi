@@ -26,6 +26,8 @@ class MainWindow : public QMainWindow
     public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
+        Ui::MainWindow *ui;
+        MQTTClient *test;
         void data_update_loop();
         void start_data_update_loop();
     private slots:
@@ -67,8 +69,6 @@ class MainWindow : public QMainWindow
 
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed
-        Ui::MainWindow *ui;
-        MQTTClient *test;
         //QSplineSeries *series;
         QList<QSplineSeries *> multi_series;
         QChart *chart;

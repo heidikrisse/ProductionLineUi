@@ -3,6 +3,7 @@
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/json_parser.h"
+#include "../include/mqtt_main_window_bridge.h"
 
 #include <thread>
 #include <mutex>
@@ -15,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
       , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // MainWindow has a member called 'test' of type 'MQTTClient*'
+    MqttMainWindowBridge* bridge = new MqttMainWindowBridge(this, test);
 
     axis_x = new QDateTimeAxis();
     axis_y = new QValueAxis();
