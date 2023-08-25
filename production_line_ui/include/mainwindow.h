@@ -62,6 +62,8 @@ class MainWindow : public QMainWindow
 
         void on_cooler_check_on_off_toggled(bool checked);
 
+        void on_calculateButton_clicked();
+
 
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed
@@ -75,6 +77,8 @@ class MainWindow : public QMainWindow
         QValueAxis* axis_y;
         std::thread data_loop_thread;
         //std::unique_ptr<QValueAxis> axis_y;
+        QLabel *rejectionLabel;
+        QLabel *costLabel;
 };
 
 #endif

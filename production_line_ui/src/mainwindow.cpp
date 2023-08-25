@@ -77,6 +77,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->heater2_checked_on_off->setChecked(test->heater2);
     ui->heater3_checked_on_off->setChecked(test->heater3);
     ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+
+    // Calculate analytics
+    // Find the labels in the analytics tab
+    rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
+    costLabel = ui->tabWidget->findChild<QLabel*>("costLabel");
+
+    // Check if the labels were found and assign initial text
+    if (rejectionLabel)
+        rejectionLabel->setText("Rejection Percentage: 0.00%");
+    if (costLabel)
+        costLabel->setText("Operating Cost: $0.00");
 }
 
 MainWindow::~MainWindow()
@@ -264,3 +275,13 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
         test->publish_data();
     }
 }
+
+void MainWindow::on_calculateButton_clicked()
+{
+    double rejectionRate = test->get_failure_rate() * 100.0;
+    double operatingCost = test->get_operating_cost();
+
+    ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+    ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+}
+
