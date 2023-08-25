@@ -1,5 +1,5 @@
 // unit_tests.cpp
-#define DOCTEST_CONFIG_IMPLEMENT
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "../include/doctest.h"
 
 #include "../include/json_parser.h" // for JSON Parser Test
