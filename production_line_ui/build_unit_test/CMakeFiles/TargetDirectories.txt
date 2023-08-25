@@ -1,3 +1,0 @@
-/home/heidi/projects/ProductionLineUi/production_line_ui/build_unit_test/CMakeFiles/unit_tests.dir
-/home/heidi/projects/ProductionLineUi/production_line_ui/build_unit_test/CMakeFiles/edit_cache.dir
-/home/heidi/projects/ProductionLineUi/production_line_ui/build_unit_test/CMakeFiles/rebuild_cache.dir

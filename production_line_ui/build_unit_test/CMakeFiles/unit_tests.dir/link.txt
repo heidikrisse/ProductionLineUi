@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/unit_tests.dir/unit_tests.cpp.o -o unit_tests  -lproduction_line_ui 
