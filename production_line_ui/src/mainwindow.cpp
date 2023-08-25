@@ -6,6 +6,7 @@
 #include "../include/json_parser.h"
 #include <thread>
 #include <mutex>
+#include <QtSql>
 
 static std::mutex data_mutex;
 
@@ -58,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
     layout->addWidget(chart_view);
 
-
     test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232btrtr"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
@@ -86,6 +86,11 @@ MainWindow::~MainWindow()
     if (data_loop_thread.joinable()) {
         data_loop_thread.join();
     }
+    delete axis_x;
+    delete axis_y;
+    delete chart;
+    delete chart_view;
+    //delete layout;
     delete ui;
 }
 

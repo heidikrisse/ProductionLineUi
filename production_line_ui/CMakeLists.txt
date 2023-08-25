@@ -21,8 +21,8 @@ add_subdirectory(${PAHO_MQTT_CPP_DIR})
 include_directories(include)
 
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Sql REQUIRED)
 find_package(Qt5Charts)
 
 set(PROJECT_SOURCES
@@ -35,6 +35,8 @@ set(PROJECT_SOURCES
         include/json.hpp
         include/json_parser.h
         src/json_parser.cpp
+        include/sqlite.hpp
+        src/sqlite.cpp
         unit_test/unit_tests.cpp
         include/doctest.h
         json_examples/line1.json
@@ -47,8 +49,6 @@ set(PROJECT_SOURCES
         resources/images/toggleBtn_off.png
         resources/resources.qrc
 )
-
-set(CMAKE_AUTORCC ON)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(production_line_ui
@@ -77,7 +77,13 @@ else()
 endif()
 
 
-target_link_libraries(production_line_ui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
+target_link_libraries(production_line_ui PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Charts
+    Qt${QT_VERSION_MAJOR}::Sql
+    paho-mqtt3a
+    paho-mqttpp3
+)
 
 set_target_properties(production_line_ui PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
