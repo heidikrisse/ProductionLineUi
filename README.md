@@ -150,7 +150,7 @@ make
 ./production_line_ui
 ```
 
-# Run Unit Tests
+### 5. Run Unit Tests
 
 Navigate to ProductionLineUi/production_line_ui/build
    
