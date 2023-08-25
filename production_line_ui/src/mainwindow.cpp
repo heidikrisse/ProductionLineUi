@@ -82,15 +82,15 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     stop_data_loop.store(true);
-    if (test)
-    {
-        test->disconnect();
-        delete test;
-    }
     if (data_loop_thread.joinable())
     {
         data_loop_thread.join();
 
+    }
+    if (test)
+    {
+        test->disconnect();
+        delete test;
     }
     delete ui;
 }
