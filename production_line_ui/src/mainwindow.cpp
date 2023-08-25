@@ -3,12 +3,7 @@
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/json_parser.h"
-
-#include <thread>
-#include <mutex>
-
-static std::mutex data_mutex;
-static std::atomic<bool> stop_data_loop(false);
+#include <QThread>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -77,7 +72,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->heater2_checked_on_off->setChecked(test->heater2);
     ui->heater3_checked_on_off->setChecked(test->heater3);
     ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
-
+    worker = new QThread;
+    test->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -88,11 +84,21 @@ MainWindow::MainWindow(QWidget *parent)
         rejectionLabel->setText("Rejection Percentage: 0.00%");
     if (costLabel)
         costLabel->setText("Operating Cost: $0.00");
+
+    connect(test, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
+    connect(test, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
+    connect(test, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
+    connect(test, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
+    connect(test, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
+    connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
+    connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
+
+    worker->start();
+
 }
 
 MainWindow::~MainWindow()
 {
-    stop_data_loop.store(true);
     if (data_loop_thread.joinable())
     {
         data_loop_thread.join();
@@ -103,33 +109,56 @@ MainWindow::~MainWindow()
         test->disconnect();
         delete test;
     }
+    worker->quit();
+    worker->wait();
+    delete worker;
     delete ui;
 }
 
-void MainWindow::data_update_loop()
+void MainWindow::conveyer_speed_received()
 {
-    std::lock_guard<std::mutex> data_lock(data_mutex);
-    while(not stop_data_loop)
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
-        ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
-        ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
-        ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
-        ui->cooler_check_on_off->setChecked(test->cooler);
-        ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
-        ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
-        ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
-        ui->heater1_check_on_off->setChecked(test->heater1);
-        ui->heater2_checked_on_off->setChecked(test->heater2);
-        ui->heater3_checked_on_off->setChecked(test->heater3);
-        ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
-    }
+    ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
+    ui->lcdNumber->display(test->conveyer_upm);
+}
+
+void MainWindow::conveyer_control_received()
+{
+    ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
+}
+void MainWindow::heater_controls_received()
+{
+    ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
 
 }
-void MainWindow::start_data_update_loop(){
-    data_loop_thread = std::thread(&MainWindow::data_update_loop, this);
+void MainWindow::heater_states_received()
+{
+    ui->heater1_check_on_off->setChecked(test->heater1);
+    ui->heater2_checked_on_off->setChecked(test->heater2);
+    ui->heater3_checked_on_off->setChecked(test->heater3);
+
 }
+void MainWindow::cooler_states_received()
+{
+    ui->cooler_check_on_off->setChecked(test->cooler);
+}
+void MainWindow::camera_state_received()
+{
+    ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+}
+
+void MainWindow::cooler_control_received()
+{
+    ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
+}
+
+
+
+
+
+
+
 void MainWindow::on_pushButton_clicked()
 {
     // Load data from a sample JSON file (line1.json) for testing
@@ -207,6 +236,7 @@ void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 
 void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
+    ui->heater1_check_on_off->setEnabled(checked);
     test->heater1_manual_control = checked;
     test->publish_data();
 }

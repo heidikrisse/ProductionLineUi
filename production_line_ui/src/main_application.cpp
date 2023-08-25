@@ -1,12 +1,11 @@
-// main.cpp
-#include "include/mainwindow.h"
-#include <QDesktopWidget>
-#include <QApplication>
+#include "main_application.h"
 
-int main(int argc, char *argv[])
+main_application::main_application()
 {
-    QApplication a(argc, argv);
-    MainWindow w;
+    ui = new MainWindow();
+    client = new MQTTClient("5.tcp.eu.ngrok.io:18017", "abcd123dsa");
+    client->connect();
+    client->subscribe("conveyer_params");
     QDesktopWidget *desktop = QApplication::desktop();
     int screen_width{desktop->width()};
     int screen_height{desktop->height()};
@@ -15,8 +14,8 @@ int main(int argc, char *argv[])
     float window_height_percentage{0.8}; // Adjust as needed
     int window_width{static_cast<int>(screen_width * window_width_percentage)};
     int window_height{static_cast<int>(screen_height * window_height_percentage)};
+    ui->resize(window_width, window_height);
+    ui->show();
 
-    w.resize(window_width, window_height);
-    w.show();
-    return a.exec();
+
 }

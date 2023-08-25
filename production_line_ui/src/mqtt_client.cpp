@@ -50,7 +50,7 @@ void MQTTClient::disconnect()
 void MQTTClient::subscribe(const std::string& topic){
     try
     {
-        client.subscribe(topic, 2)->wait();
+        client.subscribe(topic, 1)->wait();
     }
     catch (const mqtt::exception& e)
     {
@@ -60,7 +60,7 @@ void MQTTClient::subscribe(const std::string& topic){
 
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
-    msg->set_qos(2);
+    msg->set_qos(1);
     msg->set_retained(true); // Set retained flag true
 
     try
@@ -96,17 +96,29 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         std::string message{msg->get_payload()};
         try {
             conveyer_upm = j["conveyer_speed"].get<int>();
+            emit conveyer_speed_changed(conveyer_upm);
+
             conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
+            emit conveyer_control(conveyer_manual_control);
+
             heater1_manual_control = j["heater1_manual_control"].get<bool>();
             heater2_manual_control = j["heater2_manual_control"].get<bool>();
             heater3_manual_control = j["heater3_manual_control"].get<bool>();
+            emit heater_controls(heater1_manual_control, heater2_manual_control, heater3_manual_control);
+
             cooler_manual_control = j["cooler_manual_control"].get<bool>();
+            emit cooler_control(cooler_manual_control);
+
             qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
-            conveyer_upm = j["conveyer_speed"].get<int>();
+            emit qc_camera_state(qc_camera_toggle);
+
             heater1 = j["heater1"].get<bool>();
             heater2 = j["heater2"].get<bool>();
             heater3 = j["heater3"].get<bool>();
+            emit heater_states(heater1, heater2, heater3);
+
             cooler = j["cooler"].get<bool>();
+            emit cooler_state(cooler);
         }
         catch (const nlohmann::json::exception& e)
         {
