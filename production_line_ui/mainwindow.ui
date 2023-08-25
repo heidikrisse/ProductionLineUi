@@ -75,7 +75,7 @@
           <x>1020</x>
           <y>110</y>
           <width>292</width>
-          <height>314</height>
+          <height>499</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -84,8 +84,22 @@
          </item>
          <item row="5" column="0">
           <widget class="QCheckBox" name="heater2_checked_on_off">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator {
+	width: 60px;
+	height: 60px;
+}
+
+QCheckBox::indicator:checked {
+	image: url(&quot;:images/toggleBtn_on.png&quot;)
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(&quot;:images/toggleBtn_off.png&quot;)
+}</string>
+           </property>
            <property name="text">
-            <string>On (Checked) / off</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -133,15 +147,43 @@
          </item>
          <item row="11" column="0">
           <widget class="QCheckBox" name="qc_camera_on_off">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator {
+	width: 60px;
+	height: 60px;
+}
+
+QCheckBox::indicator:checked {
+	image: url(&quot;:images/toggleBtn_on.png&quot;)
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(&quot;:images/toggleBtn_off.png&quot;)
+}</string>
+           </property>
            <property name="text">
-            <string>On</string>
+            <string/>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QCheckBox" name="heater1_check_on_off">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator {
+	width: 60px;
+	height: 60px;
+}
+
+QCheckBox::indicator:checked {
+	image: url(&quot;:images/toggleBtn_on.png&quot;)
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(&quot;:images/toggleBtn_off.png&quot;)
+}</string>
+           </property>
            <property name="text">
-            <string>On (Checked) / off</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -154,8 +196,22 @@
          </item>
          <item row="9" column="0">
           <widget class="QCheckBox" name="cooler_check_on_off">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator {
+	width: 60px;
+	height: 60px;
+}
+
+QCheckBox::indicator:checked {
+	image: url(&quot;:images/toggleBtn_on.png&quot;)
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(&quot;:images/toggleBtn_off.png&quot;)
+}</string>
+           </property>
            <property name="text">
-            <string>On (Checked) / off´</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -192,8 +248,22 @@
          </item>
          <item row="7" column="0">
           <widget class="QCheckBox" name="heater3_checked_on_off">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator {
+	width: 60px;
+	height: 60px;
+}
+
+QCheckBox::indicator:checked {
+	image: url(&quot;:images/toggleBtn_on.png&quot;)
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(&quot;:images/toggleBtn_off.png&quot;)
+}</string>
+           </property>
            <property name="text">
-            <string>On (Checked) / off</string>
+            <string/>
            </property>
           </widget>
          </item>

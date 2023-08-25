@@ -72,6 +72,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->heater2_checked_on_off->setChecked(test->heater2);
     ui->heater3_checked_on_off->setChecked(test->heater3);
     ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+    ui->heater1_check_on_off->setEnabled(test->heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(test->heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(test->heater3_manual_control);
+    ui->cooler_check_on_off->setEnabled(test->cooler_manual_control);
+
     worker = new QThread;
     test->moveToThread(worker);
     // Calculate analytics
@@ -225,12 +230,8 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 {
-    if(test->heater1_manual_control)
-    {
         test->heater1 = checked;
         test->publish_data();
-    }
-
 }
 
 
@@ -244,16 +245,14 @@ void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 
 void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 {
-    if(test->heater2_manual_control){
-        test->heater2 = checked;
-        test->publish_data();
-    }
-
+    test->heater2 = checked;
+    test->publish_data();
 }
 
 
 void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 {
+    ui->heater2_checked_on_off->setEnabled(checked);
     test->heater2_manual_control = checked;
     test->publish_data();
 }
@@ -261,16 +260,14 @@ void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 
 void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 {
-    if(test->heater3_manual_control){
-        test->heater3 = checked;
-        test->publish_data();
-    }
-
+    test->heater3 = checked;
+    test->publish_data();
 }
 
 
 void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 {
+    ui->heater3_checked_on_off->setEnabled(checked);
     test->heater3_manual_control = checked;
     test->publish_data();
 }
@@ -292,6 +289,7 @@ void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
 
 void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 {
+    ui->cooler_check_on_off->setEnabled(checked);
     test->cooler_manual_control = checked;
     test->publish_data();
 }
@@ -299,11 +297,8 @@ void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
-    if(test->cooler_manual_control)
-    {
-        test->cooler = checked;
-        test->publish_data();
-    }
+    test->cooler = checked;
+    test->publish_data();
 }
 
 void MainWindow::on_calculateButton_clicked()
