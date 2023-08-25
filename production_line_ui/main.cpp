@@ -18,6 +18,5 @@ int main(int argc, char *argv[])
 
     w.resize(window_width, window_height);
     w.show();
-    w.start_data_update_loop();
     return a.exec();
 }
