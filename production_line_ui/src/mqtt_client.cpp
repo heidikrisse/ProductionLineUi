@@ -1,5 +1,6 @@
 // mqtt_client.cpp
 #include "../include/mqtt_client.h"
+#include "../include/json_parser.h"
 
 #include <string>
 #include <filesystem>
@@ -95,15 +96,15 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     {
         std::string message{msg->get_payload()};
         try {
-            conveyer_upm = j["conveyer_speed"].get<int>();
+            conveyer_upm = j["speed_of_conveyer"].get<int>();
             emit conveyer_speed_changed(conveyer_upm);
 
             conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
             emit conveyer_control(conveyer_manual_control);
 
-            heater1_manual_control = j["heater1_manual_control"].get<bool>();
-            heater2_manual_control = j["heater2_manual_control"].get<bool>();
-            heater3_manual_control = j["heater3_manual_control"].get<bool>();
+            heater1_manual_control = j["heater_1_manual_control"].get<bool>();
+            heater2_manual_control = j["heater_2_manual_control"].get<bool>();
+            heater3_manual_control = j["heater_3_manual_control"].get<bool>();
             emit heater_controls(heater1_manual_control, heater2_manual_control, heater3_manual_control);
 
             cooler_manual_control = j["cooler_manual_control"].get<bool>();
@@ -112,9 +113,9 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
             emit qc_camera_state(qc_camera_toggle);
 
-            heater1 = j["heater1"].get<bool>();
-            heater2 = j["heater2"].get<bool>();
-            heater3 = j["heater3"].get<bool>();
+            heater1 = j["heater_1"].get<bool>();
+            heater2 = j["heater_2"].get<bool>();
+            heater3 = j["heater_3"].get<bool>();
             emit heater_states(heater1, heater2, heater3);
 
             cooler = j["cooler"].get<bool>();
@@ -169,10 +170,10 @@ double MQTTClient::get_failure_rate() const
         for (const auto& data : data_cache)
         {
             total_units += data.units_per_minute;
-            // failed_units += data.failed_qc_units;
+            failed_units += data.non_passers;
         }
 
-        return failed_units / total_units;
+        return (failed_units / total_units) * 100;
 }
 
 // Function to calculate the operating costs from the fetched data
@@ -226,8 +227,8 @@ void MQTTClient::save_data_to_file(const std::string& filename)
         std::filesystem::create_directories(file_path.parent_path());
     }
 
-    // Open the file in append mode so that it doesn't overwrite the file if it already exists
-    std::ofstream out_file(filename, std::ios::app);
+    // Open the file
+    std::ofstream out_file(filename);
 
     if (out_file.is_open())
     {
@@ -236,18 +237,13 @@ void MQTTClient::save_data_to_file(const std::string& filename)
             json j;
 
             j["timestamp"] = data.timestamp;
-            j["conveyor_speed"] = data.units_per_minute;
-            j["heater1"] = data.heater1_status;
-            j["heater2"] = data.heater2_status;
-            j["heater3"] = data.heater3_status;
+            j["speed_of_conveyor"] = data.units_per_minute;
+            j["heater_1"] = data.heater1_status;
+            j["heater_2"] = data.heater2_status;
+            j["heater_3"] = data.heater3_status;
             j["cooler"] = data.cooler_status;
-            j["qc_camera"] = data.qc_camera_status;
-
-            for (int i{0}; i < 10; ++i)
-            {
-                std::string sensor_name = "temp_sensor" + std::to_string(i+1);
-                j[sensor_name] = data.heat_sensors[i];
-            }
+            j["temp_sensors"] = data.heat_sensors;
+            j["qc_camera_status"] = data.qc_camera_status;
 
             out_file << j.dump(4) << '\n';
         }
@@ -259,15 +255,15 @@ void MQTTClient::publish_data()
 {
     json j;
     j["conveyer_manual_control"] = conveyer_manual_control;
-    j["heater1_manual_control"] = heater1_manual_control;
-    j["heater2_manual_control"] = heater2_manual_control;
-    j["heater3_manual_control"] = heater3_manual_control;
+    j["heater_1_manual_control"] = heater1_manual_control;
+    j["heater_2_manual_control"] = heater2_manual_control;
+    j["heater_3_manual_control"] = heater3_manual_control;
     j["cooler_manual_control"] = cooler_manual_control;
     j["qc_camera_toggle"] = qc_camera_toggle;
-    j["conveyer_speed"] = conveyer_upm;
-    j["heater1"] = heater1;
-    j["heater2"] = heater2;
-    j["heater3"] = heater3;
+    j["speed_of_conveyer"] = conveyer_upm;
+    j["heater_1"] = heater1;
+    j["heater_2"] = heater2;
+    j["heater_3"] = heater3;
     j["cooler"] = cooler;
     publish("conveyer_params" , j.dump());
 }

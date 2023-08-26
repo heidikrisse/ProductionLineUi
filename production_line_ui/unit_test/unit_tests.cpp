@@ -11,37 +11,29 @@ TEST_CASE("JSON Parser Test")
 {
     json_data::parsed_json parsed_data;
     json j;
-    j["timestamp"] = "2023-08-22T08:30:00GMT+2";
-    j["conveyor_speed"] = 438;
-    j["heater1"] = true;
-    j["heater2"] = true;
-    j["heater3"] = false;
-    j["cooler"] = true;
-    j["qc_camera"] = true;
-    j["temp_sensor1"] = 48.4;
-    j["temp_sensor2"] = 53.9;
-    j["temp_sensor3"] = 56.2;
-    j["temp_sensor4"] = 75.1;
-    j["temp_sensor5"] = 79.6;
-    j["temp_sensor6"] = 88.2;
-    j["temp_sensor7"] = 77.4;
-    j["temp_sensor8"] = 62.7;
-    j["temp_sensor9"] = 56.3;
-    j["temp_sensor10"] = 45.9;
+    j["time_stamp"] = "2023-08-25T15:00:37GMT+2";
+    j["speed_of_conveyor"] = 438;
+    j["heater_1"] = false;
+    j["heater_2"] = false;
+    j["heater_3"] = true;
+    j["cooler"] = false;
+    j["qc_camera_status"] = true;
+    j["temp_sensors"] = {48.4, 53.9, 56.2, 41.2, 50.9, 52.3, 46.7, 48.1, 47.3, 45.9};
+
 
     parsed_data = json_data::json_to_vec(j);
 
-    CHECK(parsed_data.timestamp == "2023-08-22T08:30:00GMT+2");
+    CHECK(parsed_data.timestamp == "2023-08-25T15:00:37GMT+2");
     CHECK(parsed_data.units_per_minute == 438);
-    CHECK(parsed_data.heater1_status == true);
-    CHECK(parsed_data.heater2_status == true);
-    CHECK(parsed_data.heater3_status == false);
-    CHECK(parsed_data.cooler_status == true);
+    CHECK(parsed_data.heater1_status == false);
+    CHECK(parsed_data.heater2_status == false);
+    CHECK(parsed_data.heater3_status == true);
+    CHECK(parsed_data.cooler_status == false);
     CHECK(parsed_data.qc_camera_status == true);
-    CHECK(parsed_data.heat_sensors[0] == 48.4f);
-    CHECK(parsed_data.heat_sensors[1] == 53.9f);
-    CHECK(parsed_data.heat_sensors[2] == 56.2f);
-    CHECK(parsed_data.heat_sensors[9] == 45.9f);
+    CHECK(parsed_data.heat_sensors[0] == doctest::Approx(48.4));
+    CHECK(parsed_data.heat_sensors[1] == doctest::Approx(53.9));
+    CHECK(parsed_data.heat_sensors[2] == doctest::Approx(56.2));
+    CHECK(parsed_data.heat_sensors[9] == doctest::Approx(45.9));
     CHECK(parsed_data.non_passers == 0);
 }
 
@@ -49,7 +41,7 @@ TEST_CASE("JSON Parser Test")
 
 TEST_CASE("MQTT Client Test")
 {
-    MQTTClient mqtt_client("broker_address", "client_id");
+    MQTTClient mqtt_client("5.tcp.eu.ngrok.io:18017", "abcd1234heidip"); // ("broker_address", "client_id");
 
     SUBCASE("Connect and Disconnect")
     {
