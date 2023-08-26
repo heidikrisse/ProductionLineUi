@@ -26,11 +26,8 @@ class MainWindow : public QMainWindow
     public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
-        /*void data_update_loop();
-        void start_data_update_loop();*/
+
     private slots:
-
-
         void on_pushButton_clicked();
 
         void on_pushButton_2_clicked();
@@ -71,7 +68,6 @@ class MainWindow : public QMainWindow
         void cooler_states_received();
         void cooler_control_received();
         void camera_state_received();
-
 
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed

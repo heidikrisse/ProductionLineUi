@@ -32,11 +32,6 @@ namespace json_data
         uint8_t non_passers = 0;
     };
 
-    struct failed_qc
-    {
-        uint8_t failed_qc_units;
-    };
-
     // Returns parsed_json object
     parsed_json json_to_vec(json &j_data);
 };

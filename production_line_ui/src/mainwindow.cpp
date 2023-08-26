@@ -158,12 +158,6 @@ void MainWindow::cooler_control_received()
     ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
 }
 
-
-
-
-
-
-
 void MainWindow::on_pushButton_clicked()
 {
     // Load data from a sample JSON file (line1.json) for testing
@@ -180,11 +174,10 @@ void MainWindow::on_pushButton_clicked()
     }
 }
 
-
 void MainWindow::on_pushButton_2_clicked()
 {
     // Load the sample data
-    std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples");
+    std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
 
     // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor)
     for (auto* series : multi_series) {
@@ -202,9 +195,6 @@ void MainWindow::on_pushButton_2_clicked()
     }
 }
 
-
-
-
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
     if(test->conveyer_manual_control)
@@ -215,9 +205,7 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
     {
         ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
     }
-
 }
-
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
@@ -225,7 +213,6 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
     {
         test->publish_data();
     }
-
 }
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
@@ -234,14 +221,12 @@ void MainWindow::on_heater1_check_on_off_toggled(bool checked)
         test->publish_data();
 }
 
-
 void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
     ui->heater1_check_on_off->setEnabled(checked);
     test->heater1_manual_control = checked;
     test->publish_data();
 }
-
 
 void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 {
@@ -257,7 +242,6 @@ void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
     test->publish_data();
 }
 
-
 void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 {
     test->heater3 = checked;
@@ -272,7 +256,6 @@ void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
     test->publish_data();
 }
 
-
 void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 {
     test->qc_camera_toggle = checked;
@@ -286,14 +269,12 @@ void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
     test->publish_data();
 }
 
-
 void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 {
     ui->cooler_check_on_off->setEnabled(checked);
     test->cooler_manual_control = checked;
     test->publish_data();
 }
-
 
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
@@ -309,4 +290,3 @@ void MainWindow::on_calculateButton_clicked()
     ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
     ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
 }
-
