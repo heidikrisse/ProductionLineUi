@@ -45,6 +45,8 @@ set(PROJECT_SOURCES
         json_examples/camera3.json
         resources/images/toggleBtn_on.png
         resources/images/toggleBtn_off.png
+        resources/images/checkBtn_checked.png
+        resources/images/checkBtn_unchecked.png
         resources/resources.qrc
 )
 

@@ -2,5 +2,7 @@
     <qresource>
         <file>images/toggleBtn_off.png</file>
         <file>images/toggleBtn_on.png</file>
+        <file>images/checkBtn_checked.png</file>
+        <file>images/checkBtn_unchecked.png</file>
     </qresource>
 </RCC>
