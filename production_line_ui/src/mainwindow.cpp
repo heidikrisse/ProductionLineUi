@@ -4,10 +4,8 @@
 #include "../include/mqtt_client.h"
 #include "../include/json_parser.h"
 #include "../include/sqlite.hpp"
-#include <thread>
-#include <mutex>
+
 #include <QtSql>
-static std::mutex data_mutex;
 #include <QThread>
 
 

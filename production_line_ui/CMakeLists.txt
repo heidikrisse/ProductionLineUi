@@ -37,11 +37,9 @@ set(PROJECT_SOURCES
         src/json_parser.cpp
         include/sqlite.hpp
         src/sqlite.cpp
-        unit_test/unit_tests.cpp
         include/doctest.h
         json_examples/line1.json
         json_examples/line2.json
-        json_examples/line3.json
         json_examples/camera1.json
         json_examples/camera2.json
         json_examples/camera3.json
