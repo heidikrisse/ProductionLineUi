@@ -20,9 +20,9 @@ add_subdirectory(${PAHO_MQTT_CPP_DIR})
 # Include directories
 include_directories(include)
 
-
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Sql REQUIRED)
+
 find_package(Qt5Charts)
 
 set(PROJECT_SOURCES
@@ -76,7 +76,6 @@ else()
     endif()
 endif()
 
-
 target_link_libraries(production_line_ui PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Charts
@@ -101,4 +100,12 @@ install(TARGETS production_line_ui
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(production_line_ui resources/resources.qrc)
+endif()
+
+# Option to enable or disable unit tests
+option(ENABLE_UNIT_TESTS "Enable unit tests" ON)
+
+# Add unit_test directory as subdirectory if unit tests are enabled
+if(ENABLE_UNIT_TESTS)
+    add_subdirectory(unit_test)
 endif()

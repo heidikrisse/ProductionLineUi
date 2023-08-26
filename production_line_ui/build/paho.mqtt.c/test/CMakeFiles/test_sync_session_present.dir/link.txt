@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/test_sync_session_present.dir/test_sync_session_present.c.o -o test_sync_session_present  -Wl,-rpath,/home/heidi/projects/ProductionLineUi/production_line_ui/build/paho.mqtt.c/src ../src/libpaho-mqtt3c.so.1.3.12 -lc -ldl -lpthread -lrt -lanl 

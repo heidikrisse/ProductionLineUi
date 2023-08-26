@@ -7,15 +7,17 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <QObject>
 
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
  * line and save data to a file.
  */
-
-class MQTTClient : public mqtt::callback
+class MainWindow;
+class MQTTClient : public QObject, public mqtt::callback
 {
+    Q_OBJECT
 public:
     MQTTClient(const std::string& broker_address, const std::string& client_id);
     ~MQTTClient();
@@ -51,6 +53,15 @@ public:
     /**
      * @brief section for control parameters
      */
+  private: signals:
+
+    void conveyer_speed_changed(int new_speed);
+    void conveyer_control(bool state);
+    void heater_controls(bool heater1, bool heater2, bool heater3);
+    void heater_states(bool heater1, bool heater2, bool heater3);
+    void cooler_state(bool state);
+    void cooler_control(bool state);
+    void qc_camera_state(bool state);
 
  public:
    bool conveyer_manual_control = false;
@@ -72,4 +83,3 @@ private:
 };
 
 #endif
-

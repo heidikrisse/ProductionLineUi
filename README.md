@@ -136,3 +136,25 @@ sudo zypper install libQt5Charts5-devel
 - Once the project is loaded, configure the build settings
 - Click the Build button to compile the project
 - After building, click the Run button to execute the project
+
+or with command prompt:
+
+- Navigate to the directory where you cloned ProductionLineUi
+
+```shell
+cd production_line_ui
+mkdir build
+cd build
+cmake ..
+make
+./production_line_ui
+```
+
+### 5. Run Unit Tests
+
+Navigate to ProductionLineUi/production_line_ui/build
+   
+```shell
+cd unit_test
+./unit_tests
+```

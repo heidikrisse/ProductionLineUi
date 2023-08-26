@@ -10,6 +10,7 @@
 #include <QLineSeries>
 #include <memory>
 #include <thread>
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -25,11 +26,8 @@ class MainWindow : public QMainWindow
     public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
-        void data_update_loop();
-        void start_data_update_loop();
+
     private slots:
-
-
         void on_pushButton_clicked();
 
         void on_pushButton_2_clicked();
@@ -61,6 +59,15 @@ class MainWindow : public QMainWindow
 
         void on_cooler_check_on_off_toggled(bool checked);
 
+        void on_calculateButton_clicked();
+
+        void conveyer_speed_received();
+        void conveyer_control_received();
+        void heater_controls_received();
+        void heater_states_received();
+        void cooler_states_received();
+        void cooler_control_received();
+        void camera_state_received();
 
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed
@@ -75,6 +82,9 @@ class MainWindow : public QMainWindow
         std::thread data_loop_thread;
         Db_manager* db;
         //std::unique_ptr<QValueAxis> axis_y;
+        QLabel *rejectionLabel;
+        QLabel *costLabel;
+        QThread *worker;
 };
 
 #endif

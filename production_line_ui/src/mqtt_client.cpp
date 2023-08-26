@@ -1,5 +1,6 @@
 // mqtt_client.cpp
 #include "../include/mqtt_client.h"
+#include "../include/json_parser.h"
 
 #include <string>
 #include <filesystem>
@@ -37,9 +38,12 @@ bool MQTTClient::connect()
 
 void MQTTClient::disconnect()
 {
-    try{
+    try
+    {
         client.disconnect()->wait();
-    } catch (const mqtt::exception& e){
+    }
+    catch (const mqtt::exception& e)
+    {
         std::cerr << "disconnect error: " << e.what() << '\n';
     }
 }
@@ -47,7 +51,7 @@ void MQTTClient::disconnect()
 void MQTTClient::subscribe(const std::string& topic){
     try
     {
-        client.subscribe(topic, 2)->wait();
+        client.subscribe(topic, 1)->wait();
     }
     catch (const mqtt::exception& e)
     {
@@ -57,7 +61,7 @@ void MQTTClient::subscribe(const std::string& topic){
 
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
-    msg->set_qos(2);
+    msg->set_qos(1);
     msg->set_retained(true); // Set retained flag true
 
     try
@@ -74,9 +78,9 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
     std::vector<std::string> data;
 
-    for (const auto& jsonData : data_cache)
+    for (const auto& json_data : data_cache)
     {
-        data.push_back(jsonData.timestamp);
+        data.push_back(json_data.timestamp);
     }
 
     return data;
@@ -88,30 +92,46 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if(topic == "conveyer_params"){
+    if(topic == "conveyer_params")
+    {
         std::string message{msg->get_payload()};
         try {
-            conveyer_upm = j["conveyer_speed"].get<int>();
+            conveyer_upm = j["speed_of_conveyer"].get<int>();
+            emit conveyer_speed_changed(conveyer_upm);
+
             conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
-            heater1_manual_control = j["heater1_manual_control"].get<bool>();
-            heater2_manual_control = j["heater2_manual_control"].get<bool>();
-            heater3_manual_control = j["heater3_manual_control"].get<bool>();
+            emit conveyer_control(conveyer_manual_control);
+
+            heater1_manual_control = j["heater_1_manual_control"].get<bool>();
+            heater2_manual_control = j["heater_2_manual_control"].get<bool>();
+            heater3_manual_control = j["heater_3_manual_control"].get<bool>();
+            emit heater_controls(heater1_manual_control, heater2_manual_control, heater3_manual_control);
+
             cooler_manual_control = j["cooler_manual_control"].get<bool>();
+            emit cooler_control(cooler_manual_control);
+
             qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
-            conveyer_upm = j["conveyer_speed"].get<int>();
-            heater1 = j["heater1"].get<bool>();
-            heater2 = j["heater2"].get<bool>();
-            heater3 = j["heater3"].get<bool>();
+            emit qc_camera_state(qc_camera_toggle);
+
+            heater1 = j["heater_1"].get<bool>();
+            heater2 = j["heater_2"].get<bool>();
+            heater3 = j["heater_3"].get<bool>();
+            emit heater_states(heater1, heater2, heater3);
+
             cooler = j["cooler"].get<bool>();
-        } catch (const nlohmann::json::exception& e) {
-            std::cerr << "json parsing error: " << e.what() << std::endl;
+            emit cooler_state(cooler);
+        }
+        catch (const nlohmann::json::exception& e)
+        {
+            std::cerr << "json parsing error: " << e.what() << '\n';
         }
 
     }
-  //  data_cache.push_back(json_data::json_to_vec(j));
+   // data_cache.push_back(json_data::json_to_vec(j));
 }
 
-std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path) {
+std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
+{
     std::vector<json_data::parsed_json> samples;
 
     // Files to load
@@ -124,11 +144,13 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
         "line3.json"
     };
 
-    for (const std::string& file_name : file_names) {
+    for (const std::string& file_name : file_names)
+    {
         std::string filename = folder_path + "/" + file_name;
         std::ifstream file(filename);
 
-        if (file.is_open()) {
+        if (file.is_open())
+        {
             json j;
             file >> j;
             samples.push_back(json_data::json_to_vec(j));
@@ -148,10 +170,10 @@ double MQTTClient::get_failure_rate() const
         for (const auto& data : data_cache)
         {
             total_units += data.units_per_minute;
-            // failed_units += data.failed_qc_units;
+            failed_units += data.non_passers;
         }
 
-        return failed_units / total_units;
+        return (failed_units / total_units) * 100;
 }
 
 // Function to calculate the operating costs from the fetched data
@@ -200,13 +222,13 @@ double MQTTClient::get_operating_cost() const
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
     // Check if directory exists or create it
-    std::filesystem::path filePath(filename);
-    if(!std::filesystem::exists(filePath.parent_path())){
-        std::filesystem::create_directories(filePath.parent_path());
+    std::filesystem::path file_path(filename);
+    if(!std::filesystem::exists(file_path.parent_path())){
+        std::filesystem::create_directories(file_path.parent_path());
     }
 
-    // Open the file in append mode so that it doesn't overwrite the file if it already exists
-    std::ofstream out_file(filename, std::ios::app);
+    // Open the file
+    std::ofstream out_file(filename);
 
     if (out_file.is_open())
     {
@@ -215,18 +237,13 @@ void MQTTClient::save_data_to_file(const std::string& filename)
             json j;
 
             j["timestamp"] = data.timestamp;
-            j["conveyor_speed"] = data.units_per_minute;
-            j["heater1"] = data.heater1_status;
-            j["heater2"] = data.heater2_status;
-            j["heater3"] = data.heater3_status;
+            j["speed_of_conveyor"] = data.units_per_minute;
+            j["heater_1"] = data.heater1_status;
+            j["heater_2"] = data.heater2_status;
+            j["heater_3"] = data.heater3_status;
             j["cooler"] = data.cooler_status;
-            j["qc_camera"] = data.qc_camera_status;
-
-            for (int i{0}; i < 10; ++i)
-            {
-                std::string sensor_name = "temp_sensor" + std::to_string(i+1);
-                j[sensor_name] = data.heat_sensors[i];
-            }
+            j["temp_sensors"] = data.heat_sensors;
+            j["qc_camera_status"] = data.qc_camera_status;
 
             out_file << j.dump(4) << '\n';
         }
@@ -238,15 +255,15 @@ void MQTTClient::publish_data()
 {
     json j;
     j["conveyer_manual_control"] = conveyer_manual_control;
-    j["heater1_manual_control"] = heater1_manual_control;
-    j["heater2_manual_control"] = heater2_manual_control;
-    j["heater3_manual_control"] = heater3_manual_control;
+    j["heater_1_manual_control"] = heater1_manual_control;
+    j["heater_2_manual_control"] = heater2_manual_control;
+    j["heater_3_manual_control"] = heater3_manual_control;
     j["cooler_manual_control"] = cooler_manual_control;
     j["qc_camera_toggle"] = qc_camera_toggle;
-    j["conveyer_speed"] = conveyer_upm;
-    j["heater1"] = heater1;
-    j["heater2"] = heater2;
-    j["heater3"] = heater3;
+    j["speed_of_conveyer"] = conveyer_upm;
+    j["heater_1"] = heater1;
+    j["heater_2"] = heater2;
+    j["heater_3"] = heater3;
     j["cooler"] = cooler;
     publish("conveyer_params" , j.dump());
 }

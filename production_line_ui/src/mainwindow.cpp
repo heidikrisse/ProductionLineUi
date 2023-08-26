@@ -1,5 +1,4 @@
 // mainwindow.cpp
-
 #include "../include/mainwindow.h"
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
@@ -8,8 +7,9 @@
 #include <thread>
 #include <mutex>
 #include <QtSql>
-
 static std::mutex data_mutex;
+#include <QThread>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -60,16 +60,19 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
     layout->addWidget(chart_view);
 
+
     json_data::parsed_json testi_data_parsittuna{
         "2023-08-25T15:29:00GMT+2", 459, true, false, false, true, true, {25.0, 33.2, 40.5, 43.8, 60.3, 65.4, 68.11, 72.3, 78.1, 80.5}
     };
 
     db = new Db_manager();
     db->add_data(testi_data_parsittuna);
-
     db->print_data_for_debugging(QString::fromStdString(testi_data_parsittuna.timestamp));
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232btrtr"); // change unique client ID
+      
+    /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
+
+    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "abcd1234heidikr"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
@@ -85,14 +88,49 @@ MainWindow::MainWindow(QWidget *parent)
     ui->heater2_checked_on_off->setChecked(test->heater2);
     ui->heater3_checked_on_off->setChecked(test->heater3);
     ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+    ui->heater1_check_on_off->setEnabled(test->heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(test->heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(test->heater3_manual_control);
+    ui->cooler_check_on_off->setEnabled(test->cooler_manual_control);
+
+    worker = new QThread;
+    test->moveToThread(worker);
+    // Calculate analytics
+    // Find the labels in the analytics tab
+    rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
+    costLabel = ui->tabWidget->findChild<QLabel*>("costLabel");
+
+    // Check if the labels were found and assign initial text
+    if (rejectionLabel)
+        rejectionLabel->setText("Rejection Percentage: 0.00%");
+    if (costLabel)
+        costLabel->setText("Operating Cost: $0.00");
+
+    connect(test, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
+    connect(test, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
+    connect(test, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
+    connect(test, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
+    connect(test, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
+    connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
+    connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
+
+    worker->start();
+
 }
 
 MainWindow::~MainWindow()
 {
-    if (test) {
+    if (data_loop_thread.joinable())
+    {
+        data_loop_thread.join();
+
+    }
+    if (test)
+    {
         test->disconnect();
         delete test;
     }
+
     if (data_loop_thread.joinable()) {
         data_loop_thread.join();
     }
@@ -102,33 +140,52 @@ MainWindow::~MainWindow()
     delete chart_view;
     delete db;
     //delete layout;
+
+    worker->quit();
+    worker->wait();
+    delete worker;
+
     delete ui;
 }
 
-void MainWindow::data_update_loop()
+void MainWindow::conveyer_speed_received()
 {
-    std::lock_guard<std::mutex> data_lock(data_mutex);
-    while(true)
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
-        ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
-        ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
-        ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
-        ui->cooler_check_on_off->setChecked(test->cooler);
-        ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
-        ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
-        ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
-        ui->heater1_check_on_off->setChecked(test->heater1);
-        ui->heater2_checked_on_off->setChecked(test->heater2);
-        ui->heater3_checked_on_off->setChecked(test->heater3);
-        ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
-    }
+    ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
+    ui->lcdNumber->display(test->conveyer_upm);
+}
+
+void MainWindow::conveyer_control_received()
+{
+    ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
+}
+void MainWindow::heater_controls_received()
+{
+    ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
 
 }
-void MainWindow::start_data_update_loop(){
-    data_loop_thread = std::thread(&MainWindow::data_update_loop, this);
+void MainWindow::heater_states_received()
+{
+    ui->heater1_check_on_off->setChecked(test->heater1);
+    ui->heater2_checked_on_off->setChecked(test->heater2);
+    ui->heater3_checked_on_off->setChecked(test->heater3);
+
 }
+void MainWindow::cooler_states_received()
+{
+    ui->cooler_check_on_off->setChecked(test->cooler);
+}
+void MainWindow::camera_state_received()
+{
+    ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+}
+
+void MainWindow::cooler_control_received()
+{
+    ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     // Load data from a sample JSON file (line1.json) for testing
@@ -143,37 +200,12 @@ void MainWindow::on_pushButton_clicked()
 
         test->publish("test/12345", j.dump());
     }
-
-    /*
-    nlohmann::json j;
-
-    j["timestamp"] = "asdf";
-    j["conveyor_speed"] = 14;
-    j["heater1"] = false;
-    j["heater2"] = false;
-    j["heater3"] = false;
-    j["cooler"] = false;
-    j["qc_camera"] = false;
-    j["temp_sensor1"] = 1.1f;
-    j["temp_sensor2"] = 1.1f;
-    j["temp_sensor3"] = 1.1f;
-    j["temp_sensor4"] = 1.1f;
-    j["temp_sensor5"] = 1.1f;
-    j["temp_sensor6"] = 1.1f;
-    j["temp_sensor7"] = 1.1f;
-    j["temp_sensor8"] = 1.1f;
-    j["temp_sensor9"] = 1.1f;
-    j["temp_sensor10"] = 1.1f;
-
-
-    test->publish("test/12345", j.dump()); */
 }
-
 
 void MainWindow::on_pushButton_2_clicked()
 {
     // Load the sample data
-    std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples");
+    std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
 
     // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor)
     for (auto* series : multi_series) {
@@ -183,17 +215,13 @@ void MainWindow::on_pushButton_2_clicked()
     // Add sample data to series
     for (const auto& sample : samples)
     {
-        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssZ");
+        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
         for (int i{0}; i < 10; ++i)
         {
             multi_series[i]->append(timestamp.toMSecsSinceEpoch(), sample.heat_sensors[i]);
         }
     }
-
 }
-
-
-
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
@@ -201,12 +229,11 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
     {
         test->conveyer_upm = value;
     }
-    else{
+    else
+    {
         ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
     }
-
 }
-
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
@@ -214,59 +241,48 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
     {
         test->publish_data();
     }
-
 }
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 {
-    if(test->heater1_manual_control){
         test->heater1 = checked;
         test->publish_data();
-    }
-
 }
-
 
 void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
+    ui->heater1_check_on_off->setEnabled(checked);
     test->heater1_manual_control = checked;
     test->publish_data();
 }
 
-
 void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 {
-    if(test->heater2_manual_control){
-        test->heater2 = checked;
-        test->publish_data();
-    }
-
+    test->heater2 = checked;
+    test->publish_data();
 }
 
 
 void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 {
+    ui->heater2_checked_on_off->setEnabled(checked);
     test->heater2_manual_control = checked;
     test->publish_data();
 }
 
-
 void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 {
-    if(test->heater3_manual_control){
-        test->heater3 = checked;
-        test->publish_data();
-    }
-
+    test->heater3 = checked;
+    test->publish_data();
 }
 
 
 void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 {
+    ui->heater3_checked_on_off->setEnabled(checked);
     test->heater3_manual_control = checked;
     test->publish_data();
 }
-
 
 void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 {
@@ -281,20 +297,24 @@ void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
     test->publish_data();
 }
 
-
 void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 {
+    ui->cooler_check_on_off->setEnabled(checked);
     test->cooler_manual_control = checked;
     test->publish_data();
 }
 
-
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
-    if(test->cooler_manual_control){
-        test->cooler = checked;
-        test->publish_data();
-    }
-
+    test->cooler = checked;
+    test->publish_data();
 }
 
+void MainWindow::on_calculateButton_clicked()
+{
+    double rejectionRate = test->get_failure_rate() * 100.0;
+    double operatingCost = test->get_operating_cost();
+
+    ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+    ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+}
