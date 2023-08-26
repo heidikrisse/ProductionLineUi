@@ -4,6 +4,7 @@
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/json_parser.h"
+#include "../include/sqlite.hpp"
 #include <thread>
 #include <mutex>
 #include <QtSql>
@@ -59,6 +60,15 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
     layout->addWidget(chart_view);
 
+    json_data::parsed_json testi_data_parsittuna{
+        "2023-08-25T15:29:00GMT+2", 459, true, false, false, true, true, {25.0, 33.2, 40.5, 43.8, 60.3, 65.4, 68.11, 72.3, 78.1, 80.5}
+    };
+
+    db = new Db_manager();
+    db->add_data(testi_data_parsittuna);
+
+    db->print_data_for_debugging(QString::fromStdString(testi_data_parsittuna.timestamp));
+
     test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "t4i232btrtr"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
@@ -90,6 +100,7 @@ MainWindow::~MainWindow()
     delete axis_y;
     delete chart;
     delete chart_view;
+    delete db;
     //delete layout;
     delete ui;
 }

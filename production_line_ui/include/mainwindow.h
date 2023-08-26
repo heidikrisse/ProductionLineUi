@@ -3,7 +3,7 @@
 #define MAINWINDOW_H
 
 #include "mqtt_client.h"
-
+#include "sqlite.hpp"
 #include <QMainWindow>
 #include <QtCharts>
 #include <QChartView>
@@ -68,11 +68,12 @@ class MainWindow : public QMainWindow
         MQTTClient *test;
         //QSplineSeries *series;
         QList<QSplineSeries *> multi_series;
-        QChart *chart;
-        QChartView *chart_view;
+        QChart* chart;
+        QChartView* chart_view;
         QDateTimeAxis* axis_x;
         QValueAxis* axis_y;
         std::thread data_loop_thread;
+        Db_manager* db;
         //std::unique_ptr<QValueAxis> axis_y;
 };
 
