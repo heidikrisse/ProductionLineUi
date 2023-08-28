@@ -26,6 +26,7 @@ bool MQTTClient::connect()
     try
     {
         client.connect(conn_opts)->wait();
+        live_data_available = true; // Set live data availability to true
         return true;
     }
     catch(const mqtt::exception& e)
@@ -121,9 +122,9 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             emit cooler_state(curr_data.cooler);
 
             curr_data.temps = j["temp_sensors"].get<std::array<float,10>>();
-            emit temps_changed(curr_data.temps);
+            emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
-            curr_data.time_stamp = j["time_stamp"];
+            curr_data.time_stamp = j["timestamp"].get<std::string>();
         }
         catch (const nlohmann::json::exception& e)
         {
@@ -131,7 +132,11 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         }
         emit db_updated(curr_data);
     }
-   // data_cache.push_back(json_data::json_to_vec(j));
+
+    if (live_data_available)
+    {
+        data_cache.push_back(json_data::json_to_vec(j));
+    }
 }
 
 std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
@@ -170,13 +175,19 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
-        for (const auto& data : data_cache)
-        {
-            total_units += data.units_per_minute;
-            failed_units += data.non_passers;
-        }
+    for (const auto& data : data_cache)
+    {
+        total_units += data.units_per_minute;
+        failed_units += data.non_passers;
+    }
 
-        return (failed_units / total_units) * 100;
+    double rejectionRate = 0.0;
+    if (total_units > 0.0)
+    {
+        rejectionRate = (failed_units / total_units) * 100.0;
+    }
+
+    return (failed_units / total_units) * 100;
 }
 
 // Function to calculate the operating costs from the fetched data
@@ -235,5 +246,7 @@ void MQTTClient::publish_data()
     j["heater_2"] = curr_data.heater2;
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
+    j["temp_sensors"] = curr_data.temps;
+    j["time_stamp"] = curr_data.time_stamp;
     publish("conveyer_params" , j.dump());
 }

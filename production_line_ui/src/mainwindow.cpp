@@ -9,12 +9,17 @@
 #include <QThread>
 #include <QLCDNumber>
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
       , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //for displaying the temps
+    under80 = new QPalette;
+    over80 = new QPalette;
+    over80->setColor(QPalette::WindowText, QColor(Qt::red));
+    under80->setColor(QPalette::WindowText, QColor(Qt::white));
 
     axis_x = new QDateTimeAxis();
     axis_y = new QValueAxis();
@@ -65,29 +70,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc"); // change unique client ID
+    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc345"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
-    ui->lcdNumber->display(test->curr_data.conveyer_upm); // set speed lcdNumber to display current default speed.
-    ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm); // set slider starting value to current speed
-    ui->speed_manual_or_auto->setChecked(test->curr_data.conveyer_manual_control);
-    ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
-    ui->cooler_check_on_off->setChecked(test->curr_data.cooler);
-    ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
-    ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
-    ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
-    ui->heater1_check_on_off->setChecked(test->curr_data.heater1);
-    ui->heater2_checked_on_off->setChecked(test->curr_data.heater2);
-    ui->heater3_checked_on_off->setChecked(test->curr_data.heater3);
-    ui->qc_camera_on_off->setChecked(test->curr_data.qc_camera_toggle);
-    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
-    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
-    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
-    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
 
-    worker = new QThread;
-    test->moveToThread(worker);
+
+    conveyer_speed_received();
+    conveyer_control_received();
+    cooler_control_received();
+    cooler_states_received();
+    heater_states_received();
+    heater_controls_received();
+    camera_state_received();
+    temps_received();
+
+   // worker = new QThread;
+    //test->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -107,8 +106,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
     connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
     connect(test, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
+    connect(test, &MQTTClient::temps_changed, this, &MainWindow::update_temperature_display);
     connect(test, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
     worker->start();
+
 
 }
 
@@ -125,7 +126,8 @@ MainWindow::~MainWindow()
         delete test;
     }
 
-    if (data_loop_thread.joinable()) {
+    if (data_loop_thread.joinable())
+    {
         data_loop_thread.join();
     }
     delete axis_x;
@@ -135,9 +137,9 @@ MainWindow::~MainWindow()
     delete db;
     //delete layout;
 
-    worker->quit();
-    worker->wait();
-    delete worker;
+    //worker->quit();
+   // worker->wait();
+   // delete worker;
 
     delete ui;
 }
@@ -161,6 +163,10 @@ void MainWindow::conveyer_control_received()
 }
 void MainWindow::heater_controls_received()
 {
+    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
+
     ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
     ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
     ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
@@ -184,20 +190,27 @@ void MainWindow::camera_state_received()
 
 void MainWindow::cooler_control_received()
 {
+    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
     ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
 }
 void MainWindow::temps_received()
 {
-    ui->s1_temp->display(test->curr_data.temps[0]);
-    ui->s2_temp->display(test->curr_data.temps[1]);
-    ui->s3_temp->display(test->curr_data.temps[2]);
-    ui->s4_temp->display(test->curr_data.temps[3]);
-    ui->s5_temp->display(test->curr_data.temps[4]);
-    ui->s6_temp->display(test->curr_data.temps[5]);
-    ui->s7_temp->display(test->curr_data.temps[6]);
-    ui->s8_temp->display(test->curr_data.temps[7]);
-    ui->s9_temp->display(test->curr_data.temps[8]);
-    ui->s10_temp->display(test->curr_data.temps[9]);
+    ui->s0_temp->display(test->curr_data.temps[0]);
+    /*if(test->curr_data.temps[0] >= 80){
+        ui->s1_temp->setPalette(*over80);
+    }
+    else{
+        ui->s1_temp->setPalette(*under80);
+    }*/
+    ui->s1_temp->display(test->curr_data.temps[1]);
+    ui->s2_temp->display(test->curr_data.temps[2]);
+    ui->s3_temp->display(test->curr_data.temps[3]);
+    ui->s4_temp->display(test->curr_data.temps[4]);
+    ui->s5_temp->display(test->curr_data.temps[5]);
+    ui->s6_temp->display(test->curr_data.temps[6]);
+    ui->s7_temp->display(test->curr_data.temps[7]);
+    ui->s8_temp->display(test->curr_data.temps[8]);
+    ui->s9_temp->display(test->curr_data.temps[9]);
 }
 void MainWindow::on_pushButton_clicked()
 {
@@ -221,7 +234,8 @@ void MainWindow::on_pushButton_2_clicked()
     std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
 
     // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor)
-    for (auto* series : multi_series) {
+    for (auto* series : multi_series)
+    {
         series->clear();
     }
 
@@ -325,9 +339,39 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 
 void MainWindow::on_calculateButton_clicked()
 {
-    double rejectionRate = test->get_failure_rate() * 100.0;
-    double operatingCost = test->get_operating_cost();
+    if (test->live_data_available)
+    {
+        double rejectionRate = test->get_failure_rate() * 100.0;
+        double operatingCost = test->get_operating_cost();
 
-    ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
-    ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+    }
+    else
+    {
+        // Load sample data and calculate analytics
+        std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
+
+        // Calculate rejection rate and operating cost for sample data
+        double rejectionRate = test->get_failure_rate() * 100.0;
+        double operatingCost = test->get_operating_cost();
+
+        // Update UI labels
+        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+    }
+}
+
+void MainWindow::update_temperature_display(const std::array<float, 10>& temps) {
+    // Update the QLCDNumber widgets for each sensor using temps
+    ui->s1_temp->display(temps[0]);
+    ui->s1_temp->display(temps[1]);
+    ui->s1_temp->display(temps[2]);
+    ui->s1_temp->display(temps[3]);
+    ui->s1_temp->display(temps[4]);
+    ui->s1_temp->display(temps[5]);
+    ui->s1_temp->display(temps[6]);
+    ui->s1_temp->display(temps[7]);
+    ui->s1_temp->display(temps[8]);
+    ui->s1_temp->display(temps[9]);
 }

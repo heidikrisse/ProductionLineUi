@@ -2,11 +2,12 @@
 #include "include/mainwindow.h"
 #include <QDesktopWidget>
 #include <QApplication>
-
+#include <QMetaType>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     qRegisterMetaType<CurrentConveyerData>("CurrentConveyerData&");
+    qRegisterMetaType<std::array<float, 10>>("std::array<float, 10>");
     MainWindow w;
     QDesktopWidget *desktop = QApplication::desktop();
     int screen_width{desktop->width()};

@@ -4,16 +4,17 @@
 
 #include "mqtt/async_client.h"
 #include "json_parser.h" // for using nlohmann::json´
+
 #include <fstream>
 #include <string>
 #include <vector>
 #include <QObject>
-
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
  * line and save data to a file.
  */
+
 class MainWindow;
 struct CurrentConveyerData{
     std::string time_stamp;
@@ -28,7 +29,11 @@ struct CurrentConveyerData{
     bool heater2 = false;
     bool heater3 = false;
     bool cooler = false;
-    std::array<float, 10> temps;
+    std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
+};
+struct LatestCameraData{
+    std::string time_stamp;
+    uint8_t failed_count;
 };
 
 class MQTTClient : public QObject, public mqtt::callback
@@ -37,6 +42,12 @@ class MQTTClient : public QObject, public mqtt::callback
 public:
     MQTTClient(const std::string& broker_address, const std::string& client_id);
     ~MQTTClient();
+
+    CurrentConveyerData curr_data;
+    LatestCameraData camera_data;
+
+
+    bool live_data_available = false; // boolean to check if live real-time data is available
 
     // Function to connect to the MQTT broker
     bool connect();
@@ -62,9 +73,6 @@ public:
     // Function to calculate the operating costs from the fetched data
     double get_operating_cost() const;
 
-    // Function to save data to a file
-    // void save_data_to_file(const std::string& filename);
-
     void publish_data();
     /**
      * @brief section for control parameters
@@ -81,8 +89,7 @@ public:
     void temps_changed(std::array<float,10>& temps);
     void db_updated(CurrentConveyerData& data);
 
- public:
-    CurrentConveyerData curr_data;
+
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;

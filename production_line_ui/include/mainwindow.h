@@ -4,6 +4,7 @@
 
 #include "mqtt_client.h"
 #include "sqlite.hpp"
+
 #include <QMainWindow>
 #include <QtCharts>
 #include <QChartView>
@@ -61,6 +62,8 @@ class MainWindow : public QMainWindow
 
         void on_calculateButton_clicked();
 
+        void update_temperature_display(const std::array<float, 10>& temps);
+
         void conveyer_speed_received();
         void conveyer_control_received();
         void heater_controls_received();
@@ -85,6 +88,8 @@ class MainWindow : public QMainWindow
         QLabel *costLabel;
         QThread *worker;
         QLCDNumber *h1_temp;
+        QPalette *over80;
+        QPalette *under80;
 };
 
 #endif
