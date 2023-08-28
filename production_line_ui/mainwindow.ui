@@ -502,6 +502,46 @@ QCheckBox::indicator:unchecked {
          <string>Calculate rejection percentage and operating costs:</string>
         </property>
        </widget>
+       <widget class="QWidget" name="gridLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>600</x>
+          <y>110</y>
+          <width>160</width>
+          <height>88</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="analytics_grid">
+         <item row="1" column="0">
+          <widget class="QLabel" name="uptimeTitleLabel">
+           <property name="text">
+            <string>Uptime-%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="conveyerAnalticsLabel">
+           <property name="text">
+            <string>Conveyer statistics</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="sensorTempTitleLabel">
+           <property name="text">
+            <string>Sensor temp avg</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="conveyerAverageSpeedTitle">
+           <property name="text">
+            <string>Conveyer speed avg</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
