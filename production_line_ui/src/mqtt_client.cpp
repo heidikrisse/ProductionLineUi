@@ -129,7 +129,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         {
             std::cerr << "json parsing error: " << e.what() << '\n';
         }
-
+        emit db_updated(curr_data);
     }
    // data_cache.push_back(json_data::json_to_vec(j));
 }

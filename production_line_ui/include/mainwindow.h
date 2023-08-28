@@ -69,6 +69,7 @@ class MainWindow : public QMainWindow
         void cooler_control_received();
         void camera_state_received();
         void temps_received();
+        void db_update_received();
 
       private:
         Ui::MainWindow *ui;

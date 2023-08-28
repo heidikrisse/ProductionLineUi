@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    qRegisterMetaType<CurrentConveyerData>("CurrentConveyerData&");
     MainWindow w;
     QDesktopWidget *desktop = QApplication::desktop();
     int screen_width{desktop->width()};
