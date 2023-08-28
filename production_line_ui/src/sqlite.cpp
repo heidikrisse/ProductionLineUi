@@ -2,25 +2,31 @@
 #include "../include/sqlite.hpp"
 #include "../include/json_parser.h"
 
-Db_manager::Db_manager() {
-    if (create_connection()) {
+Db_manager::Db_manager()
+{
+    if (create_connection())
+    {
         qDebug() << "Db testing!";
     }
 }
 
-bool Db_manager::create_connection() {
+bool Db_manager::create_connection()
+{
     // Creates db to ~/Documents/production_line.db if it not exists
     db = QSqlDatabase::addDatabase("QSQLITE");
     //  Returns the directory containing user document files
     QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     db.setDatabaseName(path + "/production_line.db");
 
-    if (!db.open()) {
+    if (!db.open())
+    {
         qDebug() << "Cannot open database";
 //        QMessageBox::critical(nullptr, QObject::tr("Cannot open database.\nClick Cancel to exit."),
 //                    QMessageBox::Cancel);
         return false;
-    } else {
+    }
+    else
+    {
         qDebug() << "Opened database successfully";
     }
 
@@ -33,7 +39,8 @@ bool Db_manager::create_connection() {
     return true;
 }
 
-bool Db_manager::add_data(json_data::parsed_json parsed_data) {
+bool Db_manager::add_data(json_data::parsed_json parsed_data)
+{
     // Should we add the check if data is correct?
     QSqlQuery query;
     query.prepare("INSERT INTO line_data (timestamp, conveyor_speed, heater1, heater2, heater3, "
@@ -63,25 +70,31 @@ bool Db_manager::add_data(json_data::parsed_json parsed_data) {
     query.bindValue(":temp9", parsed_data.heat_sensors[8]);
     query.bindValue(":temp10", parsed_data.heat_sensors[9]);
 
-    if (query.exec()) {
+    if (query.exec())
+    {
         return true;
-    } else {
+    }
+    else
+    {
         qDebug() << "Adding data to database failed:"
                << query.lastError();
         return false;
     }
 }
 
-void Db_manager::print_data_for_debugging(const QString selected_timestamp) {
+void Db_manager::print_data_for_debugging(const QString selected_timestamp)
+{
     QSqlQuery query(db);
     query.setForwardOnly(true);
     // Querying some data out
     query.prepare("SELECT timestamp, conveyor_speed, heater1, cooler, temp3, temp10 FROM line_data WHERE timestamp = :timestamp");
     query.bindValue(":timestamp", selected_timestamp);
-    if (!query.exec()) {
+    if (!query.exec())
+    {
         qDebug() << "SQL query error:" << query.lastError().text();
     }
-    while(query.next()) {
+    while(query.next())
+    {
         QString time = query.value(0).toString();
         int speed = query.value(1).toInt();
         int heat1 = query.value(2).toInt();

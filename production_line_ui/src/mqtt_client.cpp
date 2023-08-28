@@ -13,7 +13,7 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
     client.set_callback(*this);
 
     // Load sample data
-    data_cache = load_sample_data("../json_examples"); // removed when we get the real realtime data from group 2
+    data_cache = load_sample_data("../json_examples/line1.json"); // removed when we get the real realtime data from group 2
 }
 
 MQTTClient::~MQTTClient()
@@ -218,6 +218,7 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
+/*
 // Function to save the data to a file
 void MQTTClient::save_data_to_file(const std::string& filename)
 {
@@ -250,7 +251,8 @@ void MQTTClient::save_data_to_file(const std::string& filename)
 
         out_file.close();
     }
-}
+} */
+
 void MQTTClient::publish_data()
 {
     json j;

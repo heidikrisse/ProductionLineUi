@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
       
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("5.tcp.eu.ngrok.io:18017", "abcd1234heidikr"); // change unique client ID
+    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abcd1234heidi"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
