@@ -16,6 +16,7 @@
  */
 class MainWindow;
 struct CurrentConveyerData{
+    std::string time_stamp;
     bool conveyer_manual_control = false;
     bool heater1_manual_control = false;
     bool heater2_manual_control = false;
