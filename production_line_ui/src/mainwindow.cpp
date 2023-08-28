@@ -1,7 +1,7 @@
 // mainwindow.cpp
-#include "../include/mainwindow.h"
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
+#include "../include/mainwindow.h"
 #include "../include/json_parser.h"
 #include "../include/sqlite.hpp"
 

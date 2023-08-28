@@ -71,10 +71,8 @@ class MainWindow : public QMainWindow
         void temps_received();
 
       private:
-        //int conveyer_upm = 423; // conveyer units per minute speed
         Ui::MainWindow *ui;
         MQTTClient *test;
-        //QSplineSeries *series;
         QList<QSplineSeries *> multi_series;
         QChart* chart;
         QChartView* chart_view;
@@ -82,7 +80,6 @@ class MainWindow : public QMainWindow
         QValueAxis* axis_y;
         std::thread data_loop_thread;
         Db_manager* db;
-        //std::unique_ptr<QValueAxis> axis_y;
         QLabel *rejectionLabel;
         QLabel *costLabel;
         QThread *worker;

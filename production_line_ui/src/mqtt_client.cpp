@@ -3,7 +3,6 @@
 #include "../include/json_parser.h"
 
 #include <string>
-#include <filesystem>
 
 // Add a message callback to mqtt client
 MQTTClient::MQTTClient(const std::string& broker_address, const std::string& client_id)
