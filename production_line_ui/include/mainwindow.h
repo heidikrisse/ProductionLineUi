@@ -68,6 +68,7 @@ class MainWindow : public QMainWindow
         void cooler_states_received();
         void cooler_control_received();
         void camera_state_received();
+        void temps_received();
 
       private:
         //int conveyer_upm = 423; // conveyer units per minute speed
@@ -85,6 +86,7 @@ class MainWindow : public QMainWindow
         QLabel *rejectionLabel;
         QLabel *costLabel;
         QThread *worker;
+        QLCDNumber *h1_temp;
 };
 
 #endif
