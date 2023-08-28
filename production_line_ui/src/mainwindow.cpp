@@ -74,33 +74,16 @@ MainWindow::MainWindow(QWidget *parent)
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
-    ui->lcdNumber->display(test->curr_data.conveyer_upm); // set speed lcdNumber to display current default speed.
-    ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm); // set slider starting value to current speed
-    ui->speed_manual_or_auto->setChecked(test->curr_data.conveyer_manual_control);
-    ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
-    ui->cooler_check_on_off->setChecked(test->curr_data.cooler);
-    ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
-    ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
-    ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
-    ui->heater1_check_on_off->setChecked(test->curr_data.heater1);
-    ui->heater2_checked_on_off->setChecked(test->curr_data.heater2);
-    ui->heater3_checked_on_off->setChecked(test->curr_data.heater3);
-    ui->qc_camera_on_off->setChecked(test->curr_data.qc_camera_toggle);
-    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
-    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
-    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
-    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
 
-    ui->s1_temp->display(test->curr_data.temps[0]);
-    ui->s2_temp->display(test->curr_data.temps[1]);
-    ui->s3_temp->display(test->curr_data.temps[2]);
-    ui->s4_temp->display(test->curr_data.temps[3]);
-    ui->s5_temp->display(test->curr_data.temps[4]);
-    ui->s6_temp->display(test->curr_data.temps[5]);
-    ui->s7_temp->display(test->curr_data.temps[6]);
-    ui->s8_temp->display(test->curr_data.temps[7]);
-    ui->s9_temp->display(test->curr_data.temps[8]);
-    ui->s10_temp->display(test->curr_data.temps[9]);
+
+    conveyer_speed_received();
+    conveyer_control_received();
+    cooler_control_received();
+    cooler_states_received();
+    heater_states_received();
+    heater_controls_received();
+    camera_state_received();
+    temps_received();
 
     worker = new QThread;
     test->moveToThread(worker);
@@ -169,6 +152,10 @@ void MainWindow::conveyer_control_received()
 }
 void MainWindow::heater_controls_received()
 {
+    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
+
     ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
     ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
     ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
@@ -192,6 +179,7 @@ void MainWindow::camera_state_received()
 
 void MainWindow::cooler_control_received()
 {
+    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
     ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
 }
 void MainWindow::temps_received()
