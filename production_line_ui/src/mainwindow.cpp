@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     under80 = new QPalette;
     over80 = new QPalette;
     over80->setColor(QPalette::WindowText, QColor(Qt::red));
-    under80->setColor(QPalette::WindowText, QColor(Qt::white));
+    under80->setColor(QPalette::WindowText, QColor(Qt::green));
 
     axis_x = new QDateTimeAxis();
     axis_y = new QValueAxis();
@@ -145,11 +145,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::db_update_received()
 {
-    qDebug() << "Db debug:"  << " "  << test->curr_data.conveyer_upm << " " << test->curr_data.heater1 << " " << test->curr_data.heater2 << " " << test->curr_data.heater3 << " " << test->curr_data.cooler << " " << test->curr_data.qc_camera_toggle << "\n" << test->curr_data.temps[0] << " " << test->curr_data.temps[1] << " " << test->curr_data.temps[2] << " " << test->curr_data.temps[3] << " " << test->curr_data.temps[4] << " " << test->curr_data.temps[5] << " " << test->curr_data.temps[6] << " " << test->curr_data.temps[7] << " " << test->curr_data.temps[8] << " " << test->curr_data.temps[9] << " " << test->curr_data.conveyer_manual_control << " " << test->curr_data.heater1_manual_control << " " << test->curr_data.heater2_manual_control << " " << test->curr_data.heater3_manual_control << " " << test->curr_data.cooler_manual_control << "\n";
-//    CurrentConveyerData testi_struct {
-//        "2023-08-22T08:30:00GMT+2", false, false, false, false, false, false, 423, false, false, false, false, {1.3, 2.4, 3.6, 4.7, 5.3, 6.7, 7.1, 8.5, 9.3, 10.0}
-//    };
-    //db->add_line_data(testi_struct);
+
     db->add_line_data(test->curr_data);
     db->print_line_data();
 }
@@ -199,21 +195,75 @@ void MainWindow::cooler_control_received()
 void MainWindow::temps_received()
 {
     ui->s0_temp->display(test->curr_data.temps[0]);
-    /*if(test->curr_data.temps[0] >= 80){
+    if(test->curr_data.temps[0] >= 80){
+        ui->s0_temp->setPalette(*over80);
+    }
+    else{
+        ui->s0_temp->setPalette(*under80);
+    }
+    ui->s1_temp->display(test->curr_data.temps[1]);
+    if(test->curr_data.temps[1] >= 80){
         ui->s1_temp->setPalette(*over80);
     }
     else{
         ui->s1_temp->setPalette(*under80);
-    }*/
-    ui->s1_temp->display(test->curr_data.temps[1]);
+    }
     ui->s2_temp->display(test->curr_data.temps[2]);
+    if(test->curr_data.temps[2] >= 80){
+        ui->s2_temp->setPalette(*over80);
+    }
+    else{
+        ui->s2_temp->setPalette(*under80);
+    }
     ui->s3_temp->display(test->curr_data.temps[3]);
+    if(test->curr_data.temps[3] >= 80){
+        ui->s3_temp->setPalette(*over80);
+    }
+    else{
+        ui->s3_temp->setPalette(*under80);
+    }
     ui->s4_temp->display(test->curr_data.temps[4]);
+    if(test->curr_data.temps[4] >= 80){
+        ui->s4_temp->setPalette(*over80);
+    }
+    else{
+        ui->s4_temp->setPalette(*under80);
+    }
     ui->s5_temp->display(test->curr_data.temps[5]);
+    if(test->curr_data.temps[5] >= 80){
+        ui->s5_temp->setPalette(*over80);
+    }
+    else{
+        ui->s5_temp->setPalette(*under80);
+    }
     ui->s6_temp->display(test->curr_data.temps[6]);
+    if(test->curr_data.temps[6] >= 80){
+        ui->s6_temp->setPalette(*over80);
+    }
+    else{
+        ui->s6_temp->setPalette(*under80);
+    }
     ui->s7_temp->display(test->curr_data.temps[7]);
+    if(test->curr_data.temps[7] >= 80){
+        ui->s7_temp->setPalette(*over80);
+    }
+    else{
+        ui->s7_temp->setPalette(*under80);
+    }
     ui->s8_temp->display(test->curr_data.temps[8]);
+    if(test->curr_data.temps[8] >= 80){
+        ui->s8_temp->setPalette(*over80);
+    }
+    else{
+        ui->s8_temp->setPalette(*under80);
+    }
     ui->s9_temp->display(test->curr_data.temps[9]);
+    if(test->curr_data.temps[9] >= 80){
+        ui->s9_temp->setPalette(*over80);
+    }
+    else{
+        ui->s9_temp->setPalette(*under80);
+    }
 }
 void MainWindow::on_pushButton_clicked()
 {

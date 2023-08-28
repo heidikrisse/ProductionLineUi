@@ -24,7 +24,10 @@ bool Db_manager::create_connection()
 
     // Creates table to database if it not exists
     QSqlQuery query(db);
-    query.exec("CREATE TABLE IF NOT EXISTS line_data (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, conv_ctrl INT, heat1_ctrl INT, heat2_ctrl INT, heat3_ctrl INT, cool_ctrl INT, conveyor_speed INT, heater1 INT, heater2 INT, heater3 INT, cooler INT, qc_camera INT, temp1 REAL, temp2 REAL, temp3 REAL, temp4 REAL, temp5 REAL, temp6 REAL, temp7 REAL, temp8 REAL, temp9 REAL, temp10 REAL)");
+    query.exec("CREATE TABLE IF NOT EXISTS line_data (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, conv_ctrl INT, "
+               "heat1_ctrl INT, heat2_ctrl INT, heat3_ctrl INT, cool_ctrl INT, conveyor_speed INT, heater1 INT, heater2 INT, "
+               "heater3 INT, cooler INT, qc_camera INT, temp1 REAL, temp2 REAL, temp3 REAL, temp4 REAL, temp5 REAL, temp6 REAL, "
+               "temp7 REAL, temp8 REAL, temp9 REAL, temp10 REAL)");
     query.exec("CREATE TABLE IF NOT EXISTS camera_data (id INT PRIMARY KEY AUTOINCREMENT, timestamp TEXT, non_passers INT)");
     return true;
 }
@@ -32,7 +35,12 @@ bool Db_manager::create_connection()
 bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO line_data (timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, conveyor_speed, heater1, heater2, heater3, cooler, qc_camera, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10) VALUES (:timestamp, :conv_ctrl, :heat1_ctrl, :heat2_ctrl, :heat3_ctrl, :cool_ctrl, :conveyor_speed, :heater1, :heater2, :heater3, :cooler, :qc_camera, :temp1, :temp2, :temp3, :temp4, :temp5, :temp6, :temp7, :temp8, :temp9, :temp10)");
+    query.prepare("INSERT INTO line_data (timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, "
+                  "heat3_ctrl, cool_ctrl, conveyor_speed, heater1, heater2, heater3, cooler, "
+                  "qc_camera, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, "
+                  "temp10) VALUES (:timestamp, :conv_ctrl, :heat1_ctrl, :heat2_ctrl, :heat3_ctrl, "
+                  ":cool_ctrl, :conveyor_speed, :heater1, :heater2, :heater3, :cooler, "
+                  ":qc_camera, :temp1, :temp2, :temp3, :temp4, :temp5, :temp6, :temp7, :temp8, :temp9, :temp10)");
 
     // Binding placeholders and values
     query.bindValue(":timestamp", QString::fromStdString(parsed_data.time_stamp));
