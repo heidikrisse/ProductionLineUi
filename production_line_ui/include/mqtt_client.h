@@ -8,12 +8,12 @@
 #include <string>
 #include <vector>
 #include <QObject>
-
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
  * line and save data to a file.
  */
+
 class MainWindow;
 struct CurrentConveyerData{
     std::string time_stamp;
@@ -28,7 +28,7 @@ struct CurrentConveyerData{
     bool heater2 = false;
     bool heater3 = false;
     bool cooler = false;
-    std::array<float, 10> temps;
+    std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
 };
 
 class MQTTClient : public QObject, public mqtt::callback
@@ -79,7 +79,7 @@ public:
     void cooler_control(bool state);
     void qc_camera_state(bool state);
 
-    void temps_changed(std::array<float,10>& temps);
+    void temps_changed(std::array<float,10> temps);
 
  public:
     CurrentConveyerData curr_data;

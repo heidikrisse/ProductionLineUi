@@ -91,6 +91,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
     ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
 
+    ui->s1_temp->display(test->curr_data.temps[0]);
+    ui->s2_temp->display(test->curr_data.temps[1]);
+    ui->s3_temp->display(test->curr_data.temps[2]);
+    ui->s4_temp->display(test->curr_data.temps[3]);
+    ui->s5_temp->display(test->curr_data.temps[4]);
+    ui->s6_temp->display(test->curr_data.temps[5]);
+    ui->s7_temp->display(test->curr_data.temps[6]);
+    ui->s8_temp->display(test->curr_data.temps[7]);
+    ui->s9_temp->display(test->curr_data.temps[8]);
+    ui->s10_temp->display(test->curr_data.temps[9]);
+
     worker = new QThread;
     test->moveToThread(worker);
     // Calculate analytics

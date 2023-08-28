@@ -235,5 +235,6 @@ void MQTTClient::publish_data()
     j["heater_2"] = curr_data.heater2;
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
+    j["temp_sensors"] = curr_data.temps;
     publish("conveyer_params" , j.dump());
 }
