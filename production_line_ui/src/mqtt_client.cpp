@@ -122,7 +122,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             emit cooler_state(curr_data.cooler);
 
             curr_data.temps = j["temp_sensors"].get<std::array<float,10>>();
-            emit temps_changed(curr_data.temps);
+            emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
             curr_data.time_stamp = j["time_stamp"];
         }

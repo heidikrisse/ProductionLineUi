@@ -61,6 +61,8 @@ class MainWindow : public QMainWindow
 
         void on_calculateButton_clicked();
 
+        void update_temperature_display(const std::array<float, 10>& temps);
+
         void conveyer_speed_received();
         void conveyer_control_received();
         void heater_controls_received();
