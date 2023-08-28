@@ -17,7 +17,7 @@
 
 class MainWindow;
 struct CurrentConveyerData{
-    std::string time_stamp;
+    std::string time_stamp = "0000-00-00T00:00:00GMT+2";
     bool conveyer_manual_control = false;
     bool heater1_manual_control = false;
     bool heater2_manual_control = false;

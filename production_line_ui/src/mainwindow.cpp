@@ -146,6 +146,10 @@ MainWindow::~MainWindow()
 void MainWindow::db_update_received()
 {
     qDebug() << "Db debug:"  << " "  << test->curr_data.conveyer_upm << " " << test->curr_data.heater1 << " " << test->curr_data.heater2 << " " << test->curr_data.heater3 << " " << test->curr_data.cooler << " " << test->curr_data.qc_camera_toggle << "\n" << test->curr_data.temps[0] << " " << test->curr_data.temps[1] << " " << test->curr_data.temps[2] << " " << test->curr_data.temps[3] << " " << test->curr_data.temps[4] << " " << test->curr_data.temps[5] << " " << test->curr_data.temps[6] << " " << test->curr_data.temps[7] << " " << test->curr_data.temps[8] << " " << test->curr_data.temps[9] << " " << test->curr_data.conveyer_manual_control << " " << test->curr_data.heater1_manual_control << " " << test->curr_data.heater2_manual_control << " " << test->curr_data.heater3_manual_control << " " << test->curr_data.cooler_manual_control << "\n";
+//    CurrentConveyerData testi_struct {
+//        "2023-08-22T08:30:00GMT+2", false, false, false, false, false, false, 423, false, false, false, false, {1.3, 2.4, 3.6, 4.7, 5.3, 6.7, 7.1, 8.5, 9.3, 10.0}
+//    };
+    //db->add_line_data(testi_struct);
     db->add_line_data(test->curr_data);
     db->print_line_data();
 }
