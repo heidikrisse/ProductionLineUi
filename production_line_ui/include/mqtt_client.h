@@ -86,7 +86,7 @@ public:
     void cooler_state(bool state);
     void cooler_control(bool state);
     void qc_camera_state(bool state);
-    void temps_changed(std::array<float,10>& temps);
+    void temps_changed(std::array<float,10> temps);
     void db_updated(CurrentConveyerData& data);
 
 
