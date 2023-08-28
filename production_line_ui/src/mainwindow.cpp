@@ -7,6 +7,7 @@
 
 #include <QtSql>
 #include <QThread>
+#include <QLCDNumber>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -42,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         auto* series = new QSplineSeries();
         multi_series.append(series);
-        series->setName(QString("Sensor " + QString::number(i)));
+        series->setName(QString("HS " + QString::number(i)));
         chart->addSeries(series);
         series->append(QDateTime::fromString("200000", "hhmmss").toMSecsSinceEpoch()+(3*i), (28+(2*i)));
         series->append(QDateTime::fromString("210000", "hhmmss").toMSecsSinceEpoch()+(3*i), (39+(2*i)));
@@ -58,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
     layout->addWidget(chart_view);
 
-
     json_data::parsed_json testi_data_parsittuna{
         "2023-08-25T15:29:00GMT+2", 459, true, false, false, true, true, {25.0, 33.2, 40.5, 43.8, 60.3, 65.4, 68.11, 72.3, 78.1, 80.5}
     };
@@ -70,26 +70,26 @@ MainWindow::MainWindow(QWidget *parent)
       
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abcd1234heidi"); // change unique client ID
+    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
-    ui->lcdNumber->display(test->conveyer_upm); // set speed lcdNumber to display current default speed.
-    ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm); // set slider starting value to current speed
-    ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
-    ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
-    ui->cooler_check_on_off->setChecked(test->cooler);
-    ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
-    ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
-    ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
-    ui->heater1_check_on_off->setChecked(test->heater1);
-    ui->heater2_checked_on_off->setChecked(test->heater2);
-    ui->heater3_checked_on_off->setChecked(test->heater3);
-    ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
-    ui->heater1_check_on_off->setEnabled(test->heater1_manual_control);
-    ui->heater2_checked_on_off->setEnabled(test->heater2_manual_control);
-    ui->heater3_checked_on_off->setEnabled(test->heater3_manual_control);
-    ui->cooler_check_on_off->setEnabled(test->cooler_manual_control);
+    ui->lcdNumber->display(test->curr_data.conveyer_upm); // set speed lcdNumber to display current default speed.
+    ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm); // set slider starting value to current speed
+    ui->speed_manual_or_auto->setChecked(test->curr_data.conveyer_manual_control);
+    ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
+    ui->cooler_check_on_off->setChecked(test->curr_data.cooler);
+    ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
+    ui->heater1_check_on_off->setChecked(test->curr_data.heater1);
+    ui->heater2_checked_on_off->setChecked(test->curr_data.heater2);
+    ui->heater3_checked_on_off->setChecked(test->curr_data.heater3);
+    ui->qc_camera_on_off->setChecked(test->curr_data.qc_camera_toggle);
+    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
+    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
 
     worker = new QThread;
     test->moveToThread(worker);
@@ -111,7 +111,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
     connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
     connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
-
+    connect(test, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     worker->start();
 
 }
@@ -148,42 +148,54 @@ MainWindow::~MainWindow()
 
 void MainWindow::conveyer_speed_received()
 {
-    ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
-    ui->lcdNumber->display(test->conveyer_upm);
+    ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm);
+    ui->lcdNumber->display(test->curr_data.conveyer_upm);
 }
 
 void MainWindow::conveyer_control_received()
 {
-    ui->speed_manual_or_auto->setChecked(test->conveyer_manual_control);
+    ui->speed_manual_or_auto->setChecked(test->curr_data.conveyer_manual_control);
 }
 void MainWindow::heater_controls_received()
 {
-    ui->heater1_manual_automatic->setChecked(test->heater1_manual_control);
-    ui->heater2_manual_automatic->setChecked(test->heater2_manual_control);
-    ui->heater3_manual_automatic->setChecked(test->heater3_manual_control);
+    ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
 
 }
 void MainWindow::heater_states_received()
 {
-    ui->heater1_check_on_off->setChecked(test->heater1);
-    ui->heater2_checked_on_off->setChecked(test->heater2);
-    ui->heater3_checked_on_off->setChecked(test->heater3);
+    ui->heater1_check_on_off->setChecked(test->curr_data.heater1);
+    ui->heater2_checked_on_off->setChecked(test->curr_data.heater2);
+    ui->heater3_checked_on_off->setChecked(test->curr_data.heater3);
 
 }
 void MainWindow::cooler_states_received()
 {
-    ui->cooler_check_on_off->setChecked(test->cooler);
+    ui->cooler_check_on_off->setChecked(test->curr_data.cooler);
 }
 void MainWindow::camera_state_received()
 {
-    ui->qc_camera_on_off->setChecked(test->qc_camera_toggle);
+    ui->qc_camera_on_off->setChecked(test->curr_data.qc_camera_toggle);
 }
 
 void MainWindow::cooler_control_received()
 {
-    ui->cooler_manual_auto->setChecked(test->cooler_manual_control);
+    ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
 }
-
+void MainWindow::temps_received()
+{
+    ui->s1_temp->display(test->curr_data.temps[0]);
+    ui->s2_temp->display(test->curr_data.temps[1]);
+    ui->s3_temp->display(test->curr_data.temps[2]);
+    ui->s4_temp->display(test->curr_data.temps[3]);
+    ui->s5_temp->display(test->curr_data.temps[4]);
+    ui->s6_temp->display(test->curr_data.temps[5]);
+    ui->s7_temp->display(test->curr_data.temps[6]);
+    ui->s8_temp->display(test->curr_data.temps[7]);
+    ui->s9_temp->display(test->curr_data.temps[8]);
+    ui->s10_temp->display(test->curr_data.temps[9]);
+}
 void MainWindow::on_pushButton_clicked()
 {
     // Load data from a sample JSON file (line1.json) for testing
@@ -223,19 +235,19 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
-    if(test->conveyer_manual_control)
+    if(test->curr_data.conveyer_manual_control)
     {
-        test->conveyer_upm = value;
+        test->curr_data.conveyer_upm = value;
     }
     else
     {
-        ui->conveyer_units_per_minute_slider->setValue(test->conveyer_upm);
+        ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm);
     }
 }
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
-    if(test->conveyer_manual_control)
+    if(test->curr_data.conveyer_manual_control)
     {
         test->publish_data();
     }
@@ -243,20 +255,20 @@ void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 {
-        test->heater1 = checked;
+        test->curr_data.heater1 = checked;
         test->publish_data();
 }
 
 void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
     ui->heater1_check_on_off->setEnabled(checked);
-    test->heater1_manual_control = checked;
+    test->curr_data.heater1_manual_control = checked;
     test->publish_data();
 }
 
 void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 {
-    test->heater2 = checked;
+    test-> curr_data.heater2 = checked;
     test->publish_data();
 }
 
@@ -264,13 +276,13 @@ void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 {
     ui->heater2_checked_on_off->setEnabled(checked);
-    test->heater2_manual_control = checked;
+    test-> curr_data.heater2_manual_control = checked;
     test->publish_data();
 }
 
 void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 {
-    test->heater3 = checked;
+    test-> curr_data.heater3 = checked;
     test->publish_data();
 }
 
@@ -278,33 +290,33 @@ void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 {
     ui->heater3_checked_on_off->setEnabled(checked);
-    test->heater3_manual_control = checked;
+    test-> curr_data.heater3_manual_control = checked;
     test->publish_data();
 }
 
 void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 {
-    test->qc_camera_toggle = checked;
+    test-> curr_data.qc_camera_toggle = checked;
     test->publish_data();
 }
 
 
 void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
 {
-    test->conveyer_manual_control = checked;
+    test-> curr_data.conveyer_manual_control = checked;
     test->publish_data();
 }
 
 void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 {
     ui->cooler_check_on_off->setEnabled(checked);
-    test->cooler_manual_control = checked;
+    test->curr_data.cooler_manual_control = checked;
     test->publish_data();
 }
 
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
-    test->cooler = checked;
+    test->curr_data.cooler = checked;
     test->publish_data();
 }
 

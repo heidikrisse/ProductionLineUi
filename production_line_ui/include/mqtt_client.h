@@ -15,6 +15,21 @@
  * line and save data to a file.
  */
 class MainWindow;
+struct CurrentConveyerData{
+    bool conveyer_manual_control = false;
+    bool heater1_manual_control = false;
+    bool heater2_manual_control = false;
+    bool heater3_manual_control = false;
+    bool cooler_manual_control = false;
+    bool qc_camera_toggle = false;
+    int conveyer_upm = 423;
+    bool heater1 = false;
+    bool heater2 = false;
+    bool heater3 = false;
+    bool cooler = false;
+    std::array<float, 10> temps;
+};
+
 class MQTTClient : public QObject, public mqtt::callback
 {
     Q_OBJECT
@@ -63,19 +78,10 @@ public:
     void cooler_control(bool state);
     void qc_camera_state(bool state);
 
- public:
-   bool conveyer_manual_control = false;
-   bool heater1_manual_control = false;
-   bool heater2_manual_control = false;
-   bool heater3_manual_control = false;
-   bool cooler_manual_control = false;
-   bool qc_camera_toggle = false;
-   int conveyer_upm = 423;
-   bool heater1 = false;
-   bool heater2 = false;
-   bool heater3 = false;
-   bool cooler = false;
+    void temps_changed(std::array<float,10>& temps);
 
+ public:
+    CurrentConveyerData curr_data;
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;
