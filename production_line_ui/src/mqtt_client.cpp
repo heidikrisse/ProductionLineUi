@@ -124,7 +124,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             curr_data.temps = j["temp_sensors"].get<std::array<float,10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
-            curr_data.time_stamp = j["time_stamp"];
+            curr_data.time_stamp = j["timestamp"].get<std::string>();
         }
         catch (const nlohmann::json::exception& e)
         {
@@ -247,5 +247,6 @@ void MQTTClient::publish_data()
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
     j["temp_sensors"] = curr_data.temps;
+    j["time_stamp"] = curr_data.time_stamp;
     publish("conveyer_params" , j.dump());
 }

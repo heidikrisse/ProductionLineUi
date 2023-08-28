@@ -87,6 +87,8 @@ class MainWindow : public QMainWindow
         QLabel *costLabel;
         QThread *worker;
         QLCDNumber *h1_temp;
+        QPalette *over80;
+        QPalette *under80;
 };
 
 #endif
