@@ -26,6 +26,7 @@ bool MQTTClient::connect()
     try
     {
         client.connect(conn_opts)->wait();
+        live_data_available = true; // Set live data availability to true
         return true;
     }
     catch(const mqtt::exception& e)
@@ -131,7 +132,11 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         }
 
     }
-   // data_cache.push_back(json_data::json_to_vec(j));
+
+    if (live_data_available)
+    {
+        data_cache.push_back(json_data::json_to_vec(j));
+    }
 }
 
 std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)

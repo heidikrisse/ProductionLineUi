@@ -38,6 +38,9 @@ public:
     MQTTClient(const std::string& broker_address, const std::string& client_id);
     ~MQTTClient();
 
+    CurrentConveyerData curr_data;
+    bool live_data_available = false; // boolean to check if live real-time data is available
+
     // Function to connect to the MQTT broker
     bool connect();
 
@@ -78,8 +81,6 @@ public:
 
     void temps_changed(std::array<float,10>& temps);
 
- public:
-    CurrentConveyerData curr_data;
 private:
     mqtt::async_client client;
     std::vector<json_data::parsed_json> data_cache;

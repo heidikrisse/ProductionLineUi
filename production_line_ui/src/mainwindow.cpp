@@ -324,9 +324,28 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 
 void MainWindow::on_calculateButton_clicked()
 {
-    double rejectionRate = test->get_failure_rate() * 100.0;
-    double operatingCost = test->get_operating_cost();
+    if (test->live_data_available)
+    {
+        double rejectionRate = test->get_failure_rate() * 100.0;
+        double operatingCost = test->get_operating_cost();
 
-    ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
-    ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+    }
+    else
+    {
+        // Use data from json_examples folder
+        std::string filename{"../json_examples/line1.json"};
+
+        std::ifstream file(filename);
+        if (file.is_open())
+        {
+            nlohmann::json j;
+            file >> j;
+            file.close();
+
+
+        }
+    }
 }
+
