@@ -170,13 +170,19 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
-        for (const auto& data : data_cache)
-        {
-            total_units += data.units_per_minute;
-            failed_units += data.non_passers;
-        }
+    for (const auto& data : data_cache)
+    {
+        total_units += data.units_per_minute;
+        failed_units += data.non_passers;
+    }
 
-        return (failed_units / total_units) * 100;
+    double rejectionRate = 0.0;
+    if (total_units > 0.0)
+    {
+        rejectionRate = (failed_units / total_units) * 100.0;
+    }
+
+    return (failed_units / total_units) * 100;
 }
 
 // Function to calculate the operating costs from the fetched data

@@ -62,9 +62,6 @@ public:
     // Function to calculate the operating costs from the fetched data
     double get_operating_cost() const;
 
-    // Function to save data to a file
-    // void save_data_to_file(const std::string& filename);
-
     void publish_data();
     /**
      * @brief section for control parameters
