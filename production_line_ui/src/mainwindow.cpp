@@ -334,18 +334,16 @@ void MainWindow::on_calculateButton_clicked()
     }
     else
     {
-        // Use data from json_examples folder
-        std::string filename{"../json_examples/line1.json"};
+        // Load sample data and calculate analytics
+        std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
 
-        std::ifstream file(filename);
-        if (file.is_open())
-        {
-            nlohmann::json j;
-            file >> j;
-            file.close();
+        // Calculate rejection rate and operating cost for sample data
+        double rejectionRate = test->get_failure_rate() * 100.0;
+        double operatingCost = test->get_operating_cost();
 
-
-        }
+        // Update UI labels
+        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
     }
 }
 
