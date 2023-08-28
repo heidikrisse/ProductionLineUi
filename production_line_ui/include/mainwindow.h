@@ -4,6 +4,7 @@
 
 #include "mqtt_client.h"
 #include "sqlite.hpp"
+
 #include <QMainWindow>
 #include <QtCharts>
 #include <QChartView>

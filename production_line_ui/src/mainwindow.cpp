@@ -9,7 +9,6 @@
 #include <QThread>
 #include <QLCDNumber>
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
       , ui(new Ui::MainWindow)
