@@ -85,8 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
     camera_state_received();
     temps_received();
 
-   // worker = new QThread;
-    //test->moveToThread(worker);
+    worker = new QThread;
+    test->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -106,7 +106,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
     connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
     connect(test, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
-    connect(test, &MQTTClient::temps_changed, this, &MainWindow::update_temperature_display);
     connect(test, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
     worker->start();
 
@@ -137,9 +136,9 @@ MainWindow::~MainWindow()
     delete db;
     //delete layout;
 
-    //worker->quit();
-   // worker->wait();
-   // delete worker;
+    worker->quit();
+    worker->wait();
+    delete worker;
 
     delete ui;
 }
@@ -360,18 +359,4 @@ void MainWindow::on_calculateButton_clicked()
         ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
         ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
     }
-}
-
-void MainWindow::update_temperature_display(const std::array<float, 10>& temps) {
-    // Update the QLCDNumber widgets for each sensor using temps
-    ui->s1_temp->display(temps[0]);
-    ui->s1_temp->display(temps[1]);
-    ui->s1_temp->display(temps[2]);
-    ui->s1_temp->display(temps[3]);
-    ui->s1_temp->display(temps[4]);
-    ui->s1_temp->display(temps[5]);
-    ui->s1_temp->display(temps[6]);
-    ui->s1_temp->display(temps[7]);
-    ui->s1_temp->display(temps[8]);
-    ui->s1_temp->display(temps[9]);
 }
