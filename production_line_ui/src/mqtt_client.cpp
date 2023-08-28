@@ -141,12 +141,11 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
         "camera3.json",
         "line1.json",
         "line2.json",
-        "line3.json"
     };
 
     for (const std::string& file_name : file_names)
     {
-        std::string filename = folder_path + "/" + file_name;
+        std::string filename{folder_path + "/" + file_name};
         std::ifstream file(filename);
 
         if (file.is_open())

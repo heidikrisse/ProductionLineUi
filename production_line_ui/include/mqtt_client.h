@@ -47,7 +47,7 @@ public:
     double get_operating_cost() const;
 
     // Function to save data to a file
-    void save_data_to_file(const std::string& filename);
+    // void save_data_to_file(const std::string& filename);
 
     void publish_data();
     /**
