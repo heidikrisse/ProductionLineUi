@@ -92,10 +92,10 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if(topic == "conveyer_params")
+    if (topic == "conveyer_params")
     {
-        std::string message{msg->get_payload()};
-        try {
+        try
+        {
             curr_data.conveyer_upm = j["speed_of_conveyer"].get<int>();
             emit conveyer_speed_changed(curr_data.conveyer_upm);
 
@@ -121,14 +121,14 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             curr_data.cooler = j["cooler"].get<bool>();
             emit cooler_state(curr_data.cooler);
 
-            curr_data.temps = j["temp_sensors"].get<std::array<float,10>>();
+            curr_data.temps = j["temp_sensors"].get<std::array<float, 10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
-            curr_data.time_stamp = j["timestamp"].get<std::string>();
+            curr_data.time_stamp = j["time_stamp"].get<std::string>();
         }
         catch (const nlohmann::json::exception& e)
         {
-            std::cerr << "json parsing error: " << e.what() << '\n';
+            std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
         emit db_updated(curr_data);
     }
@@ -138,6 +138,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         data_cache.push_back(json_data::json_to_vec(j));
     }
 }
+
 
 std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
 {
@@ -176,6 +177,7 @@ double MQTTClient::get_failure_rate() const
     double failed_units{0};
 
     for (const auto& data : data_cache)
+    // for (const auto& data : data_cache)
     {
         total_units += data.units_per_minute;
         failed_units += data.non_passers;
@@ -226,7 +228,6 @@ double MQTTClient::get_operating_cost() const
         {
             total_cost += cooler_cost;
         }
-
     }
 
     return total_cost / total_units;
@@ -248,5 +249,13 @@ void MQTTClient::publish_data()
     j["cooler"] = curr_data.cooler;
     j["temp_sensors"] = curr_data.temps;
     j["time_stamp"] = curr_data.time_stamp;
+
     publish("conveyer_params" , j.dump());
+
+    // Update curr_data before emitting the signal
+    curr_data.conveyer_upm = j["speed_of_conveyer"].get<int>();
+    curr_data.conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
+
+    // Emit db_updated signal with the updated curr_data
+    emit db_updated(curr_data);
 }

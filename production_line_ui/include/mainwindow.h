@@ -9,9 +9,9 @@
 #include <QtCharts>
 #include <QChartView>
 #include <QLineSeries>
+#include <QThread>
 #include <memory>
 #include <thread>
-#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -29,10 +29,6 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
     private slots:
-        void on_pushButton_clicked();
-
-        void on_pushButton_2_clicked();
-
         //slider values
         void on_conveyer_units_per_minute_slider_valueChanged(int value);
 

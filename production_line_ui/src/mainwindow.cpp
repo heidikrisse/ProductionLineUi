@@ -94,9 +94,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Check if the labels were found and assign initial text
     if (rejectionLabel)
-        rejectionLabel->setText("Rejection Percentage: 0.00%");
+        rejectionLabel->setText("Rejection Percentage: 0.00 %");
     if (costLabel)
-        costLabel->setText("Operating Cost: $0.00");
+        costLabel->setText("Operating Cost: 0.00 €");
 
     connect(test, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
     connect(test, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
@@ -107,9 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
     connect(test, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     connect(test, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
+
+
     worker->start();
-
-
 }
 
 MainWindow::~MainWindow()
@@ -215,43 +215,6 @@ void MainWindow::temps_received()
     ui->s8_temp->display(test->curr_data.temps[8]);
     ui->s9_temp->display(test->curr_data.temps[9]);
 }
-void MainWindow::on_pushButton_clicked()
-{
-    // Load data from a sample JSON file (line1.json) for testing
-    std::string filename{"../json_examples/line1.json"};
-
-    std::ifstream file(filename);
-    if (file.is_open())
-    {
-        nlohmann::json j;
-        file >> j;
-        file.close();
-
-        test->publish("test/12345", j.dump());
-    }
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    // Load the sample data
-    std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
-
-    // Clear previous data from multi_series list (using multi_series list to manage the different series for each sensor)
-    for (auto* series : multi_series)
-    {
-        series->clear();
-    }
-
-    // Add sample data to series
-    for (const auto& sample : samples)
-    {
-        QDateTime timestamp = QDateTime::fromString(QString::fromStdString(sample.timestamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
-        for (int i{0}; i < 10; ++i)
-        {
-            multi_series[i]->append(timestamp.toMSecsSinceEpoch(), sample.heat_sensors[i]);
-        }
-    }
-}
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
@@ -342,25 +305,21 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 
 void MainWindow::on_calculateButton_clicked()
 {
-    if (test->live_data_available)
-    {
-        double rejectionRate = test->get_failure_rate() * 100.0;
-        double operatingCost = test->get_operating_cost();
-
-        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
-        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
-    }
-    else
+    if (!test->live_data_available)
     {
         // Load sample data and calculate analytics
         std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
+    }
 
-        // Calculate rejection rate and operating cost for sample data
-        double rejectionRate = test->get_failure_rate() * 100.0;
-        double operatingCost = test->get_operating_cost();
+    double rejectionRate = test->get_failure_rate() * 100.0;
+    double operatingCost = test->get_operating_cost();
 
-        // Update UI labels
-        ui->rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
-        ui->costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
+    if (rejectionLabel)
+    {
+        rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
+    }
+    if (costLabel)
+    {
+        costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
     }
 }

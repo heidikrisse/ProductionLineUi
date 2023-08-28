@@ -74,9 +74,7 @@ public:
     double get_operating_cost() const;
 
     void publish_data();
-    /**
-     * @brief section for control parameters
-     */
+
   private: signals:
 
     void conveyer_speed_changed(int new_speed);
