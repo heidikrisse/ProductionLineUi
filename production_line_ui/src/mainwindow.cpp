@@ -16,6 +16,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //for displaying the temps
+    under80 = new QPalette;
+    over80 = new QPalette;
+    over80->setColor(QPalette::WindowText, QColor(Qt::red));
+    under80->setColor(QPalette::WindowText, QColor(Qt::white));
+
     axis_x = new QDateTimeAxis();
     axis_y = new QValueAxis();
     chart = new QChart();
@@ -70,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
       
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc"); // change unique client ID
+    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc345"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
@@ -85,8 +91,8 @@ MainWindow::MainWindow(QWidget *parent)
     camera_state_received();
     temps_received();
 
-    worker = new QThread;
-    test->moveToThread(worker);
+   // worker = new QThread;
+    //test->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -109,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test, &MQTTClient::temps_changed, this, &MainWindow::update_temperature_display);
 
 
-    worker->start();
+    //worker->start();
 
 }
 
@@ -137,9 +143,9 @@ MainWindow::~MainWindow()
     delete db;
     //delete layout;
 
-    worker->quit();
-    worker->wait();
-    delete worker;
+    //worker->quit();
+   // worker->wait();
+   // delete worker;
 
     delete ui;
 }
@@ -188,16 +194,22 @@ void MainWindow::cooler_control_received()
 }
 void MainWindow::temps_received()
 {
-    ui->s1_temp->display(test->curr_data.temps[0]);
-    ui->s2_temp->display(test->curr_data.temps[1]);
-    ui->s3_temp->display(test->curr_data.temps[2]);
-    ui->s4_temp->display(test->curr_data.temps[3]);
-    ui->s5_temp->display(test->curr_data.temps[4]);
-    ui->s6_temp->display(test->curr_data.temps[5]);
-    ui->s7_temp->display(test->curr_data.temps[6]);
-    ui->s8_temp->display(test->curr_data.temps[7]);
-    ui->s9_temp->display(test->curr_data.temps[8]);
-    ui->s10_temp->display(test->curr_data.temps[9]);
+    ui->s0_temp->display(test->curr_data.temps[0]);
+    /*if(test->curr_data.temps[0] >= 80){
+        ui->s1_temp->setPalette(*over80);
+    }
+    else{
+        ui->s1_temp->setPalette(*under80);
+    }*/
+    ui->s1_temp->display(test->curr_data.temps[1]);
+    ui->s2_temp->display(test->curr_data.temps[2]);
+    ui->s3_temp->display(test->curr_data.temps[3]);
+    ui->s4_temp->display(test->curr_data.temps[4]);
+    ui->s5_temp->display(test->curr_data.temps[5]);
+    ui->s6_temp->display(test->curr_data.temps[6]);
+    ui->s7_temp->display(test->curr_data.temps[7]);
+    ui->s8_temp->display(test->curr_data.temps[8]);
+    ui->s9_temp->display(test->curr_data.temps[9]);
 }
 void MainWindow::on_pushButton_clicked()
 {

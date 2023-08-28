@@ -30,6 +30,10 @@ struct CurrentConveyerData{
     bool cooler = false;
     std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
 };
+struct LatestCameraData{
+    std::string time_stamp;
+    uint8_t failed_count;
+};
 
 class MQTTClient : public QObject, public mqtt::callback
 {
@@ -39,6 +43,9 @@ public:
     ~MQTTClient();
 
     CurrentConveyerData curr_data;
+    LatestCameraData camera_data;
+
+
     bool live_data_available = false; // boolean to check if live real-time data is available
 
     // Function to connect to the MQTT broker
