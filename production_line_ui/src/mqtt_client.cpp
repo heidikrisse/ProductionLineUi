@@ -189,16 +189,14 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
-    std::cout << "get_failure_rate()" << '\n'; // for debugging
-
     for (const auto& data : data_cache)
     {
         total_units += data.units_per_minute;
         failed_units += data.non_passers;
     }
 
-    std::cout << "total_units" << total_units << '\n'; // for debugging
-    std::cout << "failed_units" << failed_units << '\n'; // for debugging
+    std::cout << "total_units: " << total_units << '\n'; // for debugging, prints 0 - WHY?!?!?!??!?!?!!?
+    std::cout << "failed_units: " << failed_units << '\n'; // for debugging, prints correctly 2
 
     double rejectionRate = 0.0;
     if (total_units > 0.0)
@@ -225,6 +223,8 @@ double MQTTClient::get_operating_cost() const
     {
         total_units += data.units_per_minute;
         total_cost += data.units_per_minute * cost_per_unit;
+
+        std::cout << "total_units: " << total_units << '\n'; // for debugging
 
         if (data.heater1_status)
         {
