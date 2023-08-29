@@ -108,10 +108,15 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             emit conveyor_speed_changed(curr_data.conveyor_upm);
             curr_data.qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
             emit qc_camera_state(curr_data.qc_camera_toggle);
-
-            curr_data.heater1 = j["heater_1"].get<bool>();
-            curr_data.heater2 = j["heater_2"].get<bool>();
-            curr_data.heater3 = j["heater_3"].get<bool>();
+            if(!curr_data.heater1_manual_control){
+                curr_data.heater1 = j["heater_1"].get<bool>();
+            }
+            if(!curr_data.heater2_manual_control){
+                curr_data.heater2 = j["heater_2"].get<bool>();
+            }
+            if(!curr_data.heater3_manual_control){
+                curr_data.heater3 = j["heater_3"].get<bool>();
+            }
             emit heater_states(curr_data.heater1, curr_data.heater2, curr_data.heater3);
 
             curr_data.cooler = j["cooler"].get<bool>();
@@ -126,7 +131,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         }
         catch (const nlohmann::json::exception& e)
         {
-          //  std::cerr << "JSON parsing error: " << e.what() << '\n';
+            std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
 
         // Parse JSON data and push the data to the data_cache
