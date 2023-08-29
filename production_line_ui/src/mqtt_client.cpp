@@ -255,6 +255,31 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
+// Function to calculate the average temperature of the fetched data
+double MQTTClient::get_average_temperature() const
+{
+    double total_temperature{0};
+    int num_temperatures{0};
+
+    for (const auto& data : data_cache)
+    {
+        for (const auto& temp : data.heat_sensors)
+        {
+            total_temperature += temp;
+            num_temperatures++;
+        }
+    }
+
+    if (num_temperatures > 0)
+    {
+        return total_temperature / num_temperatures;
+    }
+    else
+    {
+        return 0.0; // Return 0 if no temperature data available
+    }
+}
+
 void MQTTClient::publish_data()
 {
     json j;
