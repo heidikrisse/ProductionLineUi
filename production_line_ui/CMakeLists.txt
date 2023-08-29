@@ -40,9 +40,6 @@ set(PROJECT_SOURCES
         include/doctest.h
         json_examples/line1.json
         json_examples/line2.json
-        json_examples/camera1.json
-        json_examples/camera2.json
-        json_examples/camera3.json
         resources/images/toggleBtn_on.png
         resources/images/toggleBtn_off.png
         resources/images/checkBtn_checked.png

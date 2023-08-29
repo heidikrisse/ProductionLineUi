@@ -305,12 +305,6 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 
 void MainWindow::on_calculateButton_clicked()
 {
-    if (!test->live_data_available)
-    {
-        // Load sample data and calculate analytics
-        std::vector<json_data::parsed_json> samples = test->load_sample_data("../json_examples/");
-    }
-
     double rejectionRate = test->get_failure_rate() * 100.0;
     double operatingCost = test->get_operating_cost();
 

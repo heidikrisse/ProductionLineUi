@@ -6,5 +6,6 @@
     "qc_camera_status":true,
     "speed_of_conveyor":0,
     "temp_sensors":[48.4,53.9,56.2,41.2,50.9,52.3,46.7,48.1,47.3,45.9],
+    "non-passers": 0
     "time_stamp":"2023-08-25T20:00:37GMT+2"
 }
