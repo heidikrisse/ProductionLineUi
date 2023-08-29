@@ -149,9 +149,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::db_update_received()
 {
-
     db->add_line_data(mqtt_client->curr_data);
-    db->print_line_data();
 }
 
 void MainWindow::conveyor_speed_received()
@@ -276,7 +274,7 @@ void MainWindow::temps_received()
     }
 }
 
-void MainWindow::on_conveyor_units_per_minute_slider_valueChanged(int value)
+void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
     if(mqtt_client->curr_data.conveyor_manual_control)
     {
@@ -288,7 +286,7 @@ void MainWindow::on_conveyor_units_per_minute_slider_valueChanged(int value)
     }
 }
 
-void MainWindow::on_conveyor_units_per_minute_slider_sliderReleased()
+void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
     if(mqtt_client->curr_data.conveyor_manual_control)
     {
