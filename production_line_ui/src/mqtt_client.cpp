@@ -19,7 +19,7 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
     // }
     // else
     // {
-        data_cache = load_sample_data("../json_examples/"); // Load sample data
+    //    data_cache = load_sample_data("../json_examples/"); // Load sample data
     // }
 }
 
@@ -138,50 +138,51 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         {
             std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
+
         emit db_updated(curr_data);
     }
 
     // If live data available, add to data_cache
-    if (live_data_available)
-    {
-        data_cache.push_back(json_data::json_to_vec(j));
-    }
+    // if (live_data_available)
+    // {
+    //     data_cache.push_back(json_data::json_to_vec(j));
+    // }
 }
 
 
-std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
-{
-    std::vector<json_data::parsed_json> samples;
+//std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
+//{
+//    std::vector<json_data::parsed_json> samples;
 
-    // Files to load
-    std::vector<std::string> file_names = {
-        "line1.json",
-        "line2.json",
-    };
+//    // Files to load
+//    std::vector<std::string> file_names = {
+//        "line1.json",
+//        "line2.json",
+//    };
 
-    for (const std::string& file_name : file_names)
-    {
-        std::string filename{folder_path + "/" + file_name};
-        std::ifstream file(filename);
+//    for (const std::string& file_name : file_names)
+//    {
+//        std::string filename{folder_path + "/" + file_name};
+//        std::ifstream file(filename);
 
-        std::cout << "SEARCHING FOR" << filename << '\n'; // for debugging
+//        std::cout << "SEARCHING FOR" << filename << '\n'; // for debugging
 
-        if (file.is_open())
-        {
-            std::cout << "FILE IS OPEN" << '\n'; // for debugging
-            json j;
-            file >> j;
-            samples.push_back(json_data::json_to_vec(j));
-            file.close();
-        }
-        else
-        {
-            std::cout << "NOT FOUND" << '\n'; // for debugging
-        }
-    }
+//        if (file.is_open())
+//        {
+//            std::cout << "FILE IS OPEN" << '\n'; // for debugging
+//            json j;
+//            file >> j;
+//            samples.push_back(json_data::json_to_vec(j));
+//            file.close();
+//        }
+//        else
+//        {
+//            std::cout << "NOT FOUND" << '\n'; // for debugging
+//        }
+//    }
 
-    return samples;
-}
+//    return samples;
+//}
 
 // Function to calculate the failure rate from the fetched data
 double MQTTClient::get_failure_rate() const

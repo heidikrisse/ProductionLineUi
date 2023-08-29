@@ -44,10 +44,8 @@ public:
     ~MQTTClient();
 
     CurrentConveyerData curr_data;
-    LatestCameraData camera_data;
 
-
-    bool live_data_available = false; // boolean to check if live real-time data is available
+    bool live_data_available{false}; // boolean to check if live real-time data is available
 
     // Function to connect to the MQTT broker
     bool connect();
@@ -64,7 +62,7 @@ public:
     // Function to fetch latest data from the sensors
     std::vector<std::string> fetch_sensor_data();
 
-    std::vector<json_data::parsed_json> load_sample_data(const std::string& folder_path);
+    // std::vector<json_data::parsed_json> load_sample_data(const std::string& folder_path);
     // Overriden callback function to handle incoming messages
     virtual void message_arrived(mqtt::const_message_ptr msg) override;
 
@@ -90,7 +88,7 @@ public:
 
 private:
     mqtt::async_client client;
-    std::vector<json_data::parsed_json> data_cache;
+    std::vector<json_data::parsed_json> data_cache; // from database
 
 };
 
