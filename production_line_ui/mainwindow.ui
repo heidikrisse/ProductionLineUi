@@ -415,7 +415,7 @@ QCheckBox::indicator:unchecked {
          <string>test</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="calculate_button">
+       <widget class="QPushButton" name="calculateButton">
         <property name="geometry">
          <rect>
           <x>50</x>

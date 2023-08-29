@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("0.tcp.eu.ngrok.io:16108", "abc345"); // change unique client ID
+    test = new MQTTClient("4.tcp.eu.ngrok.io:17857", "1234heidik"); // change unique client ID
     test->connect();
     test->subscribe("conveyer_params");
     test->subscribe("test/12345"); // name of the test/topic
@@ -353,7 +353,7 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
     test->publish_data();
 }
 
-void MainWindow::on_calculate_button_clicked()
+void MainWindow::on_calculateButton_clicked()
 {
     double rejectionRate = test->get_failure_rate() * 100.0;
     double operatingCost = test->get_operating_cost();

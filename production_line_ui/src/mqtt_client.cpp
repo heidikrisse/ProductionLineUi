@@ -13,14 +13,14 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
 
     // If connection is succesfull, data_cache will remain empty and live real-time data
     // will be added through message_arrived function to data_cache
-    if (connect())
-    {
-        live_data_available = true; // Set live data availability to true
-    }
-    else
-    {
+    // if (connect())
+    // {
+    //    live_data_available = true; // Set live data availability to true
+    // }
+    // else
+    // {
         data_cache = load_sample_data("../json_examples/"); // Load sample data
-    }
+    // }
 }
 
 MQTTClient::~MQTTClient()
