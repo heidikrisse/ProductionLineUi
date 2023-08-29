@@ -22,7 +22,7 @@ namespace json_data
     struct parsed_json
     {
         std::string timestamp;
-        uint16_t units_per_minute;
+        uint16_t units_per_minute; // conveyor speed
         bool heater1_status;
         bool heater2_status;
         bool heater3_status;

@@ -12,7 +12,7 @@
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
- * line and save data to a file.
+ * line.
  */
 
 class MainWindow;

@@ -11,8 +11,16 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
     // Set a message callback
     client.set_callback(*this);
 
-    // Load sample data
-    data_cache = load_sample_data("../json_examples/line1.json"); // removed when we get the real realtime data from group 2
+    // If connection is succesfull, data_cache will remain empty and live real-time data
+    // will be added through message_arrived function to data_cache
+    if (connect())
+    {
+        live_data_available = true; // Set live data availability to true
+    }
+    else
+    {
+        data_cache = load_sample_data("../json_examples/"); // Load sample data
+    }
 }
 
 MQTTClient::~MQTTClient()
@@ -133,6 +141,7 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         emit db_updated(curr_data);
     }
 
+    // If live data available, add to data_cache
     if (live_data_available)
     {
         data_cache.push_back(json_data::json_to_vec(j));
@@ -146,9 +155,6 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
 
     // Files to load
     std::vector<std::string> file_names = {
-        "camera1.json",
-        "camera2.json",
-        "camera3.json",
         "line1.json",
         "line2.json",
     };
@@ -158,12 +164,19 @@ std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::stri
         std::string filename{folder_path + "/" + file_name};
         std::ifstream file(filename);
 
+        std::cout << "SEARCHING FOR" << filename << '\n'; // for debugging
+
         if (file.is_open())
         {
+            std::cout << "FILE IS OPEN" << '\n'; // for debugging
             json j;
             file >> j;
             samples.push_back(json_data::json_to_vec(j));
             file.close();
+        }
+        else
+        {
+            std::cout << "NOT FOUND" << '\n'; // for debugging
         }
     }
 
@@ -176,12 +189,16 @@ double MQTTClient::get_failure_rate() const
     double total_units{0};
     double failed_units{0};
 
+    std::cout << "get_failure_rate()" << '\n'; // for debugging
+
     for (const auto& data : data_cache)
-    // for (const auto& data : data_cache)
     {
         total_units += data.units_per_minute;
         failed_units += data.non_passers;
     }
+
+    std::cout << "total_units" << total_units << '\n'; // for debugging
+    std::cout << "failed_units" << failed_units << '\n'; // for debugging
 
     double rejectionRate = 0.0;
     if (total_units > 0.0)
