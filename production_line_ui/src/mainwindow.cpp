@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123qw"); // change unique client ID
+    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123hk"); // change unique client ID
     mqtt_client->connect();
     mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("test/12345"); // name of the test/topic
@@ -107,6 +107,20 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mqtt_client, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
     connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     connect(mqtt_client, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
+
+    // Connect MQTTClient signals to MainWindow slots
+    connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
+
+    // Initialize graph with data_cache
+    for (const auto &data : mqtt_client->data_cache)
+    {
+        for (size_t i = 0; i < data.heat_sensors.size(); ++i)
+        {
+            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), // Convert std::string to QString
+                    "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
+
+        }
+    }
 
 
     worker->start();
@@ -253,6 +267,12 @@ void MainWindow::temps_received()
     }
     else{
         ui->s9_temp->setPalette(*under80);
+    }
+
+    // Update graph with data_cache
+    for (size_t i = 0; i < mqtt_client->curr_data.temps.size(); ++i)
+    {
+        multi_series[i]->append(QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
     }
 }
 

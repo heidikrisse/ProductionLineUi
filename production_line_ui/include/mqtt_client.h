@@ -47,6 +47,8 @@ public:
 
     bool live_data_available{false}; // boolean to check if live real-time data is available
 
+    std::vector<json_data::parsed_json> data_cache; // from database
+
     // Function to connect to the MQTT broker
     bool connect();
 
@@ -90,7 +92,6 @@ public:
 
 private:
     mqtt::async_client client;
-    std::vector<json_data::parsed_json> data_cache; // from database
 
 };
 

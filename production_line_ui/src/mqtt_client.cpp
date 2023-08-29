@@ -139,6 +139,10 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
 
+        // Parse JSON data and push the data to the data_cache
+        json_data::parsed_json parsed = json_data::json_to_vec(j);
+        data_cache.push_back(parsed);
+
         emit db_updated(curr_data);
     }
 
