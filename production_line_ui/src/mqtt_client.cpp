@@ -21,6 +21,11 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
     // {
     //    data_cache = load_sample_data("../json_examples/"); // Load sample data
     // }
+
+    if (!connect())
+    {
+        std::cout << "Connection error: Unable to connect to MQTT.\n";
+    }
 }
 
 MQTTClient::~MQTTClient()
