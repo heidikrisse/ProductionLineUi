@@ -196,8 +196,8 @@ double MQTTClient::get_failure_rate() const
         failed_units += data.non_passers;
     }
 
-    std::cout << "total_units: " << total_units << '\n'; // for debugging, prints 0 - WHY?!?!?!??!?!?!!?
-    std::cout << "failed_units: " << failed_units << '\n'; // for debugging, prints correctly 2
+    std::cout << "total_units: " << total_units << '\n'; // for debugging
+    std::cout << "failed_units: " << failed_units << '\n'; // for debugging
 
     double rejectionRate = 0.0;
     if (total_units > 0.0)
