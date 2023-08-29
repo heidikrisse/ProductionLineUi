@@ -14,8 +14,7 @@ bool Db_manager::create_connection()
     if (!db.open())
     {
         qDebug() << "Cannot open database";
-//        QMessageBox::critical(nullptr, QObject::tr("Cannot open database.\nClick Cancel to exit."),
-//                    QMessageBox::Cancel);
+
         return false;
     }
     else
@@ -88,19 +87,21 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
         qDebug() << "Getting db-data failed:" << query.lastError().text();
     }
     while(query.next()) {
-        QString time = query.value(0).toString();
-        bool conv_ctrl = query.value(1).toBool();
-        bool heat1_ctrl = query.value(2).toBool();
-        bool heat2_ctrl = query.value(3).toBool();
-        bool heat3_ctrl = query.value(4).toBool();
-        bool cool_ctrl = query.value(5).toBool();
-        int speed = query.value(6).toInt();
-        bool heat1 = query.value(7).toBool();
-        bool heat2 = query.value(8).toBool();
-        bool heat3 = query.value(9).toBool();
-        bool cool = query.value(10).toBool();
-        bool camera = query.value(11).toBool();
-        uint8_t failed = query.value(12).toInt();
+        CurrentConveyorData tmp_struct;
+        tmp_struct.time_stamp = query.value(0).toString().toStdString();
+        tmp_struct.conveyor_manual_control = query.value(1).toBool();
+        tmp_struct.heater1_manual_control = query.value(2).toBool();
+        tmp_struct.heater2_manual_control = query.value(3).toBool();
+        tmp_struct.heater3_manual_control = query.value(4).toBool();
+        tmp_struct.cooler_manual_control = query.value(5).toBool();
+        tmp_struct.qc_camera_toggle = query.value(6).toBool();
+        tmp_struct.qc_camera_fails = (query.value(7).toUInt() != 0);
+        tmp_struct.conveyor_upm = query.value(8).toUInt();
+        tmp_struct.heater1 = query.value(9).toBool();
+        tmp_struct.heater2 = query.value(10).toBool();
+        tmp_struct.heater3 = query.value(11).toBool();
+        tmp_struct.cooler = query.value(12).toBool();
+
         float t1 = query.value(13).toFloat();
         float t2 = query.value(14).toFloat();
         float t3 = query.value(15).toFloat();
@@ -113,7 +114,7 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
         float t10 = query.value(22).toFloat();
 
         std::array<float, 10> tmp_array{t1, t2, t3, t4, t5, t6, t7, t8, t9, t10};
-        CurrentConveyorData tmp_struct{time.toStdString(), conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, camera, failed, speed, heat1, heat2, heat3, cool, tmp_array};
+
         data_vector.push_back(tmp_struct);
     }
     return data_vector;

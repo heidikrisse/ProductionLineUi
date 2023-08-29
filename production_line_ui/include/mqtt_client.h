@@ -24,12 +24,12 @@ struct CurrentConveyorData{
     bool heater3_manual_control = false;
     bool cooler_manual_control = false;
     bool qc_camera_toggle = false;
+    bool qc_camera_fails = false;
     int conveyor_upm = 423;
     bool heater1 = false;
     bool heater2 = false;
     bool heater3 = false;
     bool cooler = false;
-    int qc_camera_fails = 0;
 
     std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
 };
