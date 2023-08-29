@@ -92,8 +92,6 @@ public:
 
 private:
     mqtt::async_client client;
-
-
 };
 
 #endif
