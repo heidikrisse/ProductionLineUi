@@ -77,6 +77,7 @@ bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
         return false;
     }
 }
+
 void Db_manager::print_line_data()  //(const QString& selected_timestamp)
 {
     QSqlQuery query(db);

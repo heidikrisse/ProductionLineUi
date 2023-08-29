@@ -9,7 +9,6 @@ class Db_manager
     Db_manager() = default;
     bool create_connection();
     bool add_line_data(CurrentConveyerData& data);
-    bool add_camera_data(CurrentConveyerData data);
     void print_line_data();  //(const QString& selected_timestamp);
 
   private:

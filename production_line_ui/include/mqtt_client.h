@@ -70,6 +70,8 @@ public:
     double get_failure_rate() const;
     // Function to calculate the operating costs from the fetched data
     double get_operating_cost() const;
+    // Function to calculate the average temperature of the fetched data
+    double get_average_temperature() const;
 
     void publish_data();
 
