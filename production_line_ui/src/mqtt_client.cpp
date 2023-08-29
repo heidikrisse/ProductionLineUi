@@ -204,8 +204,12 @@ double MQTTClient::get_failure_rate() const
     {
         rejectionRate = (failed_units / total_units) * 100.0;
     }
+    else
+    {
+        rejectionRate = 0;
+    }
 
-    return (failed_units / total_units) * 100;
+    return rejectionRate;
 }
 
 // Function to calculate the operating costs from the fetched data
