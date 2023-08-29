@@ -77,30 +77,6 @@ bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
         return false;
     }
 }
-
-//bool Db_manager::add_camera_data(CurrentConveyerData parsed_data)
-//{
-//    QSqlQuery query;
-//    query.prepare("INSERT INTO camera_data (timestamp, non_passers) "
-//                  // Placeholders for values
-//                  "VALUES (:timestamp, :non_passers");
-
-//    // Binding placeholders and values
-//    query.bindValue(":timestamp", QString::fromStdString(parsed_data.time_stamp));
-//    query.bindValue(":non_passers", parsed_data.time_stamp);
-
-//    if (query.exec())
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        qDebug() << "Adding data to database failed:"
-//               << query.lastError();
-//        return false;
-//    }
-//}
-
 void Db_manager::print_line_data()  //(const QString& selected_timestamp)
 {
     QSqlQuery query(db);

@@ -70,10 +70,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    test = new MQTTClient("4.tcp.eu.ngrok.io:17857", "1234heidik"); // change unique client ID
-    test->connect();
-    test->subscribe("conveyer_params");
-    test->subscribe("test/12345"); // name of the test/topic
+    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123qw"); // change unique client ID
+    mqtt_client->connect();
+    mqtt_client->subscribe("conveyer_params");
+    mqtt_client->subscribe("test/12345"); // name of the test/topic
 
 
     conveyer_speed_received();
@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
     temps_received();
 
     worker = new QThread;
-    test->moveToThread(worker);
+    mqtt_client->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -98,15 +98,15 @@ MainWindow::MainWindow(QWidget *parent)
     if (costLabel)
         costLabel->setText("Operating Cost: 0.00 €");
 
-    connect(test, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
-    connect(test, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
-    connect(test, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
-    connect(test, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
-    connect(test, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
-    connect(test, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
-    connect(test, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
-    connect(test, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
-    connect(test, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
+    connect(mqtt_client, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
+    connect(mqtt_client, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
+    connect(mqtt_client, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
+    connect(mqtt_client, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
+    connect(mqtt_client, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
+    connect(mqtt_client, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
+    connect(mqtt_client, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
+    connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
+    connect(mqtt_client, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
 
 
     worker->start();
@@ -114,27 +114,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    if (data_loop_thread.joinable())
-    {
-        data_loop_thread.join();
 
-    }
-    if (test)
+    if (mqtt_client)
     {
-        test->disconnect();
-        delete test;
+        delete mqtt_client;
     }
 
-    if (data_loop_thread.joinable())
-    {
-        data_loop_thread.join();
-    }
     delete axis_x;
     delete axis_y;
     delete chart;
     delete chart_view;
     delete db;
-    //delete layout;
 
     worker->quit();
     worker->wait();
@@ -146,119 +136,119 @@ MainWindow::~MainWindow()
 void MainWindow::db_update_received()
 {
 
-    db->add_line_data(test->curr_data);
+    db->add_line_data(mqtt_client->curr_data);
     db->print_line_data();
 }
 
 void MainWindow::conveyer_speed_received()
 {
-    ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm);
-    ui->lcdNumber->display(test->curr_data.conveyer_upm);
+    ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyer_upm);
+    ui->lcdNumber->display(mqtt_client->curr_data.conveyer_upm);
 }
 
 void MainWindow::conveyer_control_received()
 {
-    ui->speed_manual_or_auto->setChecked(test->curr_data.conveyer_manual_control);
+    ui->speed_manual_or_auto->setChecked(mqtt_client->curr_data.conveyer_manual_control);
 }
 void MainWindow::heater_controls_received()
 {
-    ui->heater1_check_on_off->setEnabled(test->curr_data.heater1_manual_control);
-    ui->heater2_checked_on_off->setEnabled(test->curr_data.heater2_manual_control);
-    ui->heater3_checked_on_off->setEnabled(test->curr_data.heater3_manual_control);
+    ui->heater1_check_on_off->setEnabled(mqtt_client->curr_data.heater1_manual_control);
+    ui->heater2_checked_on_off->setEnabled(mqtt_client->curr_data.heater2_manual_control);
+    ui->heater3_checked_on_off->setEnabled(mqtt_client->curr_data.heater3_manual_control);
 
-    ui->heater1_manual_automatic->setChecked(test->curr_data.heater1_manual_control);
-    ui->heater2_manual_automatic->setChecked(test->curr_data.heater2_manual_control);
-    ui->heater3_manual_automatic->setChecked(test->curr_data.heater3_manual_control);
+    ui->heater1_manual_automatic->setChecked(mqtt_client->curr_data.heater1_manual_control);
+    ui->heater2_manual_automatic->setChecked(mqtt_client->curr_data.heater2_manual_control);
+    ui->heater3_manual_automatic->setChecked(mqtt_client->curr_data.heater3_manual_control);
 
 }
 void MainWindow::heater_states_received()
 {
-    ui->heater1_check_on_off->setChecked(test->curr_data.heater1);
-    ui->heater2_checked_on_off->setChecked(test->curr_data.heater2);
-    ui->heater3_checked_on_off->setChecked(test->curr_data.heater3);
+    ui->heater1_check_on_off->setChecked(mqtt_client->curr_data.heater1);
+    ui->heater2_checked_on_off->setChecked(mqtt_client->curr_data.heater2);
+    ui->heater3_checked_on_off->setChecked(mqtt_client->curr_data.heater3);
 
 }
 void MainWindow::cooler_states_received()
 {
-    ui->cooler_check_on_off->setChecked(test->curr_data.cooler);
+    ui->cooler_check_on_off->setChecked(mqtt_client->curr_data.cooler);
 }
 void MainWindow::camera_state_received()
 {
-    ui->qc_camera_on_off->setChecked(test->curr_data.qc_camera_toggle);
+    ui->qc_camera_on_off->setChecked(mqtt_client->curr_data.qc_camera_toggle);
 }
 
 void MainWindow::cooler_control_received()
 {
-    ui->cooler_check_on_off->setEnabled(test->curr_data.cooler_manual_control);
-    ui->cooler_manual_auto->setChecked(test->curr_data.cooler_manual_control);
+    ui->cooler_check_on_off->setEnabled(mqtt_client->curr_data.cooler_manual_control);
+    ui->cooler_manual_auto->setChecked(mqtt_client->curr_data.cooler_manual_control);
 }
 void MainWindow::temps_received()
 {
-    ui->s0_temp->display(test->curr_data.temps[0]);
-    if(test->curr_data.temps[0] >= 80){
+    ui->s0_temp->display(mqtt_client->curr_data.temps[0]);
+    if(mqtt_client->curr_data.temps[0] >= 80){
         ui->s0_temp->setPalette(*over80);
     }
     else{
         ui->s0_temp->setPalette(*under80);
     }
-    ui->s1_temp->display(test->curr_data.temps[1]);
-    if(test->curr_data.temps[1] >= 80){
+    ui->s1_temp->display(mqtt_client->curr_data.temps[1]);
+    if(mqtt_client->curr_data.temps[1] >= 80){
         ui->s1_temp->setPalette(*over80);
     }
     else{
         ui->s1_temp->setPalette(*under80);
     }
-    ui->s2_temp->display(test->curr_data.temps[2]);
-    if(test->curr_data.temps[2] >= 80){
+    ui->s2_temp->display(mqtt_client->curr_data.temps[2]);
+    if(mqtt_client->curr_data.temps[2] >= 80){
         ui->s2_temp->setPalette(*over80);
     }
     else{
         ui->s2_temp->setPalette(*under80);
     }
-    ui->s3_temp->display(test->curr_data.temps[3]);
-    if(test->curr_data.temps[3] >= 80){
+    ui->s3_temp->display(mqtt_client->curr_data.temps[3]);
+    if(mqtt_client->curr_data.temps[3] >= 80){
         ui->s3_temp->setPalette(*over80);
     }
     else{
         ui->s3_temp->setPalette(*under80);
     }
-    ui->s4_temp->display(test->curr_data.temps[4]);
-    if(test->curr_data.temps[4] >= 80){
+    ui->s4_temp->display(mqtt_client->curr_data.temps[4]);
+    if(mqtt_client->curr_data.temps[4] >= 80){
         ui->s4_temp->setPalette(*over80);
     }
     else{
         ui->s4_temp->setPalette(*under80);
     }
-    ui->s5_temp->display(test->curr_data.temps[5]);
-    if(test->curr_data.temps[5] >= 80){
+    ui->s5_temp->display(mqtt_client->curr_data.temps[5]);
+    if(mqtt_client->curr_data.temps[5] >= 80){
         ui->s5_temp->setPalette(*over80);
     }
     else{
         ui->s5_temp->setPalette(*under80);
     }
-    ui->s6_temp->display(test->curr_data.temps[6]);
-    if(test->curr_data.temps[6] >= 80){
+    ui->s6_temp->display(mqtt_client->curr_data.temps[6]);
+    if(mqtt_client->curr_data.temps[6] >= 80){
         ui->s6_temp->setPalette(*over80);
     }
     else{
         ui->s6_temp->setPalette(*under80);
     }
-    ui->s7_temp->display(test->curr_data.temps[7]);
-    if(test->curr_data.temps[7] >= 80){
+    ui->s7_temp->display(mqtt_client->curr_data.temps[7]);
+    if(mqtt_client->curr_data.temps[7] >= 80){
         ui->s7_temp->setPalette(*over80);
     }
     else{
         ui->s7_temp->setPalette(*under80);
     }
-    ui->s8_temp->display(test->curr_data.temps[8]);
-    if(test->curr_data.temps[8] >= 80){
+    ui->s8_temp->display(mqtt_client->curr_data.temps[8]);
+    if(mqtt_client->curr_data.temps[8] >= 80){
         ui->s8_temp->setPalette(*over80);
     }
     else{
         ui->s8_temp->setPalette(*under80);
     }
-    ui->s9_temp->display(test->curr_data.temps[9]);
-    if(test->curr_data.temps[9] >= 80){
+    ui->s9_temp->display(mqtt_client->curr_data.temps[9]);
+    if(mqtt_client->curr_data.temps[9] >= 80){
         ui->s9_temp->setPalette(*over80);
     }
     else{
@@ -268,95 +258,95 @@ void MainWindow::temps_received()
 
 void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
-    if(test->curr_data.conveyer_manual_control)
+    if(mqtt_client->curr_data.conveyer_manual_control)
     {
-        test->curr_data.conveyer_upm = value;
+        mqtt_client->curr_data.conveyer_upm = value;
     }
     else
     {
-        ui->conveyer_units_per_minute_slider->setValue(test->curr_data.conveyer_upm);
+        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyer_upm);
     }
 }
 
 void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
 {
-    if(test->curr_data.conveyer_manual_control)
+    if(mqtt_client->curr_data.conveyer_manual_control)
     {
-        test->publish_data();
+        mqtt_client->publish_data();
     }
 }
 
 void MainWindow::on_heater1_check_on_off_toggled(bool checked)
 {
-        test->curr_data.heater1 = checked;
-        test->publish_data();
+        mqtt_client->curr_data.heater1 = checked;
+        mqtt_client->publish_data();
 }
 
 void MainWindow::on_heater1_manual_automatic_toggled(bool checked)
 {
     ui->heater1_check_on_off->setEnabled(checked);
-    test->curr_data.heater1_manual_control = checked;
-    test->publish_data();
+    mqtt_client->curr_data.heater1_manual_control = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
 {
-    test-> curr_data.heater2 = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.heater2 = checked;
+    mqtt_client->publish_data();
 }
 
 
 void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 {
     ui->heater2_checked_on_off->setEnabled(checked);
-    test-> curr_data.heater2_manual_control = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.heater2_manual_control = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
 {
-    test-> curr_data.heater3 = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.heater3 = checked;
+    mqtt_client->publish_data();
 }
 
 
 void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 {
     ui->heater3_checked_on_off->setEnabled(checked);
-    test-> curr_data.heater3_manual_control = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.heater3_manual_control = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 {
-    test-> curr_data.qc_camera_toggle = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.qc_camera_toggle = checked;
+    mqtt_client->publish_data();
 }
 
 
 void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
 {
-    test-> curr_data.conveyer_manual_control = checked;
-    test->publish_data();
+    mqtt_client-> curr_data.conveyer_manual_control = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_cooler_manual_auto_toggled(bool checked)
 {
     ui->cooler_check_on_off->setEnabled(checked);
-    test->curr_data.cooler_manual_control = checked;
-    test->publish_data();
+    mqtt_client->curr_data.cooler_manual_control = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_cooler_check_on_off_toggled(bool checked)
 {
-    test->curr_data.cooler = checked;
-    test->publish_data();
+    mqtt_client->curr_data.cooler = checked;
+    mqtt_client->publish_data();
 }
 
 void MainWindow::on_calculateButton_clicked()
 {
-    double rejectionRate = test->get_failure_rate() * 100.0;
-    double operatingCost = test->get_operating_cost();
+    double rejectionRate = mqtt_client->get_failure_rate() * 100.0;
+    double operatingCost = mqtt_client->get_operating_cost();
 
     if (rejectionLabel)
     {
