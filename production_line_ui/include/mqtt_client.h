@@ -24,7 +24,7 @@ struct CurrentConveyorData{
     bool heater3_manual_control = false;
     bool cooler_manual_control = false;
     bool qc_camera_toggle = false;
-    int conveyer_upm = 423;
+    int conveyor_upm = 423;
     bool heater1 = false;
     bool heater2 = false;
     bool heater3 = false;

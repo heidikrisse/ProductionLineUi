@@ -67,10 +67,10 @@ MainWindow::MainWindow(QWidget *parent)
     // Create database and tables, if not exist
     db = new Db_manager();
     db->create_connection();
-    std::vector<CurrentConveyerData> testi_vektori{};
+    std::vector<CurrentConveyorData> testi_vektori{};
     testi_vektori = db->get_all_dbData();
     for (auto elem : testi_vektori) {
-        std::cout << elem.time_stamp << " " << elem.conveyer_upm << "\n";
+        std::cout << elem.time_stamp << " " << elem.conveyor_upm << "\n";
     }
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
@@ -154,7 +154,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::db_update_received()
 {
-    db->add_line_data(test->curr_data);
+    db->add_line_data(mqtt_client->curr_data);
     //db->print_line_data();
 }
 
