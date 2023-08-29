@@ -29,6 +29,8 @@ struct CurrentConveyorData{
     bool heater2 = false;
     bool heater3 = false;
     bool cooler = false;
+    int qc_camera_fails;
+
     std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
 };
 struct LatestCameraData{

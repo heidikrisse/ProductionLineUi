@@ -70,7 +70,7 @@ void MQTTClient::subscribe(const std::string& topic){
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(1);
-    msg->set_retained(true); // Set retained flag true
+    //msg->set_retained(true); // Set retained flag true
 
     try
     {
@@ -131,6 +131,8 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
 
             curr_data.temps = j["temp_sensors"].get<std::array<float, 10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
+
+            curr_data.qc_camera_fails = j["qc_camera_fails"].get<int>();
 
             curr_data.time_stamp = j["time_stamp"].get<std::string>();
         }
@@ -267,8 +269,8 @@ void MQTTClient::publish_data()
     j["heater_2"] = curr_data.heater2;
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
-    j["temp_sensors"] = curr_data.temps;
-    j["time_stamp"] = curr_data.time_stamp;
+    //j["temp_sensors"] = curr_data.temps;
+   // j["time_stamp"] = curr_data.time_stamp;
 
     publish("conveyor_params" , j.dump());
 

@@ -30,9 +30,9 @@ class MainWindow : public QMainWindow
 
     private slots:
         //slider values
-        void on_conveyor_units_per_minute_slider_valueChanged(int value);
+        void on_conveyer_units_per_minute_slider_valueChanged(int value);
 
-        void on_conveyor_units_per_minute_slider_sliderReleased();
+        void on_conveyer_units_per_minute_slider_sliderReleased();
 
         friend class MQTTClient;
 
