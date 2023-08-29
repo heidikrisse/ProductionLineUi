@@ -58,8 +58,8 @@ class MainWindow : public QMainWindow
 
         void on_calculateButton_clicked();
 
-        void conveyer_speed_received();
-        void conveyer_control_received();
+        void conveyor_speed_received();
+        void conveyor_control_received();
         void heater_controls_received();
         void heater_states_received();
         void cooler_states_received();
@@ -67,10 +67,11 @@ class MainWindow : public QMainWindow
         void camera_state_received();
         void temps_received();
         void db_update_received();
+        void on_tabWidget_currentChanged(int index);
 
       private:
         Ui::MainWindow *ui;
-        MQTTClient *test;
+        MQTTClient *mqtt_client;
         QList<QSplineSeries *> multi_series;
         QChart* chart;
         QChartView* chart_view;

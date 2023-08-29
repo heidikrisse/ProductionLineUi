@@ -70,7 +70,7 @@ void MQTTClient::subscribe(const std::string& topic){
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(1);
-    msg->set_retained(true); // Set retained flag true
+    //msg->set_retained(true); // Set retained flag true
 
     try
     {
@@ -100,15 +100,15 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if (topic == "conveyer_params")
+    if (topic == "sensor_control_data")
     {
         try
         {
-            curr_data.conveyer_upm = j["speed_of_conveyer"].get<int>();
-            emit conveyer_speed_changed(curr_data.conveyer_upm);
+            curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
+            emit conveyor_speed_changed(curr_data.conveyor_upm);
 
-            curr_data.conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
-            emit conveyer_control(curr_data.conveyer_manual_control);
+            curr_data.conveyor_manual_control = j["conveyor_manual_control"].get<bool>();
+            emit conveyor_control(curr_data.conveyor_manual_control);
 
             curr_data.heater1_manual_control = j["heater_1_manual_control"].get<bool>();
             curr_data.heater2_manual_control = j["heater_2_manual_control"].get<bool>();
@@ -132,6 +132,8 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             curr_data.temps = j["temp_sensors"].get<std::array<float, 10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
+            curr_data.qc_camera_fails = j["qc_camera_fails"].get<int>();
+
             curr_data.time_stamp = j["time_stamp"].get<std::string>();
         }
         catch (const nlohmann::json::exception& e)
@@ -139,51 +141,24 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
 
+        // Parse JSON data and push the data to the data_cache
+        json_data::parsed_json parsed = json_data::json_to_vec(j);
+        data_cache.push_back(parsed);
+
         emit db_updated(curr_data);
+        if(current_mw_tab == 2)
+        {
+            update_analytics_values();
+        }
     }
 
-    // If live data available, add to data_cache
-    // if (live_data_available)
-    // {
-    //     data_cache.push_back(json_data::json_to_vec(j));
-    // }
 }
-
-
-//std::vector<json_data::parsed_json> MQTTClient::load_sample_data(const std::string& folder_path)
-//{
-//    std::vector<json_data::parsed_json> samples;
-
-//    // Files to load
-//    std::vector<std::string> file_names = {
-//        "line1.json",
-//        "line2.json",
-//    };
-
-//    for (const std::string& file_name : file_names)
-//    {
-//        std::string filename{folder_path + "/" + file_name};
-//        std::ifstream file(filename);
-
-//        std::cout << "SEARCHING FOR" << filename << '\n'; // for debugging
-
-//        if (file.is_open())
-//        {
-//            std::cout << "FILE IS OPEN" << '\n'; // for debugging
-//            json j;
-//            file >> j;
-//            samples.push_back(json_data::json_to_vec(j));
-//            file.close();
-//        }
-//        else
-//        {
-//            std::cout << "NOT FOUND" << '\n'; // for debugging
-//        }
-//    }
-
-//    return samples;
-//}
-
+void MQTTClient::update_analytics_values() const
+{
+    get_average_temperature();
+    get_failure_rate();
+    get_operating_cost();
+}
 // Function to calculate the failure rate from the fetched data
 double MQTTClient::get_failure_rate() const
 {
@@ -255,28 +230,53 @@ double MQTTClient::get_operating_cost() const
     return total_cost / total_units;
 }
 
+// Function to calculate the average temperature of the fetched data
+double MQTTClient::get_average_temperature() const
+{
+    double total_temperature{0};
+    int num_temperatures{0};
+
+    for (const auto& data : data_cache)
+    {
+        for (const auto& temp : data.heat_sensors)
+        {
+            total_temperature += temp;
+            num_temperatures++;
+        }
+    }
+
+    if (num_temperatures > 0)
+    {
+        return total_temperature / num_temperatures;
+    }
+    else
+    {
+        return 0.0; // Return 0 if no temperature data available
+    }
+}
+
 void MQTTClient::publish_data()
 {
     json j;
-    j["conveyer_manual_control"] = curr_data.conveyer_manual_control;
+    j["conveyor_manual_control"] = curr_data.conveyor_manual_control;
     j["heater_1_manual_control"] = curr_data.heater1_manual_control;
     j["heater_2_manual_control"] = curr_data.heater2_manual_control;
     j["heater_3_manual_control"] = curr_data.heater3_manual_control;
     j["cooler_manual_control"] = curr_data.cooler_manual_control;
     j["qc_camera_toggle"] = curr_data.qc_camera_toggle;
-    j["speed_of_conveyer"] = curr_data.conveyer_upm;
+    j["speed_of_conveyor"] = curr_data.conveyor_upm;
     j["heater_1"] = curr_data.heater1;
     j["heater_2"] = curr_data.heater2;
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
-    j["temp_sensors"] = curr_data.temps;
-    j["time_stamp"] = curr_data.time_stamp;
+    //j["temp_sensors"] = curr_data.temps;
+   // j["time_stamp"] = curr_data.time_stamp;
 
-    publish("conveyer_params" , j.dump());
+    publish("conveyor_params" , j.dump());
 
     // Update curr_data before emitting the signal
-    curr_data.conveyer_upm = j["speed_of_conveyer"].get<int>();
-    curr_data.conveyer_manual_control = j["conveyer_manual_control"].get<bool>();
+    curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
+    curr_data.conveyor_manual_control = j["conveyor_manual_control"].get<bool>();
 
     // Emit db_updated signal with the updated curr_data
     emit db_updated(curr_data);
