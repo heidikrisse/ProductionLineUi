@@ -70,7 +70,7 @@ class MainWindow : public QMainWindow
 
       private:
         Ui::MainWindow *ui;
-        MQTTClient *test;
+        MQTTClient *mqtt_client;
         QList<QSplineSeries *> multi_series;
         QChart* chart;
         QChartView* chart_view;
