@@ -64,7 +64,7 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     query.bindValue(":heat2_ctrl", parsed_data.heater2_manual_control);
     query.bindValue(":heat3_ctrl", parsed_data.heater3_manual_control);
     query.bindValue(":cool_ctrl", parsed_data.cooler_manual_control);
-    query.bindValue(":non_passers", parsed_data.failed_count);
+    //query.bindValue(":non_passers", parsed_data.failed_count);
 
     if (query.exec())
     {
@@ -78,8 +78,8 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     }
 }
 
-std::vector<CurrentConveyerData> Db_manager::get_all_dbData() {
-    std::vector<CurrentConveyerData> data_vector{};
+std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
+    std::vector<CurrentConveyorData> data_vector{};
     QSqlQuery query(db);
     query.setForwardOnly(true);
     query.prepare("SELECT timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, qc_camera, non_passers, conveyor_speed, heater1, heater2, heater3, cooler, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10 FROM line_data");
@@ -112,7 +112,7 @@ std::vector<CurrentConveyerData> Db_manager::get_all_dbData() {
         float t10 = query.value(22).toFloat();
 
         std::array<float, 10> tmp_array{t1, t2, t3, t4, t5, t6, t7, t8, t9, t10};
-        CurrentConveyerData tmp_struct{time.toStdString(), conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, camera, failed, speed, heat1, heat2, heat3, cool, tmp_array};
+        CurrentConveyorData tmp_struct{time.toStdString(), conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, camera, failed, speed, heat1, heat2, heat3, cool, tmp_array};
         data_vector.push_back(tmp_struct);
     }
     return data_vector;
