@@ -32,7 +32,7 @@ bool Db_manager::create_connection()
     return true;
 }
 
-bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
+bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
 {
     QSqlQuery query;
     query.prepare("INSERT INTO line_data (timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, "
@@ -44,7 +44,7 @@ bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
 
     // Binding placeholders and values
     query.bindValue(":timestamp", QString::fromStdString(parsed_data.time_stamp));
-    query.bindValue(":conveyor_speed", parsed_data.conveyer_upm);
+    query.bindValue(":conveyor_speed", parsed_data.conveyor_upm);
     query.bindValue(":heater1", parsed_data.heater1);
     query.bindValue(":heater2", parsed_data.heater2);
     query.bindValue(":heater3", parsed_data.heater3);
@@ -60,7 +60,7 @@ bool Db_manager::add_line_data(CurrentConveyerData& parsed_data)
     query.bindValue(":temp8", parsed_data.temps[7]);
     query.bindValue(":temp9", parsed_data.temps[8]);
     query.bindValue(":temp10", parsed_data.temps[9]);
-    query.bindValue(":conv_ctrl", parsed_data.conveyer_manual_control);
+    query.bindValue(":conv_ctrl", parsed_data.conveyor_manual_control);
     query.bindValue(":heat1_ctrl", parsed_data.heater1_manual_control);
     query.bindValue(":heat2_ctrl", parsed_data.heater2_manual_control);
     query.bindValue(":heat3_ctrl", parsed_data.heater3_manual_control);

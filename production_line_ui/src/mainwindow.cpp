@@ -72,12 +72,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123qw"); // change unique client ID
     mqtt_client->connect();
-    mqtt_client->subscribe("conveyer_params");
+    //mqtt_client->subscribe("conveyer_params");
+    mqtt_client->subscribe("sensor_control_data");
     mqtt_client->subscribe("test/12345"); // name of the test/topic
+    mqtt_client->update_analytics_values();
 
-
-    conveyer_speed_received();
-    conveyer_control_received();
+    conveyor_speed_received();
+    conveyor_control_received();
     cooler_control_received();
     cooler_states_received();
     heater_states_received();
@@ -98,8 +99,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (costLabel)
         costLabel->setText("Operating Cost: 0.00 €");
 
-    connect(mqtt_client, &MQTTClient::conveyer_speed_changed, this, &MainWindow::conveyer_speed_received);
-    connect(mqtt_client, &MQTTClient::conveyer_control, this, &MainWindow::conveyer_control_received);
+    connect(mqtt_client, &MQTTClient::conveyor_speed_changed, this, &MainWindow::conveyor_speed_received);
+    connect(mqtt_client, &MQTTClient::conveyor_control, this, &MainWindow::conveyor_control_received);
     connect(mqtt_client, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
     connect(mqtt_client, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
     connect(mqtt_client, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
@@ -107,7 +108,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mqtt_client, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
     connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     connect(mqtt_client, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
-
 
     worker->start();
 }
@@ -140,15 +140,15 @@ void MainWindow::db_update_received()
     db->print_line_data();
 }
 
-void MainWindow::conveyer_speed_received()
+void MainWindow::conveyor_speed_received()
 {
-    ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyer_upm);
-    ui->lcdNumber->display(mqtt_client->curr_data.conveyer_upm);
+    ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyor_upm);
+    ui->lcdNumber->display(mqtt_client->curr_data.conveyor_upm);
 }
 
-void MainWindow::conveyer_control_received()
+void MainWindow::conveyor_control_received()
 {
-    ui->speed_manual_or_auto->setChecked(mqtt_client->curr_data.conveyer_manual_control);
+    ui->speed_manual_or_auto->setChecked(mqtt_client->curr_data.conveyor_manual_control);
 }
 void MainWindow::heater_controls_received()
 {
@@ -256,21 +256,21 @@ void MainWindow::temps_received()
     }
 }
 
-void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
+void MainWindow::on_conveyor_units_per_minute_slider_valueChanged(int value)
 {
-    if(mqtt_client->curr_data.conveyer_manual_control)
+    if(mqtt_client->curr_data.conveyor_manual_control)
     {
-        mqtt_client->curr_data.conveyer_upm = value;
+        mqtt_client->curr_data.conveyor_upm = value;
     }
     else
     {
-        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyer_upm);
+        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyor_upm);
     }
 }
 
-void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
+void MainWindow::on_conveyor_units_per_minute_slider_sliderReleased()
 {
-    if(mqtt_client->curr_data.conveyer_manual_control)
+    if(mqtt_client->curr_data.conveyor_manual_control)
     {
         mqtt_client->publish_data();
     }
@@ -326,7 +326,7 @@ void MainWindow::on_qc_camera_on_off_toggled(bool checked)
 
 void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
 {
-    mqtt_client-> curr_data.conveyer_manual_control = checked;
+    mqtt_client-> curr_data.conveyor_manual_control = checked;
     mqtt_client->publish_data();
 }
 
@@ -357,3 +357,15 @@ void MainWindow::on_calculateButton_clicked()
         costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
     }
 }
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    if(index == 2){ // analytics window
+        mqtt_client->current_mw_tab = 2;
+        mqtt_client->update_analytics_values();
+    }
+    else{  // control window
+        mqtt_client->current_mw_tab = 1;
+    }
+}
+
