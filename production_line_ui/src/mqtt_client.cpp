@@ -152,6 +152,7 @@ void MQTTClient::update_analytics_values() const
     get_failure_rate();
     get_operating_cost();
 }
+
 // Function to calculate the failure rate from the fetched data
 double MQTTClient::get_failure_rate() const
 {
