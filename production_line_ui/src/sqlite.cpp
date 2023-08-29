@@ -1,6 +1,7 @@
-#include <QtSql>
 #include "../include/sqlite.hpp"
 #include "../include/mqtt_client.h"
+
+#include <QtSql>
 
 bool Db_manager::create_connection()
 {

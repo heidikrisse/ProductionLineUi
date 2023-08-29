@@ -33,8 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
     axis_x->setTickCount(10);
     axis_x->setFormat("hh:mm:ss");
     axis_x->setTitleText("Time");
-    axis_x->setMax(QDateTime::fromString("230000",  "hhmmss"));
-    axis_x->setMin(QDateTime::fromString("200000", "hhmmss"));
+    // Set the initial range of the x-axis to the last 4 hours
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QDateTime fourHoursAgo = currentDateTime.addSecs(-4 * 60 * 60); // 4 hours in seconds
+    axis_x->setMin(fourHoursAgo);
+    axis_x->setMax(currentDateTime);
 
     // Chart
     chart->legend()->setVisible(true);
@@ -49,10 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
         multi_series.append(series);
         series->setName(QString("HS " + QString::number(i)));
         chart->addSeries(series);
-        series->append(QDateTime::fromString("200000", "hhmmss").toMSecsSinceEpoch()+(3*i), (28+(2*i)));
-        series->append(QDateTime::fromString("210000", "hhmmss").toMSecsSinceEpoch()+(3*i), (39+(2*i)));
-        series->append(QDateTime::fromString("220000", "hhmmss").toMSecsSinceEpoch()+(3*i), (55+(2*i)));
-        series->append(QDateTime::fromString("223000", "hhmmss").toMSecsSinceEpoch()+(3*i), (70+(2*i)));
         series->attachAxis(axis_x);
         series->attachAxis(axis_y);
     }
@@ -117,10 +116,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Initialize graph with data_cache
     for (const auto &data : mqtt_client->data_cache)
     {
-        for (size_t i = 0; i < data.heat_sensors.size(); ++i)
+        for (size_t i{0}; i < data.heat_sensors.size(); ++i)
         {
-            multi_series[i]->append(QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), // Convert std::string to QString
-                    "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
+            // Convert time string to QDateTime
+            QDateTime timeStamp = QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
+
+            multi_series[i]->append(timeStamp.toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
 
         }
     }
@@ -191,81 +192,29 @@ void MainWindow::cooler_control_received()
 }
 void MainWindow::temps_received()
 {
-    ui->s0_temp->display(mqtt_client->curr_data.temps[0]);
-    if(mqtt_client->curr_data.temps[0] >= 80){
-        ui->s0_temp->setPalette(*over80);
-    }
-    else{
-        ui->s0_temp->setPalette(*under80);
-    }
-    ui->s1_temp->display(mqtt_client->curr_data.temps[1]);
-    if(mqtt_client->curr_data.temps[1] >= 80){
-        ui->s1_temp->setPalette(*over80);
-    }
-    else{
-        ui->s1_temp->setPalette(*under80);
-    }
-    ui->s2_temp->display(mqtt_client->curr_data.temps[2]);
-    if(mqtt_client->curr_data.temps[2] >= 80){
-        ui->s2_temp->setPalette(*over80);
-    }
-    else{
-        ui->s2_temp->setPalette(*under80);
-    }
-    ui->s3_temp->display(mqtt_client->curr_data.temps[3]);
-    if(mqtt_client->curr_data.temps[3] >= 80){
-        ui->s3_temp->setPalette(*over80);
-    }
-    else{
-        ui->s3_temp->setPalette(*under80);
-    }
-    ui->s4_temp->display(mqtt_client->curr_data.temps[4]);
-    if(mqtt_client->curr_data.temps[4] >= 80){
-        ui->s4_temp->setPalette(*over80);
-    }
-    else{
-        ui->s4_temp->setPalette(*under80);
-    }
-    ui->s5_temp->display(mqtt_client->curr_data.temps[5]);
-    if(mqtt_client->curr_data.temps[5] >= 80){
-        ui->s5_temp->setPalette(*over80);
-    }
-    else{
-        ui->s5_temp->setPalette(*under80);
-    }
-    ui->s6_temp->display(mqtt_client->curr_data.temps[6]);
-    if(mqtt_client->curr_data.temps[6] >= 80){
-        ui->s6_temp->setPalette(*over80);
-    }
-    else{
-        ui->s6_temp->setPalette(*under80);
-    }
-    ui->s7_temp->display(mqtt_client->curr_data.temps[7]);
-    if(mqtt_client->curr_data.temps[7] >= 80){
-        ui->s7_temp->setPalette(*over80);
-    }
-    else{
-        ui->s7_temp->setPalette(*under80);
-    }
-    ui->s8_temp->display(mqtt_client->curr_data.temps[8]);
-    if(mqtt_client->curr_data.temps[8] >= 80){
-        ui->s8_temp->setPalette(*over80);
-    }
-    else{
-        ui->s8_temp->setPalette(*under80);
-    }
-    ui->s9_temp->display(mqtt_client->curr_data.temps[9]);
-    if(mqtt_client->curr_data.temps[9] >= 80){
-        ui->s9_temp->setPalette(*over80);
-    }
-    else{
-        ui->s9_temp->setPalette(*under80);
+    // Update the UI temperature displays
+    for (int i{0}; i < 10; ++i)
+    {
+        QLCDNumber *lcdNumber = ui->centralwidget->findChild<QLCDNumber *>(QString("s%1_temp").arg(i));
+        if (lcdNumber)
+        {
+            lcdNumber->display(mqtt_client->curr_data.temps[i]);
+            if (mqtt_client->curr_data.temps[i] >= 80)
+            {
+                lcdNumber->setPalette(*over80);
+            }
+            else
+            {
+                lcdNumber->setPalette(*under80);
+            }
+        }
     }
 
-    // Update graph with data_cache
-    for (size_t i = 0; i < mqtt_client->curr_data.temps.size(); ++i)
+    // Get the current timestamp and update the graph
+    qint64 currentTimestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    for (size_t i{0}; i < mqtt_client->curr_data.temps.size(); ++i)
     {
-        multi_series[i]->append(QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), "yyyy-MM-ddTHH:mm:ssZ").toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
+        multi_series[i]->append(currentTimestamp, mqtt_client->curr_data.temps[i]);
     }
 }
 
@@ -381,4 +330,3 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         mqtt_client->current_mw_tab = 1;
     }
 }
-
