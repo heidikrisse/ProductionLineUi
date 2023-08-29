@@ -16,15 +16,15 @@
  */
 
 class MainWindow;
-struct CurrentConveyerData{
+struct CurrentConveyorData{
     std::string time_stamp = "0000-00-00T00:00:00GMT+2";
-    bool conveyer_manual_control = false;
+    bool conveyor_manual_control = false;
     bool heater1_manual_control = false;
     bool heater2_manual_control = false;
     bool heater3_manual_control = false;
     bool cooler_manual_control = false;
     bool qc_camera_toggle = false;
-    int conveyer_upm = 423;
+    int conveyor_upm = 423;
     bool heater1 = false;
     bool heater2 = false;
     bool heater3 = false;
@@ -43,7 +43,7 @@ public:
     MQTTClient(const std::string& broker_address, const std::string& client_id);
     ~MQTTClient();
 
-    CurrentConveyerData curr_data;
+    CurrentConveyorData curr_data;
 
     bool live_data_available{false}; // boolean to check if live real-time data is available
 
@@ -74,24 +74,26 @@ public:
     double get_operating_cost() const;
     // Function to calculate the average temperature of the fetched data
     double get_average_temperature() const;
-
+    void update_analytics_values() const;
     void publish_data();
+    uint8_t current_mw_tab;
 
   private: signals:
 
-    void conveyer_speed_changed(int new_speed);
-    void conveyer_control(bool state);
+    void conveyor_speed_changed(int new_speed);
+    void conveyor_control(bool state);
     void heater_controls(bool heater1, bool heater2, bool heater3);
     void heater_states(bool heater1, bool heater2, bool heater3);
     void cooler_state(bool state);
     void cooler_control(bool state);
     void qc_camera_state(bool state);
     void temps_changed(std::array<float,10> temps);
-    void db_updated(CurrentConveyerData& data);
+    void db_updated(CurrentConveyorData& data);
 
 
 private:
     mqtt::async_client client;
+
 
 };
 

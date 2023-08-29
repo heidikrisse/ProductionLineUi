@@ -30,9 +30,9 @@ class MainWindow : public QMainWindow
 
     private slots:
         //slider values
-        void on_conveyer_units_per_minute_slider_valueChanged(int value);
+        void on_conveyor_units_per_minute_slider_valueChanged(int value);
 
-        void on_conveyer_units_per_minute_slider_sliderReleased();
+        void on_conveyor_units_per_minute_slider_sliderReleased();
 
         friend class MQTTClient;
 
@@ -58,8 +58,8 @@ class MainWindow : public QMainWindow
 
         void on_calculateButton_clicked();
 
-        void conveyer_speed_received();
-        void conveyer_control_received();
+        void conveyor_speed_received();
+        void conveyor_control_received();
         void heater_controls_received();
         void heater_states_received();
         void cooler_states_received();
@@ -67,6 +67,7 @@ class MainWindow : public QMainWindow
         void camera_state_received();
         void temps_received();
         void db_update_received();
+        void on_tabWidget_currentChanged(int index);
 
       private:
         Ui::MainWindow *ui;
