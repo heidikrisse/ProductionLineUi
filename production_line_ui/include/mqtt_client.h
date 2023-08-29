@@ -24,16 +24,13 @@ struct CurrentConveyerData{
     bool heater3_manual_control = false;
     bool cooler_manual_control = false;
     bool qc_camera_toggle = false;
+    uint8_t failed_count;
     int conveyer_upm = 423;
     bool heater1 = false;
     bool heater2 = false;
     bool heater3 = false;
     bool cooler = false;
     std::array<float, 10> temps {1,2,3,4,5,6,7,8,9,10};
-};
-struct LatestCameraData{
-    std::string time_stamp;
-    uint8_t failed_count;
 };
 
 class MQTTClient : public QObject, public mqtt::callback
