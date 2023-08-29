@@ -75,10 +75,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123hk"); // change unique client ID
+    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123hkdfg"); // change unique client ID
     mqtt_client->connect();
     //mqtt_client->subscribe("conveyer_params");
-    mqtt_client->subscribe("sensor_control_data");
+    mqtt_client->subscribe("sensor_control_data1");
     mqtt_client->subscribe("test/12345"); // name of the test/topic
     mqtt_client->update_analytics_values();
 
@@ -160,8 +160,7 @@ void MainWindow::db_update_received()
 
 void MainWindow::conveyor_speed_received()
 {
-    ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyor_upm);
-    ui->lcdNumber->display(mqtt_client->curr_data.conveyor_upm);
+    ui->currentSpeedLcd->display(mqtt_client->curr_data.conveyor_upm);
 }
 
 void MainWindow::conveyor_control_received()
@@ -284,11 +283,11 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
 {
     if(mqtt_client->curr_data.conveyor_manual_control)
     {
-        mqtt_client->curr_data.conveyor_upm = value;
+        mqtt_client->conveyor_desired_speed = value;
     }
     else
     {
-        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->curr_data.conveyor_upm);
+        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->conveyor_desired_speed);
     }
 }
 

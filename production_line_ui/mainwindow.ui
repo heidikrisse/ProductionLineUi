@@ -356,13 +356,13 @@ QCheckBox::indicator:unchecked {
          <rect>
           <x>260</x>
           <y>490</y>
-          <width>346</width>
+          <width>529</width>
           <height>80</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="sensor_temp_grid">
-         <item row="0" column="1">
-          <widget class="QLCDNumber" name="s1_temp"/>
+         <item row="1" column="3">
+          <widget class="QLCDNumber" name="s8_temp"/>
          </item>
          <item row="0" column="0">
           <widget class="QLCDNumber" name="s0_temp"/>
@@ -370,26 +370,49 @@ QCheckBox::indicator:unchecked {
          <item row="0" column="2">
           <widget class="QLCDNumber" name="s2_temp"/>
          </item>
-         <item row="1" column="0">
-          <widget class="QLCDNumber" name="s5_temp"/>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLCDNumber" name="s3_temp"/>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLCDNumber" name="s4_temp"/>
-         </item>
          <item row="1" column="1">
           <widget class="QLCDNumber" name="s6_temp"/>
          </item>
          <item row="1" column="2">
           <widget class="QLCDNumber" name="s7_temp"/>
          </item>
-         <item row="1" column="3">
-          <widget class="QLCDNumber" name="s8_temp"/>
+         <item row="0" column="3">
+          <widget class="QLCDNumber" name="s3_temp"/>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="currentSpeedLabel">
+           <property name="text">
+            <string>Current speed:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLCDNumber" name="s4_temp"/>
+         </item>
+         <item row="0" column="7">
+          <widget class="QLCDNumber" name="currentSpeedLcd"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLCDNumber" name="s5_temp"/>
          </item>
          <item row="1" column="4">
           <widget class="QLCDNumber" name="s9_temp"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLCDNumber" name="s1_temp"/>
+         </item>
+         <item row="0" column="5">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
