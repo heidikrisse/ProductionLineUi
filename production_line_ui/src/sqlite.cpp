@@ -26,9 +26,8 @@ bool Db_manager::create_connection()
     QSqlQuery query(db);
     query.exec("CREATE TABLE IF NOT EXISTS line_data (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, conv_ctrl INT, "
                "heat1_ctrl INT, heat2_ctrl INT, heat3_ctrl INT, cool_ctrl INT, conveyor_speed INT, heater1 INT, heater2 INT, "
-               "heater3 INT, cooler INT, qc_camera INT, temp1 REAL, temp2 REAL, temp3 REAL, temp4 REAL, temp5 REAL, temp6 REAL, "
+               "heater3 INT, cooler INT, qc_camera INT, non_passers INT, temp1 REAL, temp2 REAL, temp3 REAL, temp4 REAL, temp5 REAL, temp6 REAL, "
                "temp7 REAL, temp8 REAL, temp9 REAL, temp10 REAL)");
-    query.exec("CREATE TABLE IF NOT EXISTS camera_data (id INT PRIMARY KEY AUTOINCREMENT, timestamp TEXT, non_passers INT)");
     return true;
 }
 
@@ -37,10 +36,10 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     QSqlQuery query;
     query.prepare("INSERT INTO line_data (timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, "
                   "heat3_ctrl, cool_ctrl, conveyor_speed, heater1, heater2, heater3, cooler, "
-                  "qc_camera, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, "
+                  "qc_camera, non_passers, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, "
                   "temp10) VALUES (:timestamp, :conv_ctrl, :heat1_ctrl, :heat2_ctrl, :heat3_ctrl, "
                   ":cool_ctrl, :conveyor_speed, :heater1, :heater2, :heater3, :cooler, "
-                  ":qc_camera, :temp1, :temp2, :temp3, :temp4, :temp5, :temp6, :temp7, :temp8, :temp9, :temp10)");
+                  ":qc_camera, :non_passers, :temp1, :temp2, :temp3, :temp4, :temp5, :temp6, :temp7, :temp8, :temp9, :temp10)");
 
     // Binding placeholders and values
     query.bindValue(":timestamp", QString::fromStdString(parsed_data.time_stamp));
@@ -65,6 +64,7 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     query.bindValue(":heat2_ctrl", parsed_data.heater2_manual_control);
     query.bindValue(":heat3_ctrl", parsed_data.heater3_manual_control);
     query.bindValue(":cool_ctrl", parsed_data.cooler_manual_control);
+    query.bindValue(":non_passers", parsed_data.failed_count);
 
     if (query.exec())
     {
@@ -78,7 +78,47 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     }
 }
 
-void Db_manager::print_line_data()  //(const QString& selected_timestamp)
+std::vector<CurrentConveyerData> Db_manager::get_all_dbData() {
+    std::vector<CurrentConveyerData> data_vector{};
+    QSqlQuery query(db);
+    query.setForwardOnly(true);
+    query.prepare("SELECT timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, qc_camera, non_passers, conveyor_speed, heater1, heater2, heater3, cooler, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10 FROM line_data");
+    if (!query.exec()) {
+        qDebug() << "Getting db-data failed:" << query.lastError().text();
+    }
+    while(query.next()) {
+        QString time = query.value(0).toString();
+        bool conv_ctrl = query.value(1).toBool();
+        bool heat1_ctrl = query.value(2).toBool();
+        bool heat2_ctrl = query.value(3).toBool();
+        bool heat3_ctrl = query.value(4).toBool();
+        bool cool_ctrl = query.value(5).toBool();
+        int speed = query.value(6).toInt();
+        bool heat1 = query.value(7).toBool();
+        bool heat2 = query.value(8).toBool();
+        bool heat3 = query.value(9).toBool();
+        bool cool = query.value(10).toBool();
+        bool camera = query.value(11).toBool();
+        uint8_t failed = query.value(12).toInt();
+        float t1 = query.value(13).toFloat();
+        float t2 = query.value(14).toFloat();
+        float t3 = query.value(15).toFloat();
+        float t4 = query.value(16).toFloat();
+        float t5 = query.value(17).toFloat();
+        float t6 = query.value(18).toFloat();
+        float t7 = query.value(19).toFloat();
+        float t8 = query.value(20).toFloat();
+        float t9 = query.value(21).toFloat();
+        float t10 = query.value(22).toFloat();
+
+        std::array<float, 10> tmp_array{t1, t2, t3, t4, t5, t6, t7, t8, t9, t10};
+        CurrentConveyerData tmp_struct{time.toStdString(), conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, camera, failed, speed, heat1, heat2, heat3, cool, tmp_array};
+        data_vector.push_back(tmp_struct);
+    }
+    return data_vector;
+}
+
+void Db_manager::print_line_data()
 {
     QSqlQuery query(db);
     query.setForwardOnly(true);
