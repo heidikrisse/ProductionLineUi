@@ -100,24 +100,12 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     json j = json::parse(payload);
     std::string topic = msg->get_topic();
 
-    if (topic == "sensor_control_data")
+    if (topic == "sensor_control_data1")
     {
         try
         {
             curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
             emit conveyor_speed_changed(curr_data.conveyor_upm);
-
-            curr_data.conveyor_manual_control = j["conveyor_manual_control"].get<bool>();
-            emit conveyor_control(curr_data.conveyor_manual_control);
-
-            curr_data.heater1_manual_control = j["heater_1_manual_control"].get<bool>();
-            curr_data.heater2_manual_control = j["heater_2_manual_control"].get<bool>();
-            curr_data.heater3_manual_control = j["heater_3_manual_control"].get<bool>();
-            emit heater_controls(curr_data.heater1_manual_control, curr_data.heater2_manual_control, curr_data.heater3_manual_control);
-
-            curr_data.cooler_manual_control = j["cooler_manual_control"].get<bool>();
-            emit cooler_control(curr_data.cooler_manual_control);
-
             curr_data.qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
             emit qc_camera_state(curr_data.qc_camera_toggle);
 
@@ -132,13 +120,13 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             curr_data.temps = j["temp_sensors"].get<std::array<float, 10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
 
-            curr_data.qc_camera_fails = j["qc_camera_fails"].get<int>();
+            curr_data.qc_camera_fails = j["qc_camera_toggle"].get<int>();
 
             curr_data.time_stamp = j["time_stamp"].get<std::string>();
         }
         catch (const nlohmann::json::exception& e)
         {
-            std::cerr << "JSON parsing error: " << e.what() << '\n';
+          //  std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
 
         // Parse JSON data and push the data to the data_cache
@@ -264,13 +252,11 @@ void MQTTClient::publish_data()
     j["heater_3_manual_control"] = curr_data.heater3_manual_control;
     j["cooler_manual_control"] = curr_data.cooler_manual_control;
     j["qc_camera_toggle"] = curr_data.qc_camera_toggle;
-    j["speed_of_conveyor"] = curr_data.conveyor_upm;
+    j["speed_of_conveyor"] = conveyor_desired_speed;
     j["heater_1"] = curr_data.heater1;
     j["heater_2"] = curr_data.heater2;
     j["heater_3"] = curr_data.heater3;
     j["cooler"] = curr_data.cooler;
-    //j["temp_sensors"] = curr_data.temps;
-   // j["time_stamp"] = curr_data.time_stamp;
 
     publish("conveyor_params" , j.dump());
 
