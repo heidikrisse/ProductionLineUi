@@ -24,7 +24,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="control">
        <attribute name="icon">
@@ -415,7 +415,7 @@ QCheckBox::indicator:unchecked {
          <string>test</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="calculateButton">
+       <widget class="QPushButton" name="calculate_button">
         <property name="geometry">
          <rect>
           <x>50</x>

@@ -353,7 +353,7 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
     test->publish_data();
 }
 
-void MainWindow::on_calculateButton_clicked()
+void MainWindow::on_calculate_button_clicked()
 {
     double rejectionRate = test->get_failure_rate() * 100.0;
     double operatingCost = test->get_operating_cost();

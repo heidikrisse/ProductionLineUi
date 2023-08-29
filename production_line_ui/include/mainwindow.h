@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow
 
         void on_cooler_check_on_off_toggled(bool checked);
 
-        void on_calculateButton_clicked();
+        void on_calculate_button_clicked();
 
         void conveyer_speed_received();
         void conveyer_control_received();
