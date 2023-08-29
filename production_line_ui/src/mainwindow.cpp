@@ -6,7 +6,6 @@
 #include "../include/sqlite.hpp"
 
 #include <QtSql>
-#include <QThread>
 #include <QLCDNumber>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -91,8 +90,6 @@ MainWindow::MainWindow(QWidget *parent)
     camera_state_received();
     temps_received();
 
-    worker = new QThread;
-    mqtt_client->moveToThread(worker);
     // Calculate analytics
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
@@ -127,8 +124,6 @@ MainWindow::MainWindow(QWidget *parent)
 
         }
     }
-
-    worker->start();
 }
 
 MainWindow::~MainWindow()
@@ -144,11 +139,6 @@ MainWindow::~MainWindow()
     delete chart;
     delete chart_view;
     delete db;
-
-    worker->quit();
-    worker->wait();
-    delete worker;
-
     delete ui;
 }
 
