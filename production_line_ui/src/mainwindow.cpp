@@ -20,14 +20,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //for displaying the temps
-    under80 = new QPalette;
-    over80 = new QPalette;
+    //under80 = new QPalette;
+    //over80 = new QPalette;
+    under80 = std::make_unique<QPalette>();
+    over80 = std::make_unique<QPalette>();
     over80->setColor(QPalette::WindowText, QColor(Qt::red));
     under80->setColor(QPalette::WindowText, QColor(Qt::green));
 
-    axis_x = new QDateTimeAxis();
-    axis_y = new QValueAxis();
-    chart = new QChart();
+    //axis_x = new QDateTimeAxis();
+    //axis_y = new QValueAxis();
+    //chart = new QChart();
+    axis_x = std::make_unique<QDateTimeAxis>();
+    axis_y = std::make_unique<QValueAxis>();
+    chart = std::make_unique<QChart>();
 
     // Y-axis
     axis_y->setLabelFormat("%i");
@@ -38,18 +43,19 @@ MainWindow::MainWindow(QWidget *parent)
     axis_x->setTickCount(10);
     axis_x->setFormat("hh:mm");
     axis_x->setTitleText("hh:mm");
-    // Set the initial range of the x-axis to the last 3 hours
+    // Set the initial range of the x-axis to the last 1 hours
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QDateTime threeHoursAgo = currentDateTime.addSecs(-3 * 60 * 60); // last 3 hours in seconds
-    axis_x->setMin(threeHoursAgo);
-    axis_x->setMax(currentDateTime);
+    // QDateTime oneHoursAgo = currentDateTime.addSecs(-1 * 60 * 60); // last one hours in seconds
+    // axis_x->setMin(oneHoursAgo);
+    axis_x-> setMin(currentDateTime); // starts showing from the current time
+    axis_x->setMax(currentDateTime.addSecs(10*60)); // +10 mins
 
     // Chart
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
     chart->setTitle("Current temperature");
-    chart->addAxis(axis_x, Qt::AlignBottom);
-    chart->addAxis(axis_y, Qt::AlignLeft);
+    chart->addAxis(axis_x.get(), Qt::AlignBottom);
+    chart->addAxis(axis_y.get(), Qt::AlignLeft);
 
     for (int i{1}; i < 11; i++)
     {
@@ -57,15 +63,16 @@ MainWindow::MainWindow(QWidget *parent)
         multi_series.append(series);
         series->setName(QString("HS " + QString::number(i)));
         chart->addSeries(series);
-        series->attachAxis(axis_x);
-        series->attachAxis(axis_y);
+        series->attachAxis(axis_x.get());
+        series->attachAxis(axis_y.get());
     }
 
     // ChartView
-    chart_view = new QChartView(chart);
+    //chart_view = new QChartView(chart);
+    chart_view = std::make_unique<QChartView>(chart.get());
     chart_view->setRenderHint(QPainter::Antialiasing);
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
-    layout->addWidget(chart_view);
+    layout->addWidget(chart_view.get());
 
     // Create database and tables, if not exist
     db = new Db_manager();
@@ -78,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123hkdfg"); // change unique client ID
+    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "123hkdfgsdfsdfsd"); // change unique client ID
     mqtt_client->connect();
     //mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("sensor_control_data1");
@@ -105,15 +112,15 @@ MainWindow::MainWindow(QWidget *parent)
     if (costLabel)
         costLabel->setText("Operating Cost: 0.00 €");
 
-    connect(mqtt_client, &MQTTClient::conveyor_speed_changed, this, &MainWindow::conveyor_speed_received);
-    connect(mqtt_client, &MQTTClient::conveyor_control, this, &MainWindow::conveyor_control_received);
-    connect(mqtt_client, &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
-    connect(mqtt_client, &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
-    connect(mqtt_client, &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
-    connect(mqtt_client, &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
-    connect(mqtt_client, &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
-    connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
-    connect(mqtt_client, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
+    connect(mqtt_client.get(), &MQTTClient::conveyor_speed_changed, this, &MainWindow::conveyor_speed_received);
+    connect(mqtt_client.get(), &MQTTClient::conveyor_control, this, &MainWindow::conveyor_control_received);
+    connect(mqtt_client.get(), &MQTTClient::heater_controls, this, &MainWindow::heater_controls_received);
+    connect(mqtt_client.get(), &MQTTClient::heater_states, this, &MainWindow::heater_states_received);
+    connect(mqtt_client.get(), &MQTTClient::cooler_state, this, &MainWindow::cooler_states_received);
+    connect(mqtt_client.get(), &MQTTClient::cooler_control, this, &MainWindow::cooler_control_received);
+    connect(mqtt_client.get(), &MQTTClient::qc_camera_state, this, &MainWindow::camera_state_received);
+    connect(mqtt_client.get(), &MQTTClient::temps_changed, this, &MainWindow::temps_received);
+    connect(mqtt_client.get(), &MQTTClient::db_updated, this, &MainWindow::db_update_received);
 
     // Initialize graph with data_cache
     for (const auto &data : mqtt_client->data_cache)
@@ -130,17 +137,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    if (mqtt_client)
-    {
-        delete mqtt_client;
+    for(auto& series : multi_series){
+        delete series;
     }
-
-    delete over80;
-    delete under80;
-    delete axis_x;
-    delete axis_y;
-    delete chart;
-    delete chart_view;
     delete db;
     delete ui;
 }

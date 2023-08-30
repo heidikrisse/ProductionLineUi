@@ -12,7 +12,8 @@
 #include <QThread>
 #include <memory>
 #include <thread>
-
+#include <QSharedPointer>
+#include <QScopedPointer>
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
@@ -71,20 +72,18 @@ class MainWindow : public QMainWindow
 
       private:
         Ui::MainWindow *ui;
-        MQTTClient *mqtt_client;
+        std::unique_ptr<MQTTClient> mqtt_client;
         QList<QSplineSeries *> multi_series;
-        QChart* chart;
-        QChartView* chart_view;
-        QDateTimeAxis* axis_x;
-        QValueAxis* axis_y;
-        std::thread data_loop_thread;
         Db_manager* db;
         QLabel *rejectionLabel;
         QLabel *costLabel;
-        QThread *worker;
         QLCDNumber *h1_temp;
-        QPalette *over80;
-        QPalette *under80;
+        std::unique_ptr<QPalette> over80;
+        std::unique_ptr<QPalette> under80;
+        std::unique_ptr<QChart> chart;
+        std::unique_ptr<QChartView> chart_view;
+        std::unique_ptr<QDateTimeAxis> axis_x;
+        std::unique_ptr<QValueAxis> axis_y;
 };
 
 #endif
