@@ -74,7 +74,7 @@ public:
     double get_average_temperature() const;
     void update_analytics_values() const;
     void publish_data();
-    uint8_t current_mw_tab;
+    uint8_t current_mw_tab = 1;
     int conveyor_desired_speed = 0;
 
   private: signals:
