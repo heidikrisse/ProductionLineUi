@@ -33,8 +33,6 @@ set(PROJECT_SOURCES
         include/mqtt_client.h
         src/mqtt_client.cpp
         include/json.hpp
-        include/json_parser.h
-        src/json_parser.cpp
         include/sqlite.hpp
         src/sqlite.cpp
         include/doctest.h

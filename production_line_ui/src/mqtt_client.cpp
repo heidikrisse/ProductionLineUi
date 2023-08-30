@@ -1,6 +1,6 @@
 // mqtt_client.cpp
 #include "../include/mqtt_client.h"
-#include "../include/json_parser.h"
+//#include "../include/json_parser.h"
 
 #include <string>
 
@@ -77,7 +77,7 @@ std::vector<std::string> MQTTClient::fetch_sensor_data()
 
     for (const auto& json_data : data_cache)
     {
-        data.push_back(json_data.timestamp);
+        data.push_back(json_data.time_stamp);
     }
 
     return data;
@@ -121,11 +121,6 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         {
             std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
-
-        // Parse JSON data and push the data to the data_cache
-        json_data::parsed_json parsed = json_data::json_to_vec(j);
-        data_cache.push_back(parsed);
-
         emit db_updated(curr_data);
         if(current_mw_tab == 2)
         {
@@ -149,8 +144,8 @@ double MQTTClient::get_failure_rate() const
 
     for (const auto& data : data_cache)
     {
-        total_units += data.units_per_minute;
-        failed_units += data.non_passers;
+        total_units += data.conveyor_upm;
+        failed_units += data.qc_camera_fails;
     }
 
     std::cout << "total_units: " << total_units << '\n'; // for debugging
@@ -183,27 +178,27 @@ double MQTTClient::get_operating_cost() const
 
     for (const auto& data : data_cache)
     {
-        total_units += data.units_per_minute;
-        total_cost += data.units_per_minute * cost_per_unit;
+        total_units += data.conveyor_upm;
+        total_cost += data.conveyor_upm * cost_per_unit;
 
         std::cout << "total_units: " << total_units << '\n'; // for debugging
 
-        if (data.heater1_status)
+        if (data.heater1)
         {
             total_cost += heater_cost;
         }
 
-        if (data.heater2_status)
+        if (data.heater2)
         {
             total_cost += heater_cost;
         }
 
-        if (data.heater3_status)
+        if (data.heater3)
         {
             total_cost += heater_cost;
         }
 
-        if (data.cooler_status)
+        if (data.cooler)
         {
             total_cost += cooler_cost;
         }
@@ -220,7 +215,7 @@ double MQTTClient::get_average_temperature() const
 
     for (const auto& data : data_cache)
     {
-        for (const auto& temp : data.heat_sensors)
+        for (const auto& temp : data.temps)
         {
             total_temperature += temp;
             num_temperatures++;
@@ -243,7 +238,7 @@ int MQTTClient::get_average_upm() const
 
     for(const auto& data : data_cache)
     {
-        total_speed += data.units_per_minute;
+        total_speed += data.conveyor_upm;
         ++num_of_speeds;
     }
     if(num_of_speeds > 0){

@@ -3,12 +3,14 @@
 #define MQTT_CLIENT_H
 
 #include "mqtt/async_client.h"
-#include "json_parser.h" // for using nlohmann::json´
+#include "json.hpp"
 
 #include <fstream>
 #include <string>
 #include <vector>
 #include <QObject>
+
+using json = nlohmann::json;
 
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
@@ -45,7 +47,7 @@ public:
     CurrentConveyorData curr_data;
     bool live_data_available{false}; // boolean to check if live real-time data is available
 
-    std::vector<json_data::parsed_json> data_cache; // from database
+    std::vector<CurrentConveyorData> data_cache; // from database
 
     // Function to connect to the MQTT broker
     bool connect();
