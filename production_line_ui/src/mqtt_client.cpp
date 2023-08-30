@@ -173,7 +173,7 @@ double MQTTClient::get_failure_rate() const
 // Function to calculate the operating costs from the fetched data
 double MQTTClient::get_operating_cost() const
 {
-    double cost_per_unit{0.1}; // <= can be changed
+    double cost_per_unit{1}; // <= can be changed
     // Cost for every heater turned on / unit time
     double heater_cost{3}; // <= can be changed
     // Const for cooler turned on / unit time

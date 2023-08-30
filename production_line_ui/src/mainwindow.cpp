@@ -20,16 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //for displaying the temps
-    //under80 = new QPalette;
-    //over80 = new QPalette;
     under80 = std::make_unique<QPalette>();
     over80 = std::make_unique<QPalette>();
     over80->setColor(QPalette::WindowText, QColor(Qt::red));
     under80->setColor(QPalette::WindowText, QColor(Qt::green));
 
-    //axis_x = new QDateTimeAxis();
-    //axis_y = new QValueAxis();
-    //chart = new QChart();
     axis_x = std::make_unique<QDateTimeAxis>();
     axis_y = std::make_unique<QValueAxis>();
     chart = std::make_unique<QChart>();
@@ -68,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // ChartView
-    //chart_view = new QChartView(chart);
     chart_view = std::make_unique<QChartView>(chart.get());
     chart_view->setRenderHint(QPainter::Antialiasing);
     QVBoxLayout *layout = new QVBoxLayout(ui->chart_frame);
@@ -87,7 +81,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfs22"); // change unique client ID
     mqtt_client->connect();
-    //mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("sensor_control_data1");
     mqtt_client->subscribe("test/12345"); // name of the test/topic
     mqtt_client->update_analytics_values();
@@ -101,7 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
     camera_state_received();
     temps_received();
 
-    // Calculate analytics
+    // Calculate analytics:
+
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
     costLabel = ui->tabWidget->findChild<QLabel*>("costLabel");
