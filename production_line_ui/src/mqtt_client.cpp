@@ -265,11 +265,4 @@ void MQTTClient::publish_data()
     j["cooler"] = curr_data.cooler;
 
     publish("conveyor_params" , j.dump());
-
-    // Update curr_data before emitting the signal
-    curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
-    curr_data.conveyor_manual_control = j["conveyor_manual_control"].get<bool>();
-
-    // Emit db_updated signal with the updated curr_data
-    emit db_updated(curr_data);
 }
