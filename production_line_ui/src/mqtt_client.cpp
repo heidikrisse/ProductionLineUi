@@ -10,17 +10,6 @@ MQTTClient::MQTTClient(const std::string& broker_address, const std::string& cli
 {
     // Set a message callback
     client.set_callback(*this);
-
-    // If connection is succesfull, data_cache will remain empty and live real-time data
-    // will be added through message_arrived function to data_cache
-    // if (connect())
-    // {
-    //    live_data_available = true; // Set live data availability to true
-    // }
-    // else
-    // {
-    //    data_cache = load_sample_data("../json_examples/"); // Load sample data
-    // }
 }
 
 MQTTClient::~MQTTClient()
@@ -144,8 +133,8 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
             update_analytics_values();
         }
     }
-
 }
+
 void MQTTClient::update_analytics_values() const
 {
     get_average_temperature();

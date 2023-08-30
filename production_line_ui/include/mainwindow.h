@@ -14,6 +14,7 @@
 #include <thread>
 #include <QSharedPointer>
 #include <QScopedPointer>
+
 QT_BEGIN_NAMESPACE
 namespace Ui
 {

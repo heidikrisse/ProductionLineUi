@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <QObject>
+
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
  * - connects to an MQTT broker, fetches data, controls a production
@@ -62,7 +63,6 @@ public:
     // Function to fetch latest data from the sensors
     std::vector<std::string> fetch_sensor_data();
 
-    // std::vector<json_data::parsed_json> load_sample_data(const std::string& folder_path);
     // Overriden callback function to handle incoming messages
     virtual void message_arrived(mqtt::const_message_ptr msg) override;
 
