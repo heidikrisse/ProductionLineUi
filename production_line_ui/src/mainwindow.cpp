@@ -17,12 +17,13 @@ MainWindow::MainWindow(QWidget *parent)
       , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setStyleSheet("background-color: rgb(230, 234, 234);");
 
     //for displaying the temps
     under80 = std::make_unique<QPalette>();
     over80 = std::make_unique<QPalette>();
     over80->setColor(QPalette::WindowText, QColor(Qt::red));
-    under80->setColor(QPalette::WindowText, QColor(Qt::green));
+    under80->setColor(QPalette::WindowText, QColor(qRgb(73, 166, 45)));
 
     axis_x = std::make_unique<QDateTimeAxis>();
     axis_y = std::make_unique<QValueAxis>();
