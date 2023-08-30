@@ -93,6 +93,8 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     {
         try
         {
+            //TODO: Lisätkää j["failures"].get<std::string> tms
+            // keskustelkaa ryhmä 2 kanssa
             curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
             emit conveyor_speed_changed(curr_data.conveyor_upm);
             if(!curr_data.heater1_manual_control){
@@ -234,7 +236,22 @@ double MQTTClient::get_average_temperature() const
         return 0.0; // Return 0 if no temperature data available
     }
 }
+int MQTTClient::get_average_upm() const
+{
+    int total_speed{0};
+    int num_of_speeds{0};
 
+    for(const auto& data : data_cache)
+    {
+        total_speed += data.units_per_minute;
+        ++num_of_speeds;
+    }
+    if(num_of_speeds > 0){
+        return total_speed / num_of_speeds;
+    }
+    else return 0;
+
+}
 void MQTTClient::publish_data()
 {
     json j;

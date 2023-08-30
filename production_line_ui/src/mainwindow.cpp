@@ -143,6 +143,7 @@ MainWindow::~MainWindow()
     chart_view = nullptr;
     db = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void MainWindow::db_update_received()
@@ -324,10 +325,13 @@ void MainWindow::on_calculateButton_clicked()
 
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
-    if(index == 2)
+    if(index == 1)
     { // analytics window
         mqtt_client->current_mw_tab = 2;
-        mqtt_client->update_analytics_values();
+        double avg_temps = mqtt_client->get_average_temperature();
+        int avg_speed = mqtt_client->get_average_upm();
+        ui->avgTempLabel->setText(QString::number(avg_temps));
+        ui->avgSpeedLabel->setText(QString::number(avg_speed));
     }
     else
     {  // control window

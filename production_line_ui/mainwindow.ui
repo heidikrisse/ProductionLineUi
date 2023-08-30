@@ -24,7 +24,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="control">
        <attribute name="icon">
@@ -530,22 +530,22 @@ QCheckBox::indicator:unchecked {
          <rect>
           <x>600</x>
           <y>110</y>
-          <width>160</width>
+          <width>211</width>
           <height>88</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="analytics_grid">
-         <item row="1" column="0">
-          <widget class="QLabel" name="uptimeTitleLabel">
-           <property name="text">
-            <string>Uptime-%</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="conveyerAnalticsLabel">
            <property name="text">
             <string>Conveyer statistics</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="conveyerAverageSpeedTitle">
+           <property name="text">
+            <string>Conveyer speed avg</string>
            </property>
           </widget>
          </item>
@@ -556,10 +556,24 @@ QCheckBox::indicator:unchecked {
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="conveyerAverageSpeedTitle">
+         <item row="1" column="0">
+          <widget class="QLabel" name="uptimeTitleLabel">
            <property name="text">
-            <string>Conveyer speed avg</string>
+            <string>Uptime-%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="avgTempLabel">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLabel" name="avgSpeedLabel">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
