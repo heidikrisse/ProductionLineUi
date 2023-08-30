@@ -95,8 +95,8 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
         tmp_struct.heater3_manual_control = query.value(4).toBool();
         tmp_struct.cooler_manual_control = query.value(5).toBool();
         tmp_struct.qc_camera_toggle = query.value(6).toBool();
-        tmp_struct.qc_camera_fails = (query.value(7).toUInt() != 0);
-        tmp_struct.conveyor_upm = query.value(8).toUInt();
+        tmp_struct.qc_camera_fails = (query.value(7).toInt());
+        tmp_struct.conveyor_upm = query.value(8).toInt();
         tmp_struct.heater1 = query.value(9).toBool();
         tmp_struct.heater2 = query.value(10).toBool();
         tmp_struct.heater3 = query.value(11).toBool();
@@ -114,6 +114,7 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
         float t10 = query.value(22).toFloat();
 
         std::array<float, 10> tmp_array{t1, t2, t3, t4, t5, t6, t7, t8, t9, t10};
+        tmp_struct.temps = tmp_array;
 
         data_vector.push_back(tmp_struct);
     }
