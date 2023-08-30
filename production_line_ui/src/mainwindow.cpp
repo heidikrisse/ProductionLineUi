@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     axis_x->setTitleText("Time");
     // Set the initial range of the x-axis to the last 4 hours
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QDateTime fourHoursAgo = currentDateTime.addSecs(-4 * 60 * 60); // 4 hours in seconds
+    QDateTime fourHoursAgo = currentDateTime.addSecs(-4 * 60 * 60); // last 4 hours in seconds
     axis_x->setMin(fourHoursAgo);
     axis_x->setMax(currentDateTime);
 
@@ -110,9 +110,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     connect(mqtt_client, &MQTTClient::db_updated, this, &MainWindow::db_update_received);
 
-    // Connect MQTTClient signals to MainWindow slots
-    connect(mqtt_client, &MQTTClient::temps_changed, this, &MainWindow::temps_received);
-
     // Initialize graph with data_cache
     for (const auto &data : mqtt_client->data_cache)
     {
@@ -122,19 +119,19 @@ MainWindow::MainWindow(QWidget *parent)
             QDateTime timeStamp = QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
 
             multi_series[i]->append(timeStamp.toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
-
         }
     }
 }
 
 MainWindow::~MainWindow()
 {
-
     if (mqtt_client)
     {
         delete mqtt_client;
     }
 
+    delete over80;
+    delete under80;
     delete axis_x;
     delete axis_y;
     delete chart;
