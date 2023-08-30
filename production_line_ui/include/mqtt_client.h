@@ -45,7 +45,6 @@ public:
     ~MQTTClient();
 
     CurrentConveyorData curr_data;
-    bool live_data_available{false}; // boolean to check if live real-time data is available
 
     std::vector<CurrentConveyorData> data_cache; // from database
 
@@ -74,7 +73,7 @@ public:
     // Function to calculate the average temperature of the fetched data
     double get_average_temperature() const;
     int get_average_upm() const;
-    void update_analytics_values() const;
+    void update_analytics_values();
     void publish_data();
     uint8_t current_mw_tab = 1;
     int conveyor_desired_speed = 0;
@@ -90,6 +89,7 @@ public:
     void qc_camera_state(bool state);
     void temps_changed(std::array<float,10> temps);
     void db_updated(CurrentConveyorData& data);
+    void analytics_data_updated();
 
 private:
     mqtt::async_client client;

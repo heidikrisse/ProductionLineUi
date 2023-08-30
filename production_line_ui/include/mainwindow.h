@@ -33,9 +33,9 @@ class MainWindow : public QMainWindow
 
     private slots:
         //slider values
-        void on_conveyer_units_per_minute_slider_valueChanged(int value);
+        void on_conveyor_units_per_minute_slider_valueChanged(int value);
 
-        void on_conveyer_units_per_minute_slider_sliderReleased();
+        void on_conveyor_units_per_minute_slider_sliderReleased();
 
         friend class MQTTClient;
 
@@ -59,8 +59,6 @@ class MainWindow : public QMainWindow
 
         void on_cooler_check_on_off_toggled(bool checked);
 
-        void on_calculateButton_clicked();
-
         void conveyor_speed_received();
         void conveyor_control_received();
         void heater_controls_received();
@@ -73,9 +71,9 @@ class MainWindow : public QMainWindow
         void on_tabWidget_currentChanged(int index);
 
       private:
-        Ui::MainWindow *ui;
+        std::unique_ptr<Ui::MainWindow> ui;
         std::unique_ptr<MQTTClient> mqtt_client;
-        QList<QSplineSeries *> multi_series;
+        QList<std::shared_ptr<QSplineSeries>> multi_series;
         QLabel *rejectionLabel;
         QLabel *costLabel;
         QLCDNumber *h1_temp;

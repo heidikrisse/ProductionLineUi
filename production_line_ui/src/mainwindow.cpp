@@ -1,9 +1,4 @@
 // mainwindow.cpp
-
-/*
- * FIXME: Raw pointers (new - delete) should be changed into std::unique_ptr !
- */
-
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/mainwindow.h"
@@ -14,7 +9,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-      , ui(new Ui::MainWindow)
+      , ui(std::make_unique<Ui::MainWindow>())
 {
     ui->setupUi(this);
     this->setStyleSheet("background-color: rgb(230, 234, 234);");
@@ -32,12 +27,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Y-axis
     axis_y->setLabelFormat("%i");
     axis_y->setTitleText("Celcius degrees");
+    axis_y->setTitleFont(QFont("Sans Serif"));
     axis_y->setRange(0, 90);
 
     // X-axis
     axis_x->setTickCount(10);
     axis_x->setFormat("hh:mm");
     axis_x->setTitleText("hh:mm");
+    axis_x->setTitleFont(QFont("Sans Serif"));
     // Set the initial range of the x-axis to the last 1 hours
     QDateTime currentDateTime = QDateTime::currentDateTime();
     // QDateTime oneHoursAgo = currentDateTime.addSecs(-1 * 60 * 60); // last one hours in seconds
@@ -48,16 +45,19 @@ MainWindow::MainWindow(QWidget *parent)
     // Chart
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
-    chart->setTitle("Current temperature");
+    chart->setTitle("Current temperature"); // Chart title
+    chart->setTitleFont(QFont("Sans Serif", 18, QFont::Bold)); // Font size and style  of the title
     chart->addAxis(axis_x.get(), Qt::AlignBottom);
     chart->addAxis(axis_y.get(), Qt::AlignLeft);
 
     for (int i{1}; i < 11; i++)
     {
-        auto* series = new QSplineSeries();
-        multi_series.append(series);
+        //auto* series = new QSplineSeries();
+        //series->setParent(this);
+        multi_series.append(std::make_shared<QSplineSeries>());
+        auto series = multi_series.back();
         series->setName(QString("HS " + QString::number(i)));
-        chart->addSeries(series);
+        chart->addSeries(series.get());
         series->attachAxis(axis_x.get());
         series->attachAxis(axis_y.get());
     }
@@ -111,26 +111,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mqtt_client.get(), &MQTTClient::db_updated, this, &MainWindow::db_update_received);
 
     //Gets all data from DB to data_cache
-    //Voi ottaa pois constructorista ja laittaa esim.
-    //joku valikko mistä voi valita aikavälin tms
+    // - TODO: remove from the constructor and implement a menu to choose a time period etc.
     mqtt_client->data_cache = db->get_all_dbData();
 }
 
 MainWindow::~MainWindow()
 {
-    for(auto& series : multi_series){
-        delete series;
-    }
-    mqtt_client = nullptr;
-    over80 = nullptr;
-    under80 = nullptr;
-    axis_x = nullptr;
-    axis_y = nullptr;
-    chart = nullptr;
-    chart_view = nullptr;
-    db = nullptr;
-    delete ui;
-    ui = nullptr;
 }
 
 void MainWindow::db_update_received()
@@ -148,6 +134,7 @@ void MainWindow::conveyor_control_received()
 {
     ui->speed_manual_or_auto->setChecked(mqtt_client->curr_data.conveyor_manual_control);
 }
+
 void MainWindow::heater_controls_received()
 {
     ui->heater1_check_on_off->setEnabled(mqtt_client->curr_data.heater1_manual_control);
@@ -159,6 +146,7 @@ void MainWindow::heater_controls_received()
     ui->heater3_manual_automatic->setChecked(mqtt_client->curr_data.heater3_manual_control);
 
 }
+
 void MainWindow::heater_states_received()
 {
     ui->heater1_check_on_off->setChecked(mqtt_client->curr_data.heater1);
@@ -166,10 +154,12 @@ void MainWindow::heater_states_received()
     ui->heater3_checked_on_off->setChecked(mqtt_client->curr_data.heater3);
 
 }
+
 void MainWindow::cooler_states_received()
 {
     ui->cooler_check_on_off->setChecked(mqtt_client->curr_data.cooler);
 }
+
 void MainWindow::camera_state_received()
 {
     ui->qc_camera_on_off->setChecked(mqtt_client->curr_data.qc_camera_toggle);
@@ -180,6 +170,7 @@ void MainWindow::cooler_control_received()
     ui->cooler_check_on_off->setEnabled(mqtt_client->curr_data.cooler_manual_control);
     ui->cooler_manual_auto->setChecked(mqtt_client->curr_data.cooler_manual_control);
 }
+
 void MainWindow::temps_received()
 {
     // Update the UI temperature displays
@@ -208,7 +199,7 @@ void MainWindow::temps_received()
     }
 }
 
-void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
+void MainWindow::on_conveyor_units_per_minute_slider_valueChanged(int value)
 {
     if(mqtt_client->curr_data.conveyor_manual_control)
     {
@@ -216,11 +207,11 @@ void MainWindow::on_conveyer_units_per_minute_slider_valueChanged(int value)
     }
     else
     {
-        ui->conveyer_units_per_minute_slider->setValue(mqtt_client->conveyor_desired_speed);
+        ui->conveyor_units_per_minute_slider->setValue(mqtt_client->conveyor_desired_speed);
     }
 }
 
-void MainWindow::on_conveyer_units_per_minute_slider_sliderReleased()
+void MainWindow::on_conveyor_units_per_minute_slider_sliderReleased()
 {
     if(mqtt_client->curr_data.conveyor_manual_control)
     {
@@ -247,7 +238,6 @@ void MainWindow::on_heater2_checked_on_off_toggled(bool checked)
     mqtt_client->publish_data();
 }
 
-
 void MainWindow::on_heater2_manual_automatic_toggled(bool checked)
 {
     ui->heater2_checked_on_off->setEnabled(checked);
@@ -261,7 +251,6 @@ void MainWindow::on_heater3_checked_on_off_toggled(bool checked)
     mqtt_client->publish_data();
 }
 
-
 void MainWindow::on_heater3_manual_automatic_toggled(bool checked)
 {
     ui->heater3_checked_on_off->setEnabled(checked);
@@ -274,7 +263,6 @@ void MainWindow::on_qc_camera_on_off_toggled(bool checked)
     mqtt_client-> curr_data.qc_camera_toggle = checked;
     mqtt_client->publish_data();
 }
-
 
 void MainWindow::on_speed_manual_or_auto_toggled(bool checked)
 {
@@ -295,30 +283,29 @@ void MainWindow::on_cooler_check_on_off_toggled(bool checked)
     mqtt_client->publish_data();
 }
 
-void MainWindow::on_calculateButton_clicked()
-{
-    double rejectionRate = mqtt_client->get_failure_rate() * 100.0;
-    double operatingCost = mqtt_client->get_operating_cost();
-
-    if (rejectionLabel)
-    {
-        rejectionLabel->setText(QString("Rejection Percentage: %1%").arg(QString::number(rejectionRate, 'f', 2)));
-    }
-    if (costLabel)
-    {
-        costLabel->setText(QString("Operating Cost: $%1").arg(QString::number(operatingCost, 'f', 2)));
-    }
-}
-
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     if(index == 1)
     { // analytics window
         mqtt_client->current_mw_tab = 2;
-        double avg_temps = mqtt_client->get_average_temperature();
-        int avg_speed = mqtt_client->get_average_upm();
-        ui->avgTempLabel->setText(QString::number(avg_temps));
-        ui->avgSpeedLabel->setText(QString::number(avg_speed));
+
+        double rejection_rate{mqtt_client->get_failure_rate() * 100.0};
+        double operating_cost{mqtt_client->get_operating_cost()};
+
+        if (rejectionLabel)
+        {
+            rejectionLabel->setText(QString("%1 %").arg(QString::number(rejection_rate, 'f', 2)));
+        }
+        if (costLabel)
+        {
+            costLabel->setText(QString("%1 €").arg(QString::number(operating_cost, 'f', 2)));
+        }
+
+        double average_temps{mqtt_client->get_average_temperature()};
+        int average_speed{mqtt_client->get_average_upm()};
+
+        ui->avgTempLabel->setText(QString("%1 °C").arg(QString::number(average_temps, 'f', 2)));
+        ui->avgSpeedLabel->setText(QString("%1 units/min").arg(QString::number(average_speed)));
     }
     else
     {  // control window
