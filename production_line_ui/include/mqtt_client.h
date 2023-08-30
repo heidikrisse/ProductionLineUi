@@ -75,7 +75,7 @@ public:
     void update_analytics_values() const;
     void publish_data();
     uint8_t current_mw_tab;
-    int conveyor_desired_speed;
+    int conveyor_desired_speed = 0;
 
   private: signals:
 
