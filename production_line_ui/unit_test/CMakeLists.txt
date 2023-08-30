@@ -11,8 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Include files for unit testing
 set(TEST_SOURCES
     unit_tests.cpp
-    ../include/json_parser.h
-    ../src/json_parser.cpp
     ../include/mqtt_client.h
     ../src/mqtt_client.cpp
     ../include/doctest.h

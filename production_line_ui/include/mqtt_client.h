@@ -3,12 +3,14 @@
 #define MQTT_CLIENT_H
 
 #include "mqtt/async_client.h"
-#include "json_parser.h" // for using nlohmann::json´
+#include "json.hpp"
 
 #include <fstream>
 #include <string>
 #include <vector>
 #include <QObject>
+
+using json = nlohmann::json;
 
 /**
  * MQTTClient class is a wrapper around the Paho MQTT async client.
@@ -43,10 +45,9 @@ public:
     ~MQTTClient();
 
     CurrentConveyorData curr_data;
-
     bool live_data_available{false}; // boolean to check if live real-time data is available
 
-    std::vector<json_data::parsed_json> data_cache; // from database
+    std::vector<CurrentConveyorData> data_cache; // from database
 
     // Function to connect to the MQTT broker
     bool connect();
@@ -72,6 +73,7 @@ public:
     double get_operating_cost() const;
     // Function to calculate the average temperature of the fetched data
     double get_average_temperature() const;
+    int get_average_upm() const;
     void update_analytics_values() const;
     void publish_data();
     uint8_t current_mw_tab = 1;
@@ -88,7 +90,6 @@ public:
     void qc_camera_state(bool state);
     void temps_changed(std::array<float,10> temps);
     void db_updated(CurrentConveyorData& data);
-
 
 private:
     mqtt::async_client client;

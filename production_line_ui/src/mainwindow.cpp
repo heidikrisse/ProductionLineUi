@@ -7,7 +7,6 @@
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/mainwindow.h"
-#include "../include/json_parser.h"
 #include "../include/sqlite.hpp"
 
 #include <QtSql>
@@ -71,12 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Create database and tables, if not exist
     db = std::make_unique<Db_manager>();
     db->create_connection();
-    std::vector<CurrentConveyorData> testi_vektori{};
-    testi_vektori = db->get_all_dbData();
-    for (auto elem : testi_vektori) {
-        std::cout << elem.time_stamp << " " << elem.conveyor_upm << "\n";
-    }
-
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
     mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfs2234"); // change unique client ID
@@ -116,17 +109,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mqtt_client.get(), &MQTTClient::temps_changed, this, &MainWindow::temps_received);
     connect(mqtt_client.get(), &MQTTClient::db_updated, this, &MainWindow::db_update_received);
 
-    // Initialize graph with data_cache
-    for (const auto &data : mqtt_client->data_cache)
-    {
-        for (size_t i{0}; i < data.heat_sensors.size(); ++i)
-        {
-            // Convert time string to QDateTime
-            QDateTime timeStamp = QDateTime::fromString(QString::fromStdString(mqtt_client->curr_data.time_stamp), "yyyy-MM-ddTHH:mm:ssGMT+2");
-
-            multi_series[i]->append(timeStamp.toMSecsSinceEpoch(), mqtt_client->curr_data.temps[i]);
-        }
-    }
+    //Gets all data from DB to data_cache
+    //Voi ottaa pois constructorista ja laittaa esim.
+    //joku valikko mistä voi valita aikavälin tms
+    mqtt_client->data_cache = db->get_all_dbData();
 }
 
 MainWindow::~MainWindow()
@@ -143,6 +129,7 @@ MainWindow::~MainWindow()
     chart_view = nullptr;
     db = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void MainWindow::db_update_received()
@@ -324,10 +311,13 @@ void MainWindow::on_calculateButton_clicked()
 
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
-    if(index == 2)
+    if(index == 1)
     { // analytics window
         mqtt_client->current_mw_tab = 2;
-        mqtt_client->update_analytics_values();
+        double avg_temps = mqtt_client->get_average_temperature();
+        int avg_speed = mqtt_client->get_average_upm();
+        ui->avgTempLabel->setText(QString::number(avg_temps));
+        ui->avgSpeedLabel->setText(QString::number(avg_speed));
     }
     else
     {  // control window

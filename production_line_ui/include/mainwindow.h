@@ -4,6 +4,7 @@
 
 #include "mqtt_client.h"
 #include "sqlite.hpp"
+#include "json.hpp"
 
 #include <QMainWindow>
 #include <QtCharts>
@@ -12,8 +13,7 @@
 #include <QThread>
 #include <memory>
 #include <thread>
-#include <QSharedPointer>
-#include <QScopedPointer>
+using json = nlohmann::json;
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -27,6 +27,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     public:
+    constexpr static uint8_t TEMP_SENSOR_COUNT = 10;
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
