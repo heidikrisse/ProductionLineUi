@@ -1,4 +1,9 @@
 // mainwindow.cpp
+
+/*
+ * FIXME: Raw pointers (new - delete) should be changed into std::unique_ptr !
+ */
+
 #include "../ui_mainwindow.h"
 #include "../include/mqtt_client.h"
 #include "../include/mainwindow.h"
@@ -31,18 +36,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     // X-axis
     axis_x->setTickCount(10);
-    axis_x->setFormat("hh:mm:ss");
-    axis_x->setTitleText("Time");
-    // Set the initial range of the x-axis to the last 4 hours
+    axis_x->setFormat("hh:mm");
+    axis_x->setTitleText("hh:mm");
+    // Set the initial range of the x-axis to the last 3 hours
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QDateTime fourHoursAgo = currentDateTime.addSecs(-4 * 60 * 60); // last 4 hours in seconds
-    axis_x->setMin(fourHoursAgo);
+    QDateTime threeHoursAgo = currentDateTime.addSecs(-3 * 60 * 60); // last 3 hours in seconds
+    axis_x->setMin(threeHoursAgo);
     axis_x->setMax(currentDateTime);
 
     // Chart
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
-    chart->setTitle("Temperature");
+    chart->setTitle("Current temperature");
     chart->addAxis(axis_x, Qt::AlignBottom);
     chart->addAxis(axis_y, Qt::AlignLeft);
 
