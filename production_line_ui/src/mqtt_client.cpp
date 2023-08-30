@@ -1,6 +1,5 @@
 // mqtt_client.cpp
 #include "../include/mqtt_client.h"
-//#include "../include/json_parser.h"
 
 #include <string>
 
@@ -23,7 +22,6 @@ bool MQTTClient::connect()
     try
     {
         client.connect(conn_opts)->wait();
-        live_data_available = true; // Set live data availability to true
         return true;
     }
     catch(const mqtt::exception& e)
@@ -59,8 +57,6 @@ void MQTTClient::subscribe(const std::string& topic){
 void MQTTClient::publish(const std::string& topic, const std::string& payload){
     mqtt::message_ptr msg = mqtt::make_message(topic, payload);
     msg->set_qos(1);
-    //msg->set_retained(true); // Set retained flag true
-
     try
     {
         client.publish(msg)->wait();
@@ -70,6 +66,7 @@ void MQTTClient::publish(const std::string& topic, const std::string& payload){
         std::cerr << "publish Error: " << e.what() << '\n';
     }
 }
+
 // Function to fetch data from MQTT topics
 std::vector<std::string> MQTTClient::fetch_sensor_data()
 {
@@ -93,8 +90,6 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
     {
         try
         {
-            //TODO: Lisätkää j["failures"].get<std::string> tms
-            // keskustelkaa ryhmä 2 kanssa
             curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
             emit conveyor_speed_changed(curr_data.conveyor_upm);
             if(!curr_data.heater1_manual_control){
@@ -121,15 +116,12 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         {
             std::cerr << "JSON parsing error: " << e.what() << '\n';
         }
+
         emit db_updated(curr_data);
-        if(current_mw_tab == 2)
-        {
-            update_analytics_values();
-        }
     }
 }
 
-void MQTTClient::update_analytics_values() const
+void MQTTClient::update_analytics_values()
 {
     get_average_temperature();
     get_failure_rate();
@@ -231,6 +223,7 @@ double MQTTClient::get_average_temperature() const
         return 0.0; // Return 0 if no temperature data available
     }
 }
+
 int MQTTClient::get_average_upm() const
 {
     int total_speed{0};
@@ -241,12 +234,16 @@ int MQTTClient::get_average_upm() const
         total_speed += data.conveyor_upm;
         ++num_of_speeds;
     }
-    if(num_of_speeds > 0){
+    if(num_of_speeds > 0)
+    {
         return total_speed / num_of_speeds;
     }
-    else return 0;
-
+    else
+    {
+        return 0;
+    }
 }
+
 void MQTTClient::publish_data()
 {
     json j;

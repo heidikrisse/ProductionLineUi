@@ -9,7 +9,7 @@ Db_manager::Db_manager() : db(QSqlDatabase::addDatabase("QSQLITE"))
 bool Db_manager::create_connection()
 {
     // Creates db to ~/Documents/production_line.db if it not exists
-    //  Returns the directory containing user document files
+    // - returns the directory containing user document files
     QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     db.setDatabaseName(path + "/production_line.db");
 
