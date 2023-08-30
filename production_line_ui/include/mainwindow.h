@@ -75,10 +75,10 @@ class MainWindow : public QMainWindow
         Ui::MainWindow *ui;
         std::unique_ptr<MQTTClient> mqtt_client;
         QList<QSplineSeries *> multi_series;
-        Db_manager* db;
         QLabel *rejectionLabel;
         QLabel *costLabel;
         QLCDNumber *h1_temp;
+        std::unique_ptr<Db_manager> db;
         std::unique_ptr<QPalette> over80;
         std::unique_ptr<QPalette> under80;
         std::unique_ptr<QChart> chart;

@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(chart_view.get());
 
     // Create database and tables, if not exist
-    db = new Db_manager();
+    db = std::make_unique<Db_manager>();
     db->create_connection();
     std::vector<CurrentConveyorData> testi_vektori{};
     testi_vektori = db->get_all_dbData();
@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfsdfsd"); // change unique client ID
+    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfs22"); // change unique client ID
     mqtt_client->connect();
     //mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("sensor_control_data1");
@@ -147,7 +147,7 @@ MainWindow::~MainWindow()
     axis_y = nullptr;
     chart = nullptr;
     chart_view = nullptr;
-    delete db;
+    db = nullptr;
     delete ui;
 }
 
