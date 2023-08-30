@@ -64,7 +64,7 @@ bool Db_manager::add_line_data(CurrentConveyorData& parsed_data)
     query.bindValue(":heat2_ctrl", parsed_data.heater2_manual_control);
     query.bindValue(":heat3_ctrl", parsed_data.heater3_manual_control);
     query.bindValue(":cool_ctrl", parsed_data.cooler_manual_control);
-    //query.bindValue(":non_passers", parsed_data.failed_count);
+    query.bindValue(":non_passers", parsed_data.qc_camera_fails);
 
     if (query.exec())
     {
