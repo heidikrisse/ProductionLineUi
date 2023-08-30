@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "123hkdfgsdfsdfsd"); // change unique client ID
+    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfsdfsd"); // change unique client ID
     mqtt_client->connect();
     //mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("sensor_control_data1");
@@ -140,6 +140,13 @@ MainWindow::~MainWindow()
     for(auto& series : multi_series){
         delete series;
     }
+    mqtt_client = nullptr;
+    over80 = nullptr;
+    under80 = nullptr;
+    axis_x = nullptr;
+    axis_y = nullptr;
+    chart = nullptr;
+    chart_view = nullptr;
     delete db;
     delete ui;
 }
