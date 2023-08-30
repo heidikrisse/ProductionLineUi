@@ -95,8 +95,6 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
         {
             curr_data.conveyor_upm = j["speed_of_conveyor"].get<int>();
             emit conveyor_speed_changed(curr_data.conveyor_upm);
-            curr_data.qc_camera_toggle = j["qc_camera_toggle"].get<bool>();
-            emit qc_camera_state(curr_data.qc_camera_toggle);
             if(!curr_data.heater1_manual_control){
                 curr_data.heater1 = j["heater_1"].get<bool>();
             }
@@ -107,14 +105,13 @@ void MQTTClient::message_arrived(mqtt::const_message_ptr msg)
                 curr_data.heater3 = j["heater_3"].get<bool>();
             }
             emit heater_states(curr_data.heater1, curr_data.heater2, curr_data.heater3);
-
-            curr_data.cooler = j["cooler"].get<bool>();
-            emit cooler_state(curr_data.cooler);
-
+            if(!curr_data.cooler_manual_control){
+                curr_data.cooler = j["cooler"].get<bool>();
+                emit cooler_state(curr_data.cooler);
+            }
             curr_data.temps = j["temp_sensors"].get<std::array<float, 10>>();
             emit temps_changed(curr_data.temps); // Trigger the signal to update UI
-
-            curr_data.qc_camera_fails = j["qc_camera_toggle"].get<int>();
+            curr_data.qc_camera_fails = j["qc_camera_fails"].get<int>();
 
             curr_data.time_stamp = j["time_stamp"].get<std::string>();
         }
