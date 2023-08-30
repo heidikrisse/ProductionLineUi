@@ -323,11 +323,13 @@ void MainWindow::on_calculateButton_clicked()
 
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
-    if(index == 2){ // analytics window
+    if(index == 2)
+    { // analytics window
         mqtt_client->current_mw_tab = 2;
         mqtt_client->update_analytics_values();
     }
-    else{  // control window
+    else
+    {  // control window
         mqtt_client->current_mw_tab = 1;
     }
 }
