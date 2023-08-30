@@ -38,11 +38,12 @@ MainWindow::MainWindow(QWidget *parent)
     axis_x->setTickCount(10);
     axis_x->setFormat("hh:mm");
     axis_x->setTitleText("hh:mm");
-    // Set the initial range of the x-axis to the last 3 hours
+    // Set the initial range of the x-axis to the last 1 hours
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QDateTime threeHoursAgo = currentDateTime.addSecs(-3 * 60 * 60); // last 3 hours in seconds
-    axis_x->setMin(threeHoursAgo);
-    axis_x->setMax(currentDateTime);
+    // QDateTime oneHoursAgo = currentDateTime.addSecs(-1 * 60 * 60); // last one hours in seconds
+    // axis_x->setMin(oneHoursAgo);
+    axis_x-> setMin(currentDateTime); // starts showing from the current time
+    axis_x->setMax(currentDateTime.addSecs(10*60)); // +10 mins
 
     // Chart
     chart->legend()->setVisible(true);
@@ -78,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "123hkdfg"); // change unique client ID
+    mqtt_client = new MQTTClient("4.tcp.eu.ngrok.io:17857", "1234heidi"); // change unique client ID
     mqtt_client->connect();
     //mqtt_client->subscribe("conveyer_params");
     mqtt_client->subscribe("sensor_control_data1");
