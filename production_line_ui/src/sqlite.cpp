@@ -120,6 +120,7 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
 
         data_vector.push_back(tmp_struct);
     }
+
     return data_vector;
 }
 

@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
     db->create_connection();
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = std::make_unique<MQTTClient>("test.mosquitto.org", "12dfs2234"); // change "test.mosquitto.org" to your mosquitto broker and change your own unique client ID
+    mqtt_client = std::make_unique<MQTTClient>("test.mosquitto.org:1883", "123heidu"); // change "test.mosquitto.org" to your mosquitto broker and change your own unique client ID
     mqtt_client->connect();
     mqtt_client->subscribe("sensor_control_data1");
     mqtt_client->subscribe("test/12345"); // name of the test/topic
@@ -91,12 +91,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
     costLabel = ui->tabWidget->findChild<QLabel*>("costLabel");
-
-    // Check if the labels were found and assign initial text
-    if (rejectionLabel)
-        rejectionLabel->setText("Rejection Percentage: 0.00 %");
-    if (costLabel)
-        costLabel->setText("Operating Cost: 0.00 €");
 
     connect(mqtt_client.get(), &MQTTClient::conveyor_speed_changed, this, &MainWindow::conveyor_speed_received);
     connect(mqtt_client.get(), &MQTTClient::conveyor_control, this, &MainWindow::conveyor_control_received);
@@ -129,7 +123,6 @@ MainWindow::~MainWindow()
 void MainWindow::db_update_received()
 {
     db->add_line_data(mqtt_client->curr_data);
-    //db->print_line_data();
 }
 
 void MainWindow::conveyor_speed_received()
