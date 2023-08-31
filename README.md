@@ -158,3 +158,7 @@ Navigate to ProductionLineUi/production_line_ui/build
 cd unit_test
 ./unit_tests
 ```
+## Images
+
+Toggle button images (modified) are from https://www.flaticon.com/free-icons/on-off created by kerismaker - Flaticon
+Checkmark image (checked) is from https://icons8.com
