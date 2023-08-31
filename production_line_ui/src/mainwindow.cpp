@@ -115,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    multi_series.clear();
 }
 
 void MainWindow::db_update_received()
