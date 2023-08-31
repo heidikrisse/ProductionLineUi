@@ -4,56 +4,119 @@
 
 #include "../include/mqtt_client.h" // for MQTT Client Test
 
-/***** JSON PARSER TEST *****/
+/***** MQTT CLIENT TESTS *****/
 
-TEST_CASE("JSON Parser Test")
+// Define a mock class to use for testing
+class MockMQTTClient : public MQTTClient
 {
-    /*json_data::parsed_json parsed_data;
-    json j;
-    j["time_stamp"] = "2023-08-25T15:00:37GMT+2";
-    j["speed_of_conveyor"] = 438;
-    j["heater_1"] = false;
-    j["heater_2"] = false;
-    j["heater_3"] = true;
-    j["cooler"] = false;
-    j["qc_camera_status"] = true;
-    j["temp_sensors"] = {48.4, 53.9, 56.2, 41.2, 50.9, 52.3, 46.7, 48.1, 47.3, 45.9};
+public:
+    using MQTTClient::MQTTClient;
+    using MQTTClient::data_cache;
+    using MQTTClient::get_failure_rate;
+    using MQTTClient::get_operating_cost;
+    using MQTTClient::get_average_temperature;
+    using MQTTClient::get_average_upm;
+    using MQTTClient::update_analytics_values;
+};
 
+TEST_CASE("MQTT Client: Connect and Disconnect")
+{
+    MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip"); // ("broker_address", "client_id");
 
-    parsed_data = json_data::json_to_vec(j);
-
-    CHECK(parsed_data.timestamp == "2023-08-25T15:00:37GMT+2");
-    CHECK(parsed_data.units_per_minute == 438);
-    CHECK(parsed_data.heater1_status == false);
-    CHECK(parsed_data.heater2_status == false);
-    CHECK(parsed_data.heater3_status == true);
-    CHECK(parsed_data.cooler_status == false);
-    CHECK(parsed_data.qc_camera_status == true);
-    CHECK(parsed_data.heat_sensors[0] == doctest::Approx(48.4));
-    CHECK(parsed_data.heat_sensors[1] == doctest::Approx(53.9));
-    CHECK(parsed_data.heat_sensors[2] == doctest::Approx(56.2));
-    CHECK(parsed_data.heat_sensors[9] == doctest::Approx(45.9));
-    CHECK(parsed_data.non_passers == 0);*/
+    CHECK(mqtt_client.connect() == true);
+    mqtt_client.disconnect();
 }
 
-/***** MQTT CLIENT TEST *****/
-
-TEST_CASE("MQTT Client Test")
+TEST_CASE("MQTT Client: Publish Data")
 {
-    MQTTClient mqtt_client("5.tcp.eu.ngrok.io:18017", "abcd1234heidip"); // ("broker_address", "client_id");
+    MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+    mqtt_client.connect();
 
-    SUBCASE("Connect and Disconnect")
-    {
-        CHECK(mqtt_client.connect() == true);
-        mqtt_client.disconnect();
-    }
+    CHECK_NOTHROW(mqtt_client.publish_data());
+    mqtt_client.disconnect();
+}
 
-    SUBCASE("Publish and Subscribe")
-    {
-        CHECK(mqtt_client.connect() == true);
-        mqtt_client.subscribe("test/topic");
-        mqtt_client.publish("test/topic", "test/payload");
-        // Needs a delay / wait for the message to arrive first?
-        mqtt_client.disconnect();
-    }
+TEST_CASE("MQTT Client: Update Analytics Values")
+{
+    MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+
+    CHECK_NOTHROW(mqtt_client.update_analytics_values());
+}
+
+TEST_CASE("MQTT Client: Failure Rate Calculation")
+{
+    MockMQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+
+    // Clear the data cache
+    mqtt_client.data_cache.clear();
+
+    // Add some sample data
+    CurrentConveyorData data1;
+    data1.qc_camera_fails = 10;
+    data1.conveyor_upm = 400; // 400 units/min
+    mqtt_client.data_cache.push_back(data1);
+
+    double failure_rate{mqtt_client.get_failure_rate()};
+    double expected_failure_rate{(10.0 / (400.0 * 60.0)) * 100.0};
+
+    CHECK(failure_rate == doctest::Approx(expected_failure_rate).epsilon(0.001));
+}
+
+TEST_CASE("MQTT Client: Operating Cost Calculation")
+{
+    MockMQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+
+    // Clear the data cache
+    mqtt_client.data_cache.clear();
+
+    // Add some sample data
+    CurrentConveyorData data1;
+    data1.conveyor_upm = 500; // 500 units/min
+    data1.heater1 = true;
+    data1.heater2 = false;
+    data1.heater3 = true;
+    data1.cooler = false;
+    mqtt_client.data_cache.push_back(data1);
+
+    std::pair<double, double> operating_cost = mqtt_client.get_operating_cost();
+    double expected_total_cost{(500.0 * 60 * 0.36) + (3 + 3 + 5)}; // cost_per_unit * total_units + heater_costs
+    double expected_cost_per_unit_time{expected_total_cost / (500.0 * 60)};
+
+    CHECK(operating_cost.first == doctest::Approx(expected_total_cost).epsilon(0.001));
+    CHECK(operating_cost.second == doctest::Approx(expected_cost_per_unit_time).epsilon(0.001));
+}
+
+TEST_CASE("MQTT Client: Average Temperature Calculation")
+{
+    MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+
+    CurrentConveyorData data1;
+    data1.temps = {45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0};
+    mqtt_client.data_cache = {data1};
+
+    double average_temp{mqtt_client.get_average_temperature()};
+
+    double expected_average_temp{49.5};
+
+    CHECK(average_temp == doctest::Approx(expected_average_temp).epsilon(0.001));
+}
+
+TEST_CASE("MQTT Client: Average UPM Calculation")
+{
+    MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
+
+    // Sample data for average UPM calculation into the data_cache
+    CurrentConveyorData data1;
+    data1.conveyor_upm = 400;
+    CurrentConveyorData data2;
+    data2.conveyor_upm = 398;
+    CurrentConveyorData data3;
+    data3.conveyor_upm = 401;
+    mqtt_client.data_cache = {data1, data2, data3};
+
+    int average_upm{mqtt_client.get_average_upm()};
+
+    int expected_average_upm{399};
+
+    CHECK(average_upm == expected_average_upm);
 }
