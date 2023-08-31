@@ -171,9 +171,9 @@ Checkmark image (checked) is from https://icons8.com
 
 ## GUI
 
-![Control tab1](production_line_ui/resources/images/FinalUI2.png)
+![Control tab1](production_line_ui/resources/images/Final_UI2.png)
 
-![Control tab2](production_line_ui/resources/images/FinalUI.png)
+![Control tab2](production_line_ui/resources/images/Final_UI.png)
 
 ![Temperature >80](production_line_ui/resources/images/RED_UI.png)
 
