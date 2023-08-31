@@ -129,15 +129,16 @@ void MQTTClient::update_analytics_values()
     get_operating_cost();
 }
 
-// Function to calculate the failure rate from the fetched data
+// Function to calculate the failure rate (percentage of failed units out of the total units) from the fetched data
 double MQTTClient::get_failure_rate() const
 {
     double total_units{0};
+    int num_data_points{0}; // Count of the data points for time averaging
     double failed_units{0};
 
     for (const auto& data : data_cache)
     {
-        total_units += data.conveyor_upm;
+        total_units += data.conveyor_upm * 60;
         failed_units += data.qc_camera_fails;
     }
 
@@ -157,7 +158,7 @@ double MQTTClient::get_failure_rate() const
 // Function to calculate the operating costs from the fetched data
 double MQTTClient::get_operating_cost() const
 {
-    double cost_per_unit{1}; // <= can be changed
+    double cost_per_unit{0.5}; // <= can be changed
     // Cost for every heater turned on / unit time
     double heater_cost{3}; // <= can be changed
     // Const for cooler turned on / unit time
@@ -168,8 +169,8 @@ double MQTTClient::get_operating_cost() const
 
     for (const auto& data : data_cache)
     {
-        total_units += data.conveyor_upm;
-        total_cost += data.conveyor_upm * cost_per_unit;
+        total_units += data.conveyor_upm * 60; // total_units = conveyor speed (units/min) / min
+        total_cost += data.conveyor_upm * 60 * cost_per_unit;
 
         if (data.heater1)
         {

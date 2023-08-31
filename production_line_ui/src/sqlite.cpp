@@ -4,8 +4,8 @@
 #include <QtSql>
 Db_manager::Db_manager() : db(QSqlDatabase::addDatabase("QSQLITE"))
 {
-
 }
+
 bool Db_manager::create_connection()
 {
     // Creates db to ~/Documents/production_line.db if it not exists
@@ -143,7 +143,5 @@ void Db_manager::print_line_data()
         int cool = query.value(3).toInt();
         float t3 = query.value(4).toFloat();
         float t10 = query.value(5).toFloat();
-        qDebug() << "Time:" << time << ", conveyor speed:" << speed << ", heater1 is turned on:" << std::boolalpha << heat1
-                 << ", cooler is turned on:" << std::boolalpha << cool << ", temp.sensor 3:" << t3 << "temp.sensor 10:" << t10;
     }
 }

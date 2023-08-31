@@ -304,7 +304,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         if (costLabel)
         {
-            costLabel->setText(QString("%1 €").arg(QString::number(operating_cost, 'f', 2)));
+            costLabel->setText(QString("%1 €/unit").arg(QString::number(operating_cost, 'f', 2)));
         }
 
         double average_temps{mqtt_client->get_average_temperature()};
