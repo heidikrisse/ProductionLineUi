@@ -52,8 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (int i{1}; i < 11; i++)
     {
-        //auto* series = new QSplineSeries();
-        //series->setParent(this);
         multi_series.append(std::make_shared<QSplineSeries>());
         auto series = multi_series.back();
         series->setName(QString("HS " + QString::number(i)));
