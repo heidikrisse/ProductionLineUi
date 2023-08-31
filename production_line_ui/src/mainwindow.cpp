@@ -116,6 +116,14 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     multi_series.clear();
+    mqtt_client = nullptr;
+    over80 = nullptr;
+    under80 = nullptr;
+    axis_x = nullptr;
+    axis_y = nullptr;
+    chart = nullptr;
+    chart_view = nullptr;
+    db = nullptr;
 }
 
 void MainWindow::db_update_received()
