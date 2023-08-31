@@ -88,7 +88,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Find the labels in the analytics tab
     rejectionLabel = ui->tabWidget->findChild<QLabel*>("rejectionLabel");
-    costLabel = ui->tabWidget->findChild<QLabel*>("costLabel");
+    costPerUnitLabel = ui->tabWidget->findChild<QLabel*>("costPerUnitLabel");
+    totalCostLabel = ui->tabWidget->findChild<QLabel*>("totalCostLabel");
 
     connect(mqtt_client.get(), &MQTTClient::conveyor_speed_changed, this, &MainWindow::conveyor_speed_received);
     connect(mqtt_client.get(), &MQTTClient::conveyor_control, this, &MainWindow::conveyor_control_received);
@@ -295,16 +296,22 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     { // analytics window
         mqtt_client->current_mw_tab = 2;
 
-        double rejection_rate{mqtt_client->get_failure_rate() * 100.0};
-        double operating_cost{mqtt_client->get_operating_cost()};
+        double rejection_rate{mqtt_client->get_failure_rate()};
+        std::pair<double, double> operating_cost = mqtt_client->get_operating_cost();
+        double total_cost = operating_cost.first;
+        double cost_per_unit_time = operating_cost.second;
 
         if (rejectionLabel)
         {
             rejectionLabel->setText(QString("%1 %").arg(QString::number(rejection_rate, 'f', 2)));
         }
-        if (costLabel)
+        if (costPerUnitLabel)
         {
-            costLabel->setText(QString("%1 €/unit").arg(QString::number(operating_cost, 'f', 2)));
+            costPerUnitLabel->setText(QString("%1 €/unit").arg(QString::number(cost_per_unit_time, 'f', 2)));
+        }
+        if (totalCostLabel)
+        {
+            totalCostLabel->setText(QString("%1 €").arg(QString::number(total_cost, 'f', 0)));
         }
 
         double average_temps{mqtt_client->get_average_temperature()};

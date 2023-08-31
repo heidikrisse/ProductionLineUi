@@ -75,7 +75,8 @@ class MainWindow : public QMainWindow
         std::unique_ptr<MQTTClient> mqtt_client;
         QList<std::shared_ptr<QSplineSeries>> multi_series;
         QLabel *rejectionLabel;
-        QLabel *costLabel;
+        QLabel *totalCostLabel;
+        QLabel *costPerUnitLabel;
         QLCDNumber *h1_temp;
         std::unique_ptr<Db_manager> db;
         std::unique_ptr<QPalette> over80;

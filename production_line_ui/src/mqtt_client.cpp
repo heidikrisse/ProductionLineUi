@@ -156,7 +156,7 @@ double MQTTClient::get_failure_rate() const
 }
 
 // Function to calculate the operating costs from the fetched data
-double MQTTClient::get_operating_cost() const
+std::pair<double, double>MQTTClient::get_operating_cost() const
 {
     double cost_per_unit{0.5}; // <= can be changed
     // Cost for every heater turned on / unit time
@@ -172,28 +172,30 @@ double MQTTClient::get_operating_cost() const
         total_units += data.conveyor_upm * 60; // total_units = conveyor speed (units/min) / min
         total_cost += data.conveyor_upm * 60 * cost_per_unit;
 
-        if (data.heater1)
+        if (data.heater1 || data.heater1_manual_control)
         {
             total_cost += heater_cost;
         }
 
-        if (data.heater2)
+        if (data.heater2 || data.heater2_manual_control)
         {
             total_cost += heater_cost;
         }
 
-        if (data.heater3)
+        if (data.heater3 || data.heater3_manual_control)
         {
             total_cost += heater_cost;
         }
 
-        if (data.cooler)
+        if (data.cooler || data.cooler_manual_control)
         {
             total_cost += cooler_cost;
         }
     }
 
-    return total_cost / total_units;
+    double cost_per_unit_time = total_cost / total_units;
+
+    return std::make_pair(total_cost, cost_per_unit_time);
 }
 
 // Function to calculate the average temperature of the fetched data

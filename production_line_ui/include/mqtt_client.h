@@ -69,7 +69,7 @@ public:
     // Function to calculate the failure rate from the fetched data
     double get_failure_rate() const;
     // Function to calculate the operating costs from the fetched data
-    double get_operating_cost() const;
+    std::pair<double, double>get_operating_cost() const;
     // Function to calculate the average temperature of the fetched data
     double get_average_temperature() const;
     int get_average_upm() const;

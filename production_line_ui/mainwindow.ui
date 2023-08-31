@@ -468,7 +468,7 @@ QCheckBox::indicator:unchecked {
         <property name="geometry">
          <rect>
           <x>50</x>
-          <y>280</y>
+          <y>390</y>
           <width>591</width>
           <height>211</height>
          </rect>
@@ -543,12 +543,24 @@ QCheckBox::indicator:unchecked {
           <x>50</x>
           <y>120</y>
           <width>591</width>
-          <height>101</height>
+          <height>151</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="rejectionPercentageAndOperatingCostLabel">
+         <item row="0" column="1">
+          <widget class="QLabel" name="rejectionLabel">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>0.00 %</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="operatingCostTitleLabel">
+          <widget class="QLabel" name="operatingCostPerUnitTitleLabel">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -571,20 +583,8 @@ QCheckBox::indicator:unchecked {
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="rejectionLabel">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>0.00 %</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="costLabel">
+          <widget class="QLabel" name="costPerUnitLabel">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -592,6 +592,30 @@ QCheckBox::indicator:unchecked {
            </property>
            <property name="text">
             <string>0.00 €/unit</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="totalCostTitleLabel">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Total cost:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="totalCostLabel">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>0.00 €</string>
            </property>
           </widget>
          </item>
