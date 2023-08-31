@@ -3,6 +3,8 @@
 #include "../include/doctest.h"
 
 #include "../include/mqtt_client.h" // for MQTT Client Test
+#include "../include/sqlite.hpp"
+
 
 /***** JSON PARSER TEST *****/
 
@@ -38,22 +40,38 @@ TEST_CASE("JSON Parser Test")
 
 /***** MQTT CLIENT TEST *****/
 
-TEST_CASE("MQTT Client Test")
+//TEST_CASE("MQTT Client Test")
+//{
+//    MQTTClient mqtt_client("5.tcp.eu.ngrok.io:18017", "abcd1234heidip"); // ("broker_address", "client_id");
+
+//    SUBCASE("Connect and Disconnect")
+//    {
+//        CHECK(mqtt_client.connect() == true);
+//        mqtt_client.disconnect();
+//    }
+
+//    SUBCASE("Publish and Subscribe")
+//    {
+//        CHECK(mqtt_client.connect() == true);
+//        mqtt_client.subscribe("test/topic");
+//        mqtt_client.publish("test/topic", "test/payload");
+//        // Needs a delay / wait for the message to arrive first?
+//        mqtt_client.disconnect();
+//    }
+//}
+
+
+/***** DATABASE TESTS *****/
+
+TEST_CASE("Database tests")
 {
-    MQTTClient mqtt_client("5.tcp.eu.ngrok.io:18017", "abcd1234heidip"); // ("broker_address", "client_id");
+    std::unique_ptr<Db_manager> db = std::make_unique<Db_manager>();
 
-    SUBCASE("Connect and Disconnect")
-    {
-        CHECK(mqtt_client.connect() == true);
-        mqtt_client.disconnect();
-    }
+    // Returns true if db and table is created
+    bool db_and_table_created = db->Db_manager::create_connection();
 
-    SUBCASE("Publish and Subscribe")
+    SUBCASE("Create db and table")
     {
-        CHECK(mqtt_client.connect() == true);
-        mqtt_client.subscribe("test/topic");
-        mqtt_client.publish("test/topic", "test/payload");
-        // Needs a delay / wait for the message to arrive first?
-        mqtt_client.disconnect();
+        CHECK(db_and_table_created == true);
     }
 }

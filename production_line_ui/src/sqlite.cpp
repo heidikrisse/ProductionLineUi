@@ -84,7 +84,8 @@ std::vector<CurrentConveyorData> Db_manager::get_all_dbData() {
     std::vector<CurrentConveyorData> data_vector{};
     QSqlQuery query(db);
     query.setForwardOnly(true);
-    query.prepare("SELECT timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, qc_camera, non_passers, conveyor_speed, heater1, heater2, heater3, cooler, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10 FROM line_data");
+    query.prepare("SELECT timestamp, conv_ctrl, heat1_ctrl, heat2_ctrl, heat3_ctrl, cool_ctrl, qc_camera, non_passers, conveyor_speed, "
+                  "heater1, heater2, heater3, cooler, temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10 FROM line_data");
     if (!query.exec()) {
         qDebug() << "Getting db-data failed:" << query.lastError().text();
     }

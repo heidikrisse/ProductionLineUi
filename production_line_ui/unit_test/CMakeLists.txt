@@ -14,13 +14,15 @@ set(TEST_SOURCES
     ../include/mqtt_client.h
     ../src/mqtt_client.cpp
     ../include/doctest.h
+    ../include/sqlite.hpp
+    ../src/sqlite.cpp
 )
 
 # Executable for running unit tests
 add_executable(unit_tests ${TEST_SOURCES})
 
 # Link Qt libraries
-target_link_libraries(unit_tests PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts paho-mqtt3a paho-mqttpp3)
+target_link_libraries(unit_tests PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Sql paho-mqtt3a paho-mqttpp3)
 
 # Include directories
 target_include_directories(unit_tests PRIVATE ../include)
