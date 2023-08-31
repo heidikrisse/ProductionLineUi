@@ -3,6 +3,7 @@
 #include "../include/doctest.h"
 
 #include "../include/mqtt_client.h" // for MQTT Client Test
+#include "../include/sqlite.hpp"
 
 /***** MQTT CLIENT TESTS *****/
 
@@ -19,7 +20,7 @@ public:
     using MQTTClient::update_analytics_values;
 };
 
-TEST_CASE("MQTT Client: Connect and Disconnect")
+TEST_CASE("MQTT Client tests: Connect and Disconnect")
 {
     MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip"); // ("broker_address", "client_id");
 
@@ -27,7 +28,7 @@ TEST_CASE("MQTT Client: Connect and Disconnect")
     mqtt_client.disconnect();
 }
 
-TEST_CASE("MQTT Client: Publish Data")
+TEST_CASE("MQTT Client tests: Publish Data")
 {
     MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
     mqtt_client.connect();
@@ -36,14 +37,14 @@ TEST_CASE("MQTT Client: Publish Data")
     mqtt_client.disconnect();
 }
 
-TEST_CASE("MQTT Client: Update Analytics Values")
+TEST_CASE("MQTT Client tests: Update Analytics Values")
 {
     MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
 
     CHECK_NOTHROW(mqtt_client.update_analytics_values());
 }
 
-TEST_CASE("MQTT Client: Failure Rate Calculation")
+TEST_CASE("MQTT Client tests: Failure Rate Calculation")
 {
     MockMQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
 
@@ -62,7 +63,7 @@ TEST_CASE("MQTT Client: Failure Rate Calculation")
     CHECK(failure_rate == doctest::Approx(expected_failure_rate).epsilon(0.001));
 }
 
-TEST_CASE("MQTT Client: Operating Cost Calculation")
+TEST_CASE("MQTT Client tests: Operating Cost Calculation")
 {
     MockMQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
 
@@ -86,7 +87,7 @@ TEST_CASE("MQTT Client: Operating Cost Calculation")
     CHECK(operating_cost.second == doctest::Approx(expected_cost_per_unit_time).epsilon(0.001));
 }
 
-TEST_CASE("MQTT Client: Average Temperature Calculation")
+TEST_CASE("MQTT Client tests: Average Temperature Calculation")
 {
     MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
 
@@ -101,7 +102,7 @@ TEST_CASE("MQTT Client: Average Temperature Calculation")
     CHECK(average_temp == doctest::Approx(expected_average_temp).epsilon(0.001));
 }
 
-TEST_CASE("MQTT Client: Average UPM Calculation")
+TEST_CASE("MQTT Client tests: Average UPM Calculation")
 {
     MQTTClient mqtt_client("test.mosquitto.org:1883", "abcd1234heidip");
 
@@ -119,4 +120,16 @@ TEST_CASE("MQTT Client: Average UPM Calculation")
     int expected_average_upm{399};
 
     CHECK(average_upm == expected_average_upm);
+} 
+
+/***** DATABASE TESTS *****/
+
+TEST_CASE("Database tests: Create DB and Table")
+{
+    std::unique_ptr<Db_manager> db = std::make_unique<Db_manager>();
+
+    // Returns true if db and table is created
+    bool db_and_table_created = db->Db_manager::create_connection();
+
+    CHECK(db_and_table_created == true);
 }
