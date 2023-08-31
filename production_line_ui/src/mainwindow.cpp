@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     db->create_connection();
     /* !!!!!!!!!!!!!!! CHANGE UNIQUE CLIENT ID HERE !!!!!!!!!!!!!!! */
 
-    mqtt_client = std::make_unique<MQTTClient>("4.tcp.eu.ngrok.io:17857", "12dfs2234"); // change unique client ID
+    mqtt_client = std::make_unique<MQTTClient>("test.mosquitto.org", "12dfs2234"); // change "test.mosquitto.org" to your mosquitto broker and change your own unique client ID
     mqtt_client->connect();
     mqtt_client->subscribe("sensor_control_data1");
     mqtt_client->subscribe("test/12345"); // name of the test/topic

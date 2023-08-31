@@ -22,11 +22,12 @@ bool MQTTClient::connect()
     try
     {
         client.connect(conn_opts)->wait();
+        std::cout << "Successfully connected to MQTT broker.\n";
         return true;
     }
     catch(const mqtt::exception& e)
     {
-        std::cerr << "connection error: " << e.what() << '\n';
+        std::cerr << "Connection error: " << e.what() << '\n';
         return false;
     }
 }
@@ -39,7 +40,7 @@ void MQTTClient::disconnect()
     }
     catch (const mqtt::exception& e)
     {
-        std::cerr << "disconnect error: " << e.what() << '\n';
+        std::cerr << "Disconnect Error: " << e.what() << '\n';
     }
 }
 
@@ -50,7 +51,7 @@ void MQTTClient::subscribe(const std::string& topic){
     }
     catch (const mqtt::exception& e)
     {
-        std::cerr << "subscripe Error: " << e.what() << '\n';
+        std::cerr << "Subscripe Error: " << e.what() << '\n';
     }
 }
 
@@ -140,9 +141,6 @@ double MQTTClient::get_failure_rate() const
         failed_units += data.qc_camera_fails;
     }
 
-    std::cout << "total_units: " << total_units << '\n'; // for debugging
-    std::cout << "failed_units: " << failed_units << '\n'; // for debugging
-
     double rejectionRate = 0.0;
     if (total_units > 0.0)
     {
@@ -172,8 +170,6 @@ double MQTTClient::get_operating_cost() const
     {
         total_units += data.conveyor_upm;
         total_cost += data.conveyor_upm * cost_per_unit;
-
-        std::cout << "total_units: " << total_units << '\n'; // for debugging
 
         if (data.heater1)
         {
