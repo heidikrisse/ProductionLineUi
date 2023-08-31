@@ -162,3 +162,19 @@ cd unit_test
 
 Toggle button images (modified) are from https://www.flaticon.com/free-icons/on-off created by kerismaker - Flaticon
 Checkmark image (checked) is from https://icons8.com
+
+## User Manual
+
+![UserManual page1](production_line_ui/resources/images/UserManual1.png)
+
+![UserManual page2](production_line_ui/resources/images/UserManual2.png)
+
+## GUI
+
+![Control tab1](production_line_ui/resources/images/FinalUI2.png)
+
+![Control tab2](production_line_ui/resources/images/FinalUI.png)
+
+![Temperature >80](production_line_ui/resources/images/RED_UI.png)
+
+![Analytics tab](production_line_ui/resources/images/Analytics.png)
