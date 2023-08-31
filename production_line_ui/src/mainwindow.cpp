@@ -35,12 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
     axis_x->setFormat("hh:mm");
     axis_x->setTitleText("hh:mm");
     axis_x->setTitleFont(QFont("Sans Serif"));
-    // Set the initial range of the x-axis to the last 1 hours
+    // Set the initial range of the x-axis to the current time
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    // QDateTime oneHoursAgo = currentDateTime.addSecs(-1 * 60 * 60); // last one hours in seconds
-    // axis_x->setMin(oneHoursAgo);
     axis_x-> setMin(currentDateTime); // starts showing from the current time
-    axis_x->setMax(currentDateTime.addSecs(10*60)); // +10 mins
+    axis_x->setMax(currentDateTime.addSecs(5*60)); // +5 mins
 
     // Chart
     chart->legend()->setVisible(true);
@@ -193,6 +191,14 @@ void MainWindow::temps_received()
 
     // Get the current timestamp and update the graph
     qint64 currentTimestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+    // Check if the current time exceeds the x-axis maximum, and update the x-axis accordingly
+    if (currentTimestamp > axis_x->max().toMSecsSinceEpoch())
+    {
+        axis_x->setMin(QDateTime::fromMSecsSinceEpoch(currentTimestamp)); // every 5 mins the temp graph updated to the current time
+        axis_x->setMax(QDateTime::fromMSecsSinceEpoch((currentTimestamp + (5*60*1000)))); // and the x-axis maximum updated +5 mins from the current time
+    }
+
     for (size_t i{0}; i < mqtt_client->curr_data.temps.size(); ++i)
     {
         multi_series[i]->append(currentTimestamp, mqtt_client->curr_data.temps[i]);
